@@ -442,10 +442,6 @@ END
 
     </div>
 
-    <script type='codedeck'>
-var result = prompt('Give me some data');
-alert(result);
-    </script>
 
     <div class='destination'>
 
@@ -483,11 +479,7 @@ END
 
     </div>
 
-    <script type='codedeck'>
-var result = prompt('Give me some data');
-alert(result);
-    </script>
-
+ 
     <div class='destination'>
 
     </div>
@@ -503,7 +495,7 @@ alert(result);
 SCRIPT
 $(document).ready(function() {
 
-var ajax = $.getJSON("names.json",function(data) {
+var ajax = $.get("names.json",function(data) {
   alert(data);
 });
 
@@ -513,12 +505,7 @@ END
 
     </div>
 
-    <script type='codedeck'>
-var result = prompt('Give me some data');
-alert(result);
-    </script>
-
-    <div class='destination'>
+     <div class='destination'>
 
     </div>
 
