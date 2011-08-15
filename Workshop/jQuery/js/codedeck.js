@@ -19,7 +19,7 @@ function runCode(element) {
      code = "<scr" + "ipt>\n" + code + "\n</scr" + "ipt>";
    }
 
-   code = "<html><head><scr" + "ipt src='js/jquery.min.js'></scr" + "ipt></head><body>" + code + '</body></html>';
+   code = "<!DOCTYPE HTML><html><head><scr" + "ipt src='js/jquery.min.js'></scr" + "ipt></head><body>" + code + '</body></html>';
 
    writeIFrame(iframe,code);
 }
@@ -36,6 +36,7 @@ function writeIFrame(iframe,code) {
 $(document).ready(function() {
 
   var JavaScriptMode = require("ace/mode/javascript").Mode;
+  var HTMLMode = require("ace/mode/html").Mode;
 
   $("a").attr('target','_blank');
 
@@ -73,15 +74,23 @@ $(document).ready(function() {
     current.find(".code-editor").each(function() {
       if(!$(this).hasClass('codeEditor')) {
         var element = this;
+
+        var html = $(this).html().replace(/SCRIPT/g,'<script>').replace(/END/,'</s' + 'cript>').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+
         $(this).css('visibility','visible');
         var editor = ace.edit(this.id);
         $(this).addClass('codeEditor');
-        editor.getSession().setMode(new JavaScriptMode());
 
-        if($(this).attr('data-script')) {
-          var html = $("#" + $(this).attr('data-script')).html().replace(/SCRIPT/g,'<script>').replace(/END/,'</s' + 'cript>');
-          editor.getSession().setValue(html);
+
+        var language = $(element).attr('data-language');
+
+        if(language == 'js') {
+          editor.getSession().setMode(new JavaScriptMode());
+        } else {
+          editor.getSession().setMode(new HTMLMode());
         }
+
+        editor.getSession().setValue(html);
 
         $(this).data('editor',editor);
         editor.on('focus', focusCallback);

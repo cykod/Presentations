@@ -25,6 +25,7 @@
       
 	<article class='title'>
 	<h1>HTML5 Workshop #4<br/>jQuery, Ajax & Javascript</h1>
+  <p><a href='http://bit.ly/html5workshop4'>http://bit.ly/html5workshop4</a></p>
 	</article>
 
 	<article>
@@ -200,11 +201,30 @@ require(["jquery", "jquery.alpha", "jquery.beta"], function($) {
     <h1>Just enough Javascript</h1>
     <ul>
       <li>How to execute javascript (already covered)</li>
-      <li>Hello World - calling functions.</li>
+      <li>"Hello World!"</li>
+      <li>Creating and calling functions</li>
       <li>Variables: a place for your data</li> 
       <li>jQuery, getting it in your site.</li>
       <li>Manipulating the DOM</li>
+      <li>Learn more: <a href='http://javascript.infogami.com/Javascript_in_Ten_Minutes'>Javascript in Ten Minutes</a></li>
     </ul>
+  </article>
+
+  <article>
+    <h2>Running Javascript</h2>
+    <p>This deck will run Javascript for you in an iframe setup like this:</p>
+    <pre>
+&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+ &lt;head&gt;
+   &lt;script src='js/jquery.min.js&gt;&lt;/script&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+  &lt;!-- Your Code --&gt;
+ &lt;/body&gt; 
+&lt;/html&gt;
+</pre>
+    <p>Javascript will placed in script tags in the body</p>
   </article>
 
 
@@ -294,6 +314,245 @@ alert(result);
 
     </div>
 	</article>
+
+
+  <article>
+  <h1>What does jQuery get us?</h1>
+  <ul>
+    <li><em>*Cross-browser compatibility*</em></li>
+    <li>Easy DOM manipulation</li>
+    <li>Animation</li>
+    <li>Simplified Ajax</li>
+  </ul>
+  </article>
+
+
+  <article>
+  <h1>Get comfortable with the Docs!</h1>
+  <p>Probably the most important thing you can do</p>
+  <p><a href='http://docs.jquery.com'>http://docs.jquery.com</a></p>
+  </article>
+
+  <article>
+  <h1>jQuery Basics</h1>
+  <ul>
+    <li>Everything is "namespaced" inside of the jQuery object, which is aliased to "$"</li>
+    <li>...which means everything you do in jQuery starts with an $</li>
+    <li>Use the standard CSS selectors for picking pieces of the DOM</li>
+  </ul>
+  </article>
+
+  <article>
+  <h2>Basic selection + manipulation </h2>
+  <p>Let's try out $.text, $.html, $.hide, $.show,  $.css, $.attr, $.addClass, $.hasClass, $.removeClass
+    <div class='code-editor' data-language='html'>
+SCRIPT
+$(document).ready(function() {
+
+
+});
+END
+<header>
+   <h1>Site Header</h1>
+</header>
+<nav id='main-nav'>
+  <a href='#'>Item 1</a> <a href='#'>Item 2</a> <a href='#'>Item 3</a>
+</nav>
+<section>
+  <article>
+  <h1 class='article-header'>Title</h1>
+  <p>Lorem Ipsum Dolor Sic Amet</p>
+  </article>
+  <article>
+    <h1  class='article-header'>Title 2</h1>
+    <p>Lorem Ipsum Dolor Sic Amet</p>
+  </article>
+</section>
+    </div>
+
+    <div class='destination'>
+
+    </div>
+
+  </article>
+
+
+  <article>
+  <h2>Some basic DOM insertion</h2>
+  <p>Let's try out $.before, $.after, $.append, $.prepend, $.wrap, $.appendTo, both with text and elements.</p>
+    <div class='code-editor' data-language='html'>
+SCRIPT
+$(document).ready(function() {
+
+
+});
+END
+<header>
+   <h1>Site Header</h1>
+</header>
+<nav id='main-nav'>
+  <a href='#'>Item 1</a> <a href='#'>Item 2</a> <a href='#'>Item 3</a>
+</nav>
+<section>
+  <article>
+  <h1 class='article-header'>Title</h1>
+  <p>Lorem Ipsum Dolor Sic Amet</p>
+  </article>
+  <article>
+    <h1  class='article-header'>Title 2</h1>
+    <p>Lorem Ipsum Dolor Sic Amet</p>
+  </article>
+</section>
+    </div>
+
+    <div class='destination'>
+
+    </div>
+
+  </article>
+
+
+
+ <article>
+ <h2>Animation and transforms</h2>
+ <p> $.fadeOut, $.fadeIn, $.slideDown, $.slideUp, $.toggle, $.stop, $.animate</p>
+    <div class='code-editor' data-language='html'>
+SCRIPT
+$(document).ready(function() {
+
+
+});
+
+END
+
+
+&lt;style&gt;
+  .box { 
+    position:absolute; 
+    width:100px; 
+    height:100px;
+    background-color:red;
+    }
+
+  #box2 { right:0px; }
+&lt;/style&gt;
+
+&lt;div class='box' id='box1'&gt;&lt;/div&gt;
+&lt;div class='box' id='box2'&gt;&lt;/div&gt;
+
+    </div>
+
+    <script type='codedeck'>
+var result = prompt('Give me some data');
+alert(result);
+    </script>
+
+    <div class='destination'>
+
+    </div>
+
+  </article>
+
+
+ <article>
+ <h2>Events</h2>
+ <p>$.bind, $.click, $.dblclick, $.mouseenter, $.mouseleave, $.hover </p>
+    <div class='code-editor' data-language='html'>
+SCRIPT
+$(document).ready(function() {
+
+
+});
+
+END
+
+
+&lt;style&gt;
+  .box { 
+    position:absolute; 
+    width:100px; 
+    height:100px;
+    background-color:red;
+    }
+
+  #box2 { right:0px; }
+&lt;/style&gt;
+
+&lt;div class='box' id='box1'&gt;&lt;/div&gt;
+&lt;div class='box' id='box2'&gt;&lt;/div&gt;
+
+    </div>
+
+    <script type='codedeck'>
+var result = prompt('Give me some data');
+alert(result);
+    </script>
+
+    <div class='destination'>
+
+    </div>
+
+  </article>
+
+
+
+ <article>
+ <h2>Ajax</h2>
+ <p><a href='http://api.jquery.com/jQuery.ajax/'>$.ajax</a>, $.get, $.post, $.getJSON </p>
+    <div class='code-editor' data-language='html'>
+SCRIPT
+$(document).ready(function() {
+
+var ajax = $.getJSON("names.json",function(data) {
+  alert(data);
+});
+
+});
+
+END
+
+    </div>
+
+    <script type='codedeck'>
+var result = prompt('Give me some data');
+alert(result);
+    </script>
+
+    <div class='destination'>
+
+    </div>
+
+  </article>
+
+
+ <article>
+ <h2>JSONp</h2>
+ <p>Ajax is same-domain only. So there's a hack to pull data across domains called $.getScript </p>
+    <div class='code-editor' data-language='html'>
+SCRIPT
+$(document).ready(function() {
+ var username = 'cykod';
+ var count = 10;
+ $.getScript('http://twitter.com/statuses/user_timeline/' + username + '.json?callback=twitterCallback&count=' + count);
+
+});
+
+END
+
+    </div>
+
+    <script type='codedeck'>
+var result = prompt('Give me some data');
+alert(result);
+    </script>
+
+    <div class='destination'>
+
+    </div>
+
+  </article>
+
+
 
 
 </section>
