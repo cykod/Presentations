@@ -1,0 +1,401 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<script src="js/ace/ace-uncompressed.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/ace/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/ace/mode-html.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/ace/mode-css.js" type="text/javascript" charset="utf-8"></script>
+	<script src='js/jquery.min.js'></script>
+	<script src='js/jqeury.tmpl.min.ks'></script>
+
+	<script src='js/slides.js'></script>
+	<script src='js/prettify.js'></script>
+	<script src='js/codedeck.js'></script>
+
+		<link rel="stylesheet" href="css/styles.css" type="text/css" media="screen" />
+
+</head>
+<body>
+
+
+ <section class='slides layout-regular'>
+	
+      
+	<article class='title'>
+	<h1>HTML5 Workshop #5<br/>Events, Ajax</h1>
+  <p><a href='http://bit.ly/html5workshop5'>http://bit.ly/html5workshop5</a></p>
+	</article>
+
+
+	<article>
+	<h1>For Today</h1>
+	<ul>
+		<li>Javascript Overview</li>
+		<li>Events</li>
+		<li>Ajax</li>
+		<li>jQuery Plugins</li>
+		<li>HTML5 Media (Time Allowing)</li>
+	</ul>
+	</article>
+
+	<article>
+	<h1>Javascript Recap</h1>
+	</article>
+
+	<article>
+	<h1>I know I said we going to try to teach you programming...</h1>
+	</article>
+
+	<article>
+	<h1>But...</h1>
+	<p>We want you to at least know some terms to look up when you want to do something...</p>
+	</article>
+
+	<article>
+	<h2>Javascript Concepts</h2>
+	<p>Actually, concepts in any OOP programming language</p>
+	<ul>
+		<li>Variables*</li>
+		<li>Functions*</li>
+		<li>Basic Types</li>
+		<li>Conditionals</li>
+		<li>Arrays</li>
+		<li>Loops</li>
+		<li>Hashs</li>
+		<li>Objects</li>
+	</ul>
+	<p>*Discussed last time</p>
+	</article>
+
+	<article class='full-code'>
+	<h2>Basic Types</h2>
+<pre>
+var number = 1; // Javascript supports numbers
+var numberTwo = 3.2; // But they are all secretly floating point
+
+var numberThree = number + numberTwo; // Can do math +,-,/,*
+var calc = Math.cos(45 * Math.PI / 180); // Cosine of 45 degrees
+var randNum = Math.round(Math.random() * 500); // Random integer 0 to 500
+
+
+var str = "This is a string"; // Also supports strings
+var str2 = 'Also a string'; // Single or double quotes;
+var str3 = "This is 'also' a string"; // Can embed the other type
+
+var str4 = str + str2; // Add two strings
+var str5 = "Number is: " + randNum; // Adding a number to a string
+
+var str6 = str2.toUpperCase(); // "ALSO A STRING"
+</pre>
+	<p><a href='http://www.w3schools.com/jsref/jsref_obj_math.asp'>Math Methods  (W3Schools)</a><br/>
+  	   <a href='http://www.w3schools.com/jsref/jsref_obj_string.asp'>String Methods  (W3Schools)</a><br/>
+
+	</p>
+
+	</article>
+
+  <article>
+  <h2>Display a random number</h2>
+  <p>Use Math.random() and string concatenation to write out a number to the page</p>
+  <div class='code-editor' data-language='js'>
+// Get a random integer between 1 and 100
+var x = ??; 
+
+// Write out: The number is [Number]
+document.write( ?? );  
+  </div>
+   <script type='codedeck'>
+ // Get a random integer between 1 and 100
+var x = Math.round(Math.random() * 100);
+
+// Write out: The number is [Number]
+document.write("The number is: " + x); 
+    </script>
+
+
+  <div class='destination'></div>  
+
+
+  </article>
+
+  <article class='full-code'>
+	<h2>Conditionals</h2>
+  <p></p>
+<pre>
+var v1 = 1; // Javascript supports numbers
+var v2 = 2; // But they are all secretly floating point
+
+if(v1 == v2) {
+  alert("Equal!");
+} else if(v1 === v2) {
+  alert("Exactly Equal!");
+} else if(v2 < v2) {
+  alert("Less!");
+} else {
+  alert("Greater!");
+}
+// Other conditionals:
+// != - not equal
+// <= - less than or equal
+// >= - greater than or equal
+
+
+</pre>
+  </article>
+
+ <article>
+  <h2>Comparing different types</h2>
+  <p>Let's play around with what's true and false
+    <div class='code-editor' data-language='js'>
+function showComparison(txt) {
+document.write("&lt;tr&gt;&lt;td&gt;" + txt + ": &lt;/td&gt;&lt;td&gt;" + eval(txt) + "&lt;/td&gt;&lt;/tr&gt;");
+}
+
+var v1 = 1;
+var v2 = 2;
+
+document.write("v1: " + v1 + "&lt;br/&gt;");
+document.write("v2: " + v2 + "&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;");
+document.write("&lt;table&gt;");
+showComparison("v1 == v2");
+showComparison("v1 === v2");
+showComparison("v1 &lt; v2");
+showComparison("v1 &gt; v2");
+showComparison("v1 != v2");
+document.write("&lt;/table&gt;");
+  </div>
+
+  <div class='destination'></div>  
+
+
+  </article>
+
+  <article class='full-code'>
+	<h2>Arrays</h2>
+<pre>
+var arr = [ ]; // Empty array
+var arr2 = [ 1, 2, 3]; // Array with three values
+var arr3 = [ "a", "b", 3 ]; // Array with mixed values
+
+// Accessing elements
+alert(arr2[0]); // 2
+alert(arr2[4]); // undefined
+
+// Length
+alert(arr3.length); // 3
+
+// Adding to an array
+arr.push("a"); arr.push("b");
+alert(arr); // [ a, b ]
+
+arr.pop()
+alert(arr); // [ a ]
+// Lots more methods...
+</pre>
+  <p><a href='http://www.w3schools.com/jsref/jsref_obj_array.asp'>Array Object (W3Schools)</a>
+
+  </p>
+ </article>
+
+ <article class='full-code'>
+ <h2>Loops</h2>
+
+<pre>
+var arr = [ "a", "b", 3 ]; // Array with mixed values
+
+// For loops (complicated):
+for(var i=0, len=arr.length; i&lt;len;i++) { alert(arr[i]);  }
+
+// For .. in - don't use with objects
+for( var i in arr) { alert(arr[i]); }
+
+// ***jQuery each w/ callback***
+$.each(arr,function() { alert(this); });
+
+// Also while, && do-while
+var i = 0, len = arr.length;
+while(i < len) {  alert(arr[i]);  i++; }
+
+var i = 0, len = arr.length;
+do {
+  alert(arr[i]); i++;
+} while(i < len);
+</pre>
+
+ </article>
+
+
+ <article class='full-code'>
+<h2>Hashes</h2>
+<p>Places to store and retrieve data</p>
+
+<pre>
+// Can create with Literal notation 
+// Format: { key1: value1, key2: value2 }
+var obj = { color: "red", weight: 10, size: "large" };
+
+alert(obj['color']); // red
+alert(obj['length']); // undefined
+
+obj.delete('color');
+
+alert(obj['color']); // undefined
+
+</pre>
+
+ </article>
+
+
+ <article class='full-code'>
+<h2>Objects</h2>
+<p>Actually there are no "Hashes" all hashes are Objects</p>
+<pre>
+var obj = { color: "red", weight: 10, size: "large" };
+
+alert(obj.color); // red, same as obj['color']
+
+// Can also add methods
+obj.sayColor = function() { alert(this.color); }
+
+obj.sayColor();
+
+// Don't worry about creating new object types for now
+// We'll be mostly using objects returned by jQuery
+// or returned to us via JSON
+
+</pre>
+</article>
+
+
+<article>
+<h1>Javascript is single-threaded</h1>
+<p>Only 1 thing running at a time.<br/>
+  So in order to interact with the user we need to handle events</p>
+
+</article>
+
+<article>
+ <h1>jquery events</h1>
+ <p>jquery makes it easy to listen for events on objects</p>
+ <ul>
+   <li>
+     <a href='http://api.jquery.com/bind/'>generic event binding with $.bind</a></li>
+    <li>
+    	<a href="http://api.jquery.com/category/events/browser-events">browser events</a></li>
+    <li>
+    	<a href="http://api.jquery.com/category/events/form-events">form events</a></li>
+    <li>
+    	<a href="http://api.jquery.com/category/events/keyboard-events">keyboard events</a></li>
+    <li>
+    	<a href="http://api.jquery.com/category/events/mouse-events">mouse events</a></li>
+ </ul>
+</article>
+
+ <article>
+ <h2>Events</h2>
+ <p>$.bind, $.click, $.dblclick, $.mouseenter, $.mouseleave, $.hover, $.keydown </p>
+    <div class='code-editor' data-language='html'>
+SCRIPT
+$(document).ready(function() {
+
+
+});
+
+END
+
+
+&lt;style&gt;
+  .box { 
+    position:absolute; 
+    width:100px; 
+    height:100px;
+    background-color:red;
+    }
+
+  #box2 { right:0px; }
+&lt;/style&gt;
+
+&lt;div class='box' id='box1'&gt;&lt;/div&gt;
+&lt;div class='box' id='box2'&gt;&lt;/div&gt;
+
+    </div>
+
+ 
+    <div class='destination'>
+
+    </div>
+
+  </article>
+
+<article>
+ <h1>jQuery and Ajax</h1>
+  <ul>
+    <li>jQuery wraps browser-differences and provides 1 primary method for dealing with remote Ajax calls: <a href='http://api.jquery.com/jQuery.ajax/'>$.ajax</a></li>
+    <li>It also provides a bunch of shorthand methods like: <a href='http://api.jquery.com/category/ajax/shorthand-methods/'>$.get, $.post, $.load, $.getJSON, $.getScript</a></li>
+    <li>Ajax is limited to same-domain-only</li>
+ </ul>
+</article>
+
+
+ <article>
+ <h2>Ajax</h2>
+ <p><a href='http://api.jquery.com/jQuery.ajax/'>$.ajax</a>, $.get, $.post, $.getJSON </p>
+    <div class='code-editor' data-language='html'>
+SCRIPT
+$(document).ready(function() {
+
+var ajax = $.get("stuff.html",function(data) {
+  alert(data);
+});
+
+});
+
+END
+
+&lt;div id='content'&gt;&lt;/div&gt;
+
+    </div>
+
+     <div class='destination'>
+
+    </div>
+
+  </article>
+
+
+ <article>
+ <h2>JSONp</h2>
+ <p>Ajax is same-domain only. So there's a hack to pull data across domains called $.getScript </p>
+    <div class='code-editor' data-language='html'>
+SCRIPT
+$(document).ready(function() {
+ var username = 'cykod';
+ var count = 10;
+ $.getScript('http://twitter.com/statuses/user_timeline/' + username + '.json?callback=twitterCallback&count=' + count);
+
+});
+
+END
+
+    </div>
+
+    <script type='codedeck'>
+var result = prompt('Give me some data');
+alert(result);
+    </script>
+
+    <div class='destination'>
+
+    </div>
+
+  </article>
+
+
+
+
+</section>
+	
+</body>
+</html>
