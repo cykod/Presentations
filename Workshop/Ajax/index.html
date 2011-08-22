@@ -290,6 +290,7 @@ obj.sayColor();
     	<a href="http://api.jquery.com/category/events/keyboard-events">keyboard events</a></li>
     <li>
     	<a href="http://api.jquery.com/category/events/mouse-events">mouse events</a></li>
+    <li>Need to call e.preventDefault(); if we want to prevent default behavior</li>
  </ul>
 </article>
 
@@ -340,10 +341,10 @@ END
 
 
  <article>
- <h2>Ajax</h2>
- <p><a href='http://api.jquery.com/jQuery.ajax/'>$.ajax</a>, $.get, $.post, $.getJSON </p>
+ <h2>ajax</h2>
+ <p><a href='http://api.jquery.com/jquery.ajax/'>$.ajax</a>, $.get, $.load, $.getjson. sample files to use: <a href='stuff.html'>stuff.html</a>, <a href='names.json'>names.json</a> </p>
     <div class='code-editor' data-language='html'>
-SCRIPT
+script
 $(document).ready(function() {
 
 var ajax = $.get("stuff.html",function(data) {
@@ -352,17 +353,59 @@ var ajax = $.get("stuff.html",function(data) {
 
 });
 
-END
+end
 
 &lt;div id='content'&gt;&lt;/div&gt;
 
     </div>
+
+
+       <div class='destination'>
+
+    </div>
+
+  </article>
+
+  <article>
+ <h2>Ajax Exercise</h2>
+ <p>Make it load the stuff.html file when you click on the link below: </p>
+    <div class='code-editor' data-language='html'>
+SCRIPT
+$(document).ready(function() {
+
+});
+
+END
+&lt;a id='ajax-link' href='javascript:void(0);'&gt;Click Me!&lt;/a&gt;
+
+&lt;p&gt;Content is:&lt;/p&gt;
+&lt;div id='content'&gt;&lt;/div&gt;
+
+    </div>
+  <script type='codedeck'>
+
+SCRIPT
+$(document).ready(function() {
+
+});
+
+END
+&lt;a id='ajax-link' href='javascript:void(0);'&gt;Click Me!&lt;/a&gt;
+
+&lt;p&gt;Content is:&lt;/p&gt;
+&lt;div id='content'&gt;&lt;/div&gt;
+
+
+
+    </script>
 
      <div class='destination'>
 
     </div>
 
   </article>
+
+
 
 
  <article>
@@ -381,10 +424,6 @@ END
 
     </div>
 
-    <script type='codedeck'>
-var result = prompt('Give me some data');
-alert(result);
-    </script>
 
     <div class='destination'>
 

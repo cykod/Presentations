@@ -103,7 +103,7 @@ $(document).ready(function() {
         if(solution) {
           $("<button>Solution</button>").insertBefore(this).click(function() {
               var html = $("#" + solution).html().replace(/SCRIPT/g,'<script>').replace(/END/,'</s' + 'cript>');
-          editor.getSession().setValue(html);
+          editor.getSession().setValue(html..replace(/&lt;/g,'<').replace(/&gt;/g,'>'));
 
           });
         }
