@@ -1,2 +1,2 @@
-{ 'names': [{ 'first_name': "Frank", 'last_name': 'Johnson', 'age': 20 },
- { 'first_name': 'Tommy', 'last_name': 'Bahama', 'age': 34 }] }
+{ "names": [{ "first_name": "Frank", "last_name": "Johnson", "age": 20 },
+ { "first_name": "Tommy", "last_name": "Bahama", "age": 34 }] }
