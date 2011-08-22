@@ -36,7 +36,6 @@
 		<li>Events</li>
 		<li>Ajax</li>
 		<li>jQuery Plugins</li>
-		<li>HTML5 Media (Time Allowing)</li>
 	</ul>
 	</article>
 
@@ -341,10 +340,10 @@ END
 
 
  <article>
- <h2>ajax</h2>
- <p><a href='http://api.jquery.com/jquery.ajax/'>$.ajax</a>, $.get, $.load, $.getjson. sample files to use: <a href='stuff.html'>stuff.html</a>, <a href='names.json'>names.json</a> </p>
+ <h2>Ajax</h2>
+ <p><a href='http://api.jquery.com/jquery.ajax/'>$.ajax</a>, $.get, $.load, $.getJSON. sample files to use: <a href='stuff.html'>stuff.html</a>, <a href='names.json'>names.json</a> </p>
     <div class='code-editor' data-language='html'>
-script
+SCRIPT
 $(document).ready(function() {
 
 var ajax = $.get("stuff.html",function(data) {
@@ -353,7 +352,7 @@ var ajax = $.get("stuff.html",function(data) {
 
 });
 
-end
+END
 
 &lt;div id='content'&gt;&lt;/div&gt;
 
@@ -386,7 +385,9 @@ END
 
 SCRIPT
 $(document).ready(function() {
-
+   $("#ajax-link").click(function() {
+      $("#content").load("stuff.html");
+   });
 });
 
 END
@@ -405,13 +406,96 @@ END
 
   </article>
 
+  <article class='full-code'>
+    <h2>jQuery Templates</h2>
+    <p>An easy way to put dynamically generated content on a page.</p>
+<pre>
+&lt;script&gt;
+var details = { "first_name": "frank", "last_name": "johnson", "age": 20 };
 
+// What's easier to write and maintain:
+$("&lt;div&gt;My Name is:" + details.first_name + " " + details.last_name +
+"&lt;/div&gt;&lt;div class='age'&gt;I am " + details.age + " years old&lt;/div&gt;");
+// or
+&lt;/script&gt;
+
+&lt;script id='introduction' type="text/x-jquery-tmpl"&gt;
+&lt;div&gt;My Name is: ${first_name} ${last_name}&lt;/div&gt;
+&lt;div class='age'&gt;I am ${age} years old&lt;/div&gt;
+&lt;/script&gt;
+
+&lt;script&gt;
+$("#introduction").tmpl(details).appendTo("#content");
+&lt;/script&gt;
+</pre>
+
+</article>
 
 
  <article>
+ <h2>Template Exercise</h2>
+ <p>load in names.json via $.loadJSON and write it out with a template to content.</p>
+ <div class='code-editor' data-language='html'>
+ &lt;script src='http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js'&gt;END   
+
+SCRIPT
+$(document).ready(function() {
+
+  var ajax = $.getJSON("names.json",function(data) {
+  
+  });
+
+});
+
+END
+
+&lt;script id='introduction' type="text/x-jquery-tmpl"&gt;
+
+&lt;/script&gt;
+
+&lt;div id='content'&gt;&lt;/div&gt;
+</div>
+
+<div class='destination'>
+
+</div>
+
+<script type='codedeck'>
+&lt;script src='http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js'&gt;END   
+
+ SCRIPT
+$(document).ready(function() {
+
+  var ajax = $.getJSON("names.json",function(data) {
+     $.getJSON("names.json",function(data) {
+           $("#introduction").tmpl(data.names).appendTo("#content");
+     });
+  });
+
+});
+
+END
+
+&lt;script id='introduction' type="text/x-jquery-tmpl"&gt;
+  &lt;div&gt;My Name is: ${first_name} ${last_name}&lt;/div&gt;
+  &lt;div class='age'&gt;I am ${age} years old&lt;/div&gt;
+&lt;/script&gt;
+
+&lt;div id='content'&gt;&lt;/div&gt;
+
+
+</script>
+
+
+</article>
+
+
+ <article class='full-code'>
  <h2>JSONp</h2>
- <p>Ajax is same-domain only. So there's a hack to pull data across domains called $.getScript </p>
+ <p>Ajax is same-domain only. So there's a hack to pull data across domains called $.getScript. Pull some twitter statuses and display them on a page </p>
     <div class='code-editor' data-language='html'>
+&lt;script src='http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js'&gt;END   
+
 SCRIPT
 $(document).ready(function() {
  var username = 'cykod';
@@ -420,8 +504,22 @@ $(document).ready(function() {
 
 });
 
+function twitterCallback(data) {
+  console.log(data);
+}
+
 END
 
+&lt;script id='introduction' type="text/x-jquery-tmpl"&gt;
+&lt;/script&gt;
+
+
+&lt;div id='content'&gt;&lt;/div&gt;
+
+&lt;style&gt;
+.tweet { padding:10px 0px; }
+
+&lt;/style&gt;
     </div>
 
 
@@ -429,9 +527,38 @@ END
 
     </div>
 
+<script type='codedeck'>
+&lt;script src='http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js'&gt;END   
+
+SCRIPT
+$(document).ready(function() {
+ var username = 'cykod';
+ var count = 10;
+ $.getScript('http://twitter.com/statuses/user_timeline/' + username + '.json?callback=twitterCallback&count=' + count);
+
+});
+
+function twitterCallback(data) {
+    $("#introduction").tmpl(data).appendTo("#content");
+}
+
+END
+
+&lt;script id='introduction' type="text/x-jquery-tmpl"&gt;
+&lt;div class='tweet'&gt;
+  ${text}
+&lt;/div&gt;
+&lt;/script&gt;
+
+&lt;div id='content'&gt;&lt;/div&gt;
+&lt;style&gt;
+.tweet { padding:10px 0px; }
+
+&lt;/style&gt;
+
+</script>
+
   </article>
-
-
 
 
 </section>

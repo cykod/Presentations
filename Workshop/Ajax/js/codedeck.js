@@ -75,7 +75,7 @@ $(document).ready(function() {
       if(!$(this).hasClass('codeEditor')) {
         var element = this;
 
-        var html = $(this).html().replace(/SCRIPT/g,'<script>').replace(/END/,'</s' + 'cript>').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+        var html = $(this).html().replace(/SCRIPT/g,'<script>').replace(/END/g,'</s' + 'cript>').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
 
         $(this).css('visibility','visible');
         var editor = ace.edit(this.id);
@@ -102,7 +102,7 @@ $(document).ready(function() {
         var solution = $(this).attr('data-solution');
         if(solution) {
           $("<button>Solution</button>").insertBefore(this).click(function() {
-              var html = $("#" + solution).html().replace(/SCRIPT/g,'<script>').replace(/END/,'</s' + 'cript>');
+              var html = $("#" + solution).html().replace(/SCRIPT/g,'<script>').replace(/END/g,'</s' + 'cript>');
           editor.getSession().setValue(html.replace(/&lt;/g,'<').replace(/&gt;/g,'>'));
 
           });
