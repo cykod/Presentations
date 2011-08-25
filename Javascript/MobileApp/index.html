@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Mobile Apps with Javascript</title>
+	<meta name="viewport" content="width=1024">
+	
+	<!-- Replace path with correct path to deck.core.css. -->
+	<link rel="stylesheet" href="deck.core.css" type="text/css">
+	
+	<!-- Any other extension CSS files go here. -->
+	<link rel="stylesheet"  id='transition-theme-link' href="horizontal-slide.css" type="text/css" >
+	<link rel="stylesheet" id='style-theme-link' href="swiss.css" type="text/css" >
+	
+	<!-- Core and extension CSS files -->
+	<link rel="stylesheet" href="deck.goto.css">
+	<link rel="stylesheet" href="deck.menu.css">
+	<link rel="stylesheet" href="deck.navigation.css">
+	<link rel="stylesheet" href="deck.status.css">
+	<link rel="stylesheet" href="deck.hash.css">
+
+	
+	<!-- Replace path with correct path to Modernizr file. -->
+	<script src="modernizr.js"></script>
+</head>
+<body class="deck-container">
+
+<!-- Create any number of elements with class slide within the container -->
+<div class="slide">
+	<h1>Mobile App Development</h1>
+</div>
+	
+<div class='slide'>
+    <h1>Why Apps?</h1>
+</div>
+
+<div class="slide">
+    <h2>Why Apps?</h2>
+    <ol>
+	    <li  class="slide">
+		    <h3>Access to all the various App Stores</h3>
+		    <p>Consumers are actually willing to pay for Apps.</p>
+	    </li>
+	    <li  class="slide">
+		    <h3>Access to hardware you might not otherwise</h3>
+		    <p>Camera, Microphone, Telephony, Contacts, Filesystem, etc...</p>
+	    </li>
+	    <li  class="slide">
+		    <h3>Client demand</h3>
+		    <p>Hey, you have to make a living somehow...</p>
+	    </li>
+	    <li  class="slide">
+		    <h3>Performance</h3>
+		    <p>If it's a performance problem, you probably need to go 100% native.</p>
+	    </li>
+    </ol>
+</div>
+
+<div class='slide'>
+	<h1>The HTML5 Singulariy</h1>
+	<h2>Apps are an evolutionary step. We will be approaching a transition point in 2012</h2>
+</div>
+
+<div class='slide'>
+	<h1>Says who?</h1>
+</div>
+
+<div class='slide'>
+	<h1>Says Mozilla</h1>
+	<h2 class='slide'>(Ok, they have a vested interested)<br/>
+ 		<a target='_blank' href='https://wiki.mozilla.org/WebAPI'>WebAPI</a></h2>
+</div>
+
+<div class="slide">
+    <h2>What is an App?</h2>
+    <ol>
+	    <li  class="slide">
+		    <h3><em>Not:</em> Something that looks like an app</h3>
+		    <p>We have plenty of web frameworks designed to recreate the "native" look and feel along with hardware accelerated transitions.</p>
+	    </li>
+	    <li  class="slide">
+		    <h3><em>Not:</em> something that works offline</h3>
+		    <p>We already have local storage and offline storage via cache manifests</p>
+	    </li>
+	    <li  class="slide">
+		    <h3><em>Not:</em> something that you can launch from your home screen</h3>
+		    <p>We already have <a target='_blank' href='http://developer.apple.com/library/safari/#documentation/appleapplications/reference/safariwebcontent/configuringwebapplications/configuringwebapplications.html'>iPhone meta tags</a> and stuff like <a href='http://code.google.com/p/mobile-bookmark-bubble/' target='_blank'>mobile-bookmark-bubble</a>
+	    </li>
+	    <li  class="slide">
+		    <h3><em>Somewhat:</em> Access to native hardware </h3>
+		    <p>But we saw that is changing fast...</p>
+	    </li>
+	    <li class='slide'>
+ 		   <h3><em>Definitely:</em> something you can get in an app store</h3>
+		   <p>This is the one defining factor for many apps.</p>
+	    </li>
+    </ol>
+</div>
+
+<div class='slide'>
+	<h1>So...</h1>
+</div>
+
+<div class='slide'>
+	<h1>Screw everything else<br/>(Obj-C, Java)</h1>
+	<h2 class='slide'>Let's use the tools we already know and love (HTML, CSS, and Javascript) to build stuff we can put in the app store</h2>
+</div>
+
+
+<div class='slide'>
+	<h2>The Players</h2>
+	<ol>
+		<li class='slide'>
+			<h3><a target='_blank' href='http://www.appcelerator.com/'>Titanium Appcelerator</a></h3>
+			<p>A Javascript API for building Mobile apps</p>
+		</li>
+		<li class='slide'>
+			<h3><a target='_blank' href='http://www.phonegap.com/'>PhoneGap</a></h3>
+			<p>A thin wrapper around a WebKit browser with native augmentation</p>
+		</li>
+		<li class='slide'>
+			<h3><a target='_blank' href='http://www.appmobi.com/'>AppMobi</a></h3>
+			<p>PhoneGap-like augmentation + plus commercial support</p>
+		</li>
+		<li class='slide'>
+			<h3><a target='_blank' href='http://impactjs.com/'>Impact.js</a></h3>
+			<p>Specialized use-case: Games. But neat idea...</p>
+		</li>
+</div>
+
+<div class='slide'>
+	<h1>Unicorns and Rainbows?</h1>
+</div>
+
+<div class='slide'>
+	<h2>Not Quite...</h2>
+	<ul>
+		<li class='slide'><h3>The Good: Titanium and PhoneGap are open source products</h3></li>
+		<li class='slide'><h3>The Bad: They are documented a little like open source products</h3>
+			<p>Both want to sell you service contracts.<br/>
+			<a target='_blank' href='http://developer.appcelerator.com/apidoc/mobile/latest'>Titanium Docs</a> / <a target='_blank' href='http://docs.phonegap.com/'>PhoneGap Docs</a>
+		</li>
+
+		<li class='slide'><h3>The Good: Write once, deploy to iOS & Android (PhoneGap supports more)</h3></li>
+		<li class='slide'><h3>The Bad: Different options and support for different devices. No Free lunch.</h3>
+			<p>Differences are usually documented, but sometimes not. No audio recording on Android, for example.</p>
+		</li>
+
+		<li class='slide'><h3>The Bad: Tools, IDE and Debugging support are limited.</h3>
+			<p>Xcode and Interface builder are very nice tools, bundled build processes are a little hackish.</p>
+		</li>
+	</ul>
+</div>
+
+<div class='slide'>
+	<h1>Titanium and PhoneGap in Depth</h1>
+	<h2 class='slide'>From primarily an iOS perspective</h2>
+</div>
+
+<div class='slide'>
+  <h1>Titanium: Overview</h1>
+  <h2>A Javascript API for writing mobile (and desktop) applications</h2>
+</div>
+
+<div class='slide'>
+  <h2>Titanium</h2>
+  <ol>
+	  <li class='slide'><h3>Xcode required for iOS development, Eclipse for Android</h3>
+		  <p>Handles deployment to simulators and devices for you</p>
+	  </li>
+	  <li class='slide'><h3>Creates an Xcode project behind the scenes and builds automatically</h3>
+		  <p>This works about as good as you expect: works great when it works, leaves you searching the forums for some archaic error message when it doesn't.</p>
+	  </li>
+	  <li class='slide'><h3>Uses native components wherever possible</h3>
+		  <p>Compiles down to native code. Does not use HTML/CSS styled to look like native. Stuff like tabs and Splitview are native.</p></li>
+
+	  <li class='slide'><h3>Switched from a simple builder app to a full-blown IDE</h3>
+		  <p>...which sucks. If we're developing Javascript we probably already have our tools and editors we like. And now configuration options are buried inside of hacked-on IDE (Aptana built on Eclipse)</p>
+	  </li>
+
+
+
+
+  </ol>
+
+</div>
+
+
+<!-- Update these paths to point to the correct files. -->
+<script src="jquery.min.js"></script>
+<script src="deck.core.js"></script>
+
+<!-- Add any other extension JS files here -->
+<!-- Deck Core and extensions -->
+<script src="deck.menu.js"></script>
+<script src="deck.goto.js"></script>
+<script src="deck.status.js"></script>
+<script src="deck.navigation.js"></script>
+<script src="deck.hash.js"></script>
+
+
+<!-- Initialize the deck. You can put this in an external file if desired. -->
+<script>
+	$(function() {
+		$.deck('.slide');
+	});
+</script>
+</body>
+</html>
