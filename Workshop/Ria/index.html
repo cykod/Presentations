@@ -10,7 +10,7 @@
 	
 	<!-- Any other extension CSS files go here. -->
 	<!-- link rel="stylesheet"  id='transition-theme-link' href="horizontal-slide.css" type="text/css" --> 
-	<link rel="stylesheet" id='style-theme-link' href="css/swiss.css" type="text/css" >
+	<link rel="stylesheet" id='style-theme-link' href="css/coderdeck.css" type="text/css" >
 	
 	<!-- Core and extension CSS files -->
 	<link rel="stylesheet" href="css/deck.navigation.css">
@@ -24,12 +24,12 @@
 <body class="deck-container">
 
 <!-- Create any number of elements with class slide within the container -->
-<article class='slide'>
+<article class='slide slide-subhead'>
 <h1>HTML5 Workshop #6</h1>
 <h2>Putting it all together</h2>
 </article>
 	
-<article class='slide'>
+<article class='slide slide-list'>
 <h2>What we've learned</h2>
 <ol>
 	<li class='slide'><h3>HTML5 Basics &amp; Semantic Structure</h3></li>
@@ -40,12 +40,12 @@
 </ol>
 </article>
 
-<article class='slide'>
+<article class='slide slide-subhead'>
 <h1>Mashup Time</h1>
 <h2>Friend Explorer with Facebook API</h2>
 </article>
 
-<article class='slide'>
+<article class='slide slide-list'>
 <h2>The Plan</h2>
 <ol>
 	<li class='slide' ><h3>Connect to facebook API</h3></li>
@@ -55,7 +55,7 @@
 
 </article>
 
-<article class='slide'>
+<article class='slide slide-list'>
 <h2>First: Facebook Javascript SDK</h2>
 <p>Facebook has a number of useful API's, we'll be using two:<p>
 <ol>
@@ -72,7 +72,7 @@
 
 
 
-<article class='slide'>
+<article class='slide  slide-list'>
 <h2>Facebook Javascript API Basics</h2>
 <p>Api Setup (After creating an application here: <a href='https://developers.facebook.com/apps'>https://developers.facebook.com/apps</a><p>
 <pre>
@@ -98,7 +98,7 @@
 </article>
 
 
-<article class='slide'>
+<article class='slide slide-list'>
 <h2>Facebook Javascript API Basics #2</h2>
 <p>Then, we can force a login:</p>
 <pre>
@@ -126,7 +126,7 @@ FB.login(function(response) {
 
 </article>
 
-<article class='slide'>
+<article class='slide  slide-list'>
 <h2>Graph API</h2>
 <ol>
 	<li class='slide'><h3>The preferred method to pull data in and out of facebook</h3></li>
@@ -136,14 +136,14 @@ FB.login(function(response) {
 </ol>
 </article>
 
-<article class='slide'>
+<article class='slide slide-subhead'>
 <h1>Before we go too much further...</h1>
 <h2>Let's play around with the Facebook Graph Api via <br/>
 	<a target='_blank' href='http://developers.facebook.com/tools/explorer/'>Graph API Explorer</a></h2>
 
 </article>
 
-<article class='slide'>
+<article class='slide slide-list'>
 <h2>Let's connect With Facebook</h2>
 <div class='coder-editor code-editor-full' data-language='html'>
 &lt;div id="fb-root"&gt;&lt;/div&gt;
@@ -180,7 +180,7 @@ function clicker() {
 </article>
 
 
-<article class='slide'>
+<article class='slide slide-list'>
 <h2>Let's grab some more data, and the print it out</h2>
 <p>We can access the data variable in the console via: $("iframe")[0].contentWindow.responseData</p>
 <div class='coder-editor code-editor-full' data-language='html'>
@@ -218,7 +218,7 @@ function clicker() {
 
 </article>
 
-<article class='slide'>
+<article class='slide slide-list'>
 <h2>Let's Bootstrap our "app"</h2>
 <h3>With <a href='http://twitter.github.com/bootstrap/'>Twitter Bootstrap</a></h3>
 <p>Make it easy to get some simple styles up and running</p>
@@ -238,7 +238,7 @@ function clicker() {
 </ul>
 </article>
 
-<article class='slide'>
+<article class='slide slide-list'>
 <h2>Add in a pretty login button</h2>
 <p>Check out the code from the <a href='http://twitter.github.com/bootstrap/'>Twitter Bootstrap</a> page</p>
 
@@ -278,7 +278,7 @@ function clicker() {
 
 </article>
 
-<article class='slide'>
+<article class='slide slide-list'>
 <h2>Refactor the Application</h2>
 <p>Let's clean up our Javascript a little bit with the module pattern.</p>
 
@@ -292,8 +292,6 @@ function clicker() {
   FB.init({
     appId  : '186704188064658', status : true, cookie : true, xfbml  : true, channelUrl : 'channel.html', oauth  : true 
   });
-
-var responseData = null;
 
 var likeMaster = (function($,window) {
   var self = this;
@@ -327,8 +325,8 @@ var likeMaster = (function($,window) {
 
 </article>
 
-<article class='slide'>
-<h2>Let's fix the login and display our list of friends</h2>
+<article class='slide slide-list'>
+<h2>Display our list of friends</h2>
 <p>Hide the login button when a user log's in, show a "Logging in", then the user's name once they are in.</p>
 
 <div class='coder-editor code-editor-full' data-language='html'>
@@ -387,13 +385,77 @@ var likeMaster = (function($,window) {
 </article>
 
 
+<article class='slide slide-list'>
+<h2>Display our list of friends</h2>
+<p>Hide the login button when a user log's in, show a "Logging in", then the user's name once they are in.</p>
 
-<article class='slide'>
-<h2>Display a user's friends</h2>
-<p>Once the user is logged in, let's download their friends and write them to the screen as a template</p>
+<div class='coder-editor code-editor-full' data-language='html'>
+&lt;link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap-1.1.1.min.css"&gt;
+&lt;script src='http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js'&gt;END   
+
+&lt;div id="fb-root"&gt;&lt;/div&gt;
+&lt;script src="http://connect.facebook.net/en_US/all.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  FB.init({
+    appId  : '186704188064658', status : true, cookie : true, xfbml  : true, channelUrl : 'channel.html', oauth  : true 
+  });
+
+var likeMaster = (function($,window) {
+  var self    = this;
+  var me      = null;
+  var friends = null;
+
+ self.login = function() {
+    $("#login").hide();
+    $("#loggingIn").fadeIn();
+    FB.login(function(response) {
+  	   if (response.authResponse) {
+  	   	self.loggedIn();
+  	   }
+  	});
+  };
+
+  self.loggedIn = function() {
+     FB.api('/me', function(response) {
+        me = response.data;
+        $("#loggingIn").hide();
+        $("#loggedIn h1").text("Welcome " + me.name).show();
+        FB.api('/me/friends', function(response) {
+           friends = response.data;
+           self.displayFriends();
+        });
+     });
+  };
+
+  self.displayFriends = function() {
 
 
-</article>
+  }
+
+  return self;
+})(jQuery,window);
+ 
+&lt;/script&gt;
+
+&lt;div id='login' class='centered' &gt;
+&lt;h1&gt;Login to the LikeMaster&trade;&lt;/h1&gt;
+&lt;a href='javascript:void(0);' class='btn large primary' onclick='likeMaster.login();'&gt;Click Me to Login!&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;div id='loggingIn' class='centered hidden'&gt;
+  &lt;h1&gt;Please Wait, Logging In...&lt;/h1&gt;
+&lt;/div&gt;
+
+&lt;div id='loggedIn' class='centered hidden'&gt;
+  &lt;h1&gt;Welcome &lt;/h1&gt;
+&lt;/div&gt;
+
+
+  &lt;style&gt;
+    .centered { text-align:center; }
+    .hidden { display:none; }
+  &lt;/style&gt;
+</div>
 
 <!-- Update these paths to point to the correct files. -->
 <script src="js/jquery.min.js"></script>
