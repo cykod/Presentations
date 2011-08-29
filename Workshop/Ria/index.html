@@ -324,7 +324,7 @@ var likeMaster = (function($,window) {
 </article>
 
 <article class='slide slide-list'>
-<h2>Display our list of friends</h2>
+<h2>Show our name</h2>
 <p>Hide the login button when a user log's in, show a "Logging in", then the user's name once they are in.</p>
 
 <div class='coder-editor code-editor-full' data-language='html'>
@@ -356,7 +356,7 @@ var likeMaster = (function($,window) {
      FB.api('/me', function(response) {
         self.me = response;
         FB.api('/me/friends', function(response) {
-           friends = response;
+           friends = response.data;
            self.displayFriends();
         });
      });
@@ -387,7 +387,7 @@ parent.window.likeMaster = likeMaster;
 
 <article class='slide slide-list'>
 <h2>Display our list of friends</h2>
-<p>Hide the login button when a user log's in, show a "Logging in", then the user's name once they are in.</p>
+<p>Get our friends from Facebook and display them (hint: jQuery templates!)</p>
 
 <div class='coder-editor code-editor-full' data-language='html'>
 &lt;link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap-1.1.1.min.css"&gt;
@@ -417,9 +417,9 @@ var likeMaster = (function($,window) {
 
   self.loggedIn = function() {
      FB.api('/me', function(response) {
-        self.me = response.data;
+        self.me = response;
         $("#loggingIn").hide();
-        $("#loggedIn h1").text("Welcome " + me.name).show();
+        $("#loggedIn h1").text("Welcome " + self.me.name).show();
         FB.api('/me/friends', function(response) {
            self.friends = response.data;
            self.displayFriends();
@@ -438,6 +438,12 @@ window.parent.window.likeMaster = likeMaster;
 
 &lt;/script&gt;
 
+&lt;script id='friend' type="text/x-jquery-tmpl"&gt;
+  
+&lt;/script&gt;
+
+
+
 &lt;div id='login' class='centered' &gt;
 &lt;h1&gt;Login to the LikeMaster&trade;&lt;/h1&gt;
 &lt;a href='javascript:void(0);' class='btn large primary' onclick='likeMaster.login();'&gt;Click Me to Login!&lt;/a&gt;
@@ -449,6 +455,96 @@ window.parent.window.likeMaster = likeMaster;
 
 &lt;div id='loggedIn' class='centered hidden'&gt;
   &lt;h1&gt;Welcome &lt;/h1&gt;
+  &lt;div id='content' class='container'&gt;
+
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+  &lt;style&gt;
+    .centered { text-align:center; }
+    .hidden { display:none; }
+  &lt;/style&gt;
+
+</div>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>Turn Friends into links</h2>
+<p>Make each of our friends clickable, and turn them into links.</p>
+
+<div class='coder-editor code-editor-full' data-language='html'>
+&lt;link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap-1.1.1.min.css"&gt;
+&lt;script src='http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js'&gt;END   
+
+&lt;div id="fb-root"&gt;&lt;/div&gt;
+&lt;script src="http://connect.facebook.net/en_US/all.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  FB.init({
+    appId  : '186704188064658', status : true, cookie : true, xfbml  : true, channelUrl : 'channel.html', oauth  : true 
+  });
+
+var likeMaster = (function($,window) {
+  var self     = {};
+  self.me      = null;
+  self.friends = null;
+
+ self.login = function() {
+    $("#login").hide();
+    $("#loggingIn").fadeIn();
+    FB.login(function(response) {
+  	   if (response.authResponse) {
+  	   	self.loggedIn();
+  	   }
+  	});
+  };
+
+  self.loggedIn = function() {
+     FB.api('/me', function(response) {
+        self.me = response;
+        $("#loggingIn").hide();
+        $("#loggedIn h1").text("Welcome " + self.me.name).show();
+        FB.api('/me/friends', function(response) {
+           self.friends = response.data;
+           self.displayFriends();
+        });
+     });
+  };
+
+  self.displayFriends = function() {
+    $("#friend").tmpl(self.friends).html("#content .row");
+  }
+
+  return self;
+})(jQuery,window);
+window.parent.window.likeMaster = likeMaster;
+
+&lt;/script&gt;
+
+
+&lt;script id='friend' type="text/x-jquery-tmpl"&gt;
+&lt;span class='span4 columns'&gt;${name}&lt;/span&gt; 
+&lt;/script&gt;
+
+
+
+&lt;div id='login' class='centered' &gt;
+&lt;h1&gt;Login to the LikeMaster&trade;&lt;/h1&gt;
+&lt;a href='javascript:void(0);' class='btn large primary' onclick='likeMaster.login();'&gt;Click Me to Login!&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;div id='loggingIn' class='centered hidden'&gt;
+  &lt;h1&gt;Please Wait, Logging In...&lt;/h1&gt;
+&lt;/div&gt;
+
+&lt;div id='loggedIn' class='centered hidden'&gt;
+  &lt;h1&gt;Welcome &lt;/h1&gt;
+  <div id='content' class='container'>
+    <div class='row'>
+
+    </div>
+  </div>
 &lt;/div&gt;
 
 
@@ -457,6 +553,9 @@ window.parent.window.likeMaster = likeMaster;
     .hidden { display:none; }
   &lt;/style&gt;
 </div>
+
+
+
 
 <!-- Update these paths to point to the correct files. -->
 <script src="js/jquery.min.js"></script>
