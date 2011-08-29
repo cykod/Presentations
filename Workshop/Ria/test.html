@@ -18,6 +18,8 @@
     oauth  : true // enable OAuth 2.0
   });
 
+
+function clicker() {
  FB.login(function(response) {
    if (response.authResponse) {
      console.log('Welcome!  Fetching your information.... ');
@@ -27,9 +29,12 @@
   }
 });
 
+}
+
   
 </script>
   
+<a href='javascript:void(0);' onclick='clicker();'>Click'</a>
 
 </body>
 </html>
