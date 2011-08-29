@@ -1,0 +1,22 @@
+
+
+
+.coder-wrapper {
+   height:100%;
+   position:absolute;
+   left:0px;
+}
+
+.coder-editor {
+  height:500px;
+  width:500px;
+  font-family:Monaco;
+  font-size:10px;
+}
+
+.coder-destination { 
+  position:absolute;
+  right:0px;
+  width:50%;
+
+}

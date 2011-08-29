@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+
+<div id="fb-root"></div>
+<script src="http://connect.facebook.net/en_US/all.js"></script>
+<script>
+  FB.init({
+    appId  : '186704188064658',
+    status : true, // check login status
+    cookie : true, // enable cookies to allow the server to access the session
+    xfbml  : true, // parse XFBML
+    channelUrl : 'channel.html', // channel.html file
+    oauth  : true // enable OAuth 2.0
+  });
+
+ FB.login(function(response) {
+   if (response.authResponse) {
+     console.log('Welcome!  Fetching your information.... ');
+     FB.api('/me', function(response) {
+       alert('Good to see you, ' + response.name + '.');
+     });
+  }
+});
+
+  
+</script>
+  
+
+</body>
+</html>

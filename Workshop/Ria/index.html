@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Mobile Apps with Javascript</title>
+	<meta name="viewport" content="width=1024">
+	
+	<!-- Replace path with correct path to deck.core.css. -->
+	<link rel="stylesheet" href="css/deck.core.css" type="text/css">
+	
+	<!-- Any other extension CSS files go here. -->
+	<!-- link rel="stylesheet"  id='transition-theme-link' href="horizontal-slide.css" type="text/css" --> 
+	<link rel="stylesheet" id='style-theme-link' href="css/swiss.css" type="text/css" >
+	
+	<!-- Core and extension CSS files -->
+	<link rel="stylesheet" href="css/deck.goto.css">
+	<link rel="stylesheet" href="css/deck.menu.css">
+	<link rel="stylesheet" href="css/deck.navigation.css">
+	<link rel="stylesheet" href="css/deck.status.css">
+	<link rel="stylesheet" href="css/deck.hash.css">
+	<link rel="stylesheet" href="css/deck.coder.css">
+
+	
+	<!-- Replace path with correct path to Modernizr file. -->
+	<script src="js/modernizr.js"></script>
+</head>
+<body class="deck-container">
+
+<!-- Create any number of elements with class slide within the container -->
+<article class='slide'>
+  <img src='images/mobile-worship.png' alt='Mobile Apps with Javascript'/>
+</article>
+	
+<div class='slide'>
+    <h1>Why Apps?</h1>
+</div>
+
+<article class='slide'>
+
+<div class='coder-editor' data-language='js'>
+function showComparison(txt) {
+document.write("&lt;tr&gt;&lt;td&gt;" + txt + ": &lt;/td&gt;&lt;td&gt;" + eval(txt) + "&lt;/td&gt;&lt;/tr&gt;");
+}
+
+var v1 = 1;
+var v2 = 2;
+
+document.write("v1: " + v1 + "&lt;br/&gt;");
+document.write("v2: " + v2 + "&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;");
+document.write("&lt;table&gt;");
+showComparison("v1 == v2");
+showComparison("v1 === v2");
+showComparison("v1 &lt; v2");
+showComparison("v1 &gt; v2");
+showComparison("v1 != v2");
+document.write("&lt;/table&gt;");
+  </div>
+
+  <div class='coder-destination'></div>  
+
+</article>
+
+
+<!-- Update these paths to point to the correct files. -->
+<script src="js/jquery.min.js"></script>
+<script src="js/deck.core.js"></script>
+
+
+<!-- Ace -->
+<script src="js/ace/ace-uncompressed.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/ace/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/ace/mode-html.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/ace/mode-css.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Add any other extension JS files here -->
+<!-- Deck Core and extensions -->
+<script src="js/deck.menu.js"></script>
+<script src="js/deck.goto.js"></script>
+<script src="js/deck.status.js"></script>
+<script src="js/deck.navigation.js"></script>
+<script src='js/deck.coder.js'></script>
+<script src="js/deck.hash.js"></script>
+
+<!-- Initialize the deck. You can put this in an external file if desired. -->
+<script>
+	$(function() {
+		$.deck('.slide');
+	});
+</script>
+</body>
+</html>
