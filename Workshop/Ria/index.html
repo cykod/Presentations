@@ -180,6 +180,48 @@ function clicker() {
 </article>
 
 
+<article class='slide'>
+<h2>Let's grab some more data, and the print it out</h2>
+<p>We can access the data variable in the console via: $("iframe")[0].documentWindow.iframe</p>
+<div class='coder-editor code-editor-full' data-language='html'>
+&lt;div id="fb-root"&gt;&lt;/div&gt;
+&lt;script src="http://connect.facebook.net/en_US/all.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  FB.init({
+    appId  : '186704188064658',
+    status : true, // check login status
+    cookie : true, // enable cookies to allow the server to access the session
+    xfbml  : true, // parse XFBML
+    channelUrl : 'channel.html', // channel.html file
+    oauth  : true // enable OAuth 2.0
+  });
+
+var outputData = null;
+ 
+function clicker() {
+ FB.login(function(response) {
+   if (response.authResponse) {
+     console.log('Welcome!  Fetching your information.... ');
+     FB.api('/me/friends', function(response) {
+        outputData = response;
+     });
+  }
+});
+ 
+}
+ 
+$(document).ready(function() { prettyPrint(); });  
+&lt;/script&gt;
+  
+&lt;a href='javascript:void(0);' onclick='clicker();'&gt;Click Me to Connect!&lt;/a&gt;
+
+  </div>
+
+
+
+</article>
+
+
 <!-- Update these paths to point to the correct files. -->
 <script src="js/jquery.min.js"></script>
 <script src="js/deck.core.js"></script>
