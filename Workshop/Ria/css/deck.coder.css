@@ -2,21 +2,18 @@
 
 
 .coder-wrapper {
-   height:100%;
-   position:absolute;
-   left:0px;
+
+}  
+
+.deck-container .coder-editor {
+  font-family:'Droid Sans Mono', 'Courier New', monospace;
+  font-size:16px;
+
 }
 
-.coder-editor {
-  height:500px;
-  width:500px;
-  font-family:Monaco;
-  font-size:10px;
-}
-
-.coder-destination { 
-  position:absolute;
-  right:0px;
-  width:50%;
-
+.deck-container .coder-destination { 
+  display:none;
+  padding:5px;
+  border:1px solid #CCCCCC;
+  margin:5px;
 }

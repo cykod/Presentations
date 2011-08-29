@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Mobile Apps with Javascript</title>
+	<title>HTML5 Workshop #6</title>
 	<meta name="viewport" content="width=1024">
 	
 	<!-- Replace path with correct path to deck.core.css. -->
@@ -19,7 +19,6 @@
 	<link rel="stylesheet" href="css/deck.status.css">
 	<link rel="stylesheet" href="css/deck.hash.css">
 	<link rel="stylesheet" href="css/deck.coder.css">
-
 	
 	<!-- Replace path with correct path to Modernizr file. -->
 	<script src="js/modernizr.js"></script>
@@ -28,35 +27,157 @@
 
 <!-- Create any number of elements with class slide within the container -->
 <article class='slide'>
-  <img src='images/mobile-worship.png' alt='Mobile Apps with Javascript'/>
+<h1>HTML5 Workshop #6</h1>
+<h2>Putting it all together</h2>
 </article>
 	
-<div class='slide'>
-    <h1>Why Apps?</h1>
-</div>
+<article class='slide'>
+<h2>What we've learned</h2>
+<ol>
+	<li class='slide'><h3>HTML5 Basics &amp; Semantic Structure</h3></li>
+	<li class='slide'><h3>The Perfect Chop &amp; Layout basics</h3></li>
+	<li class='slide'><h3>CSS styling &amp; Responsive Design</h3></li>
+	<li class='slide'><h3>Javascript & jQuery</h3></li>
+	<li class='slide'><h3>More Javascript, Events, Ajax &amp; JS Templates</h3></li>
+</ol>
+</article>
 
 <article class='slide'>
+<h1>Mashup Time</h1>
+<h2>Friend Explorer with Facebook API</h2>
+</article>
 
-<div class='coder-editor' data-language='js'>
-function showComparison(txt) {
-document.write("&lt;tr&gt;&lt;td&gt;" + txt + ": &lt;/td&gt;&lt;td&gt;" + eval(txt) + "&lt;/td&gt;&lt;/tr&gt;");
+<article class='slide'>
+<h2>The Plan</h2>
+<ol>
+	<li class='slide' ><h3>Connect to facebook API</h3></li>
+	<li class='slide' ><h3>Pull a list of your friends</h3></li>
+	<li class='slide' ><h3>Find a list of all the things your friends like.</h3></li>
+</ol>
+
+</article>
+
+<article class='slide'>
+<h2>First: Facebook Javascript SDK</h2>
+<p>Facebook has a number of useful API's, we'll be using two:<p>
+<ol>
+	<li class='slide'><h3><a target='_blank' href='http://developers.facebook.com/docs/reference/javascript/'>Facebook Javscript SDK</a></h3>
+		<p>A way of interfacing with Facebook entirely via Javascript (Yay!)</p>
+	</li>
+
+	<li class='slide'><h3><a target='_blank' href='http://developers.facebook.com/docs/reference/api/'>Facebook Graph API</a></h3>
+	  <p>Their main API for accessing and posting data</p>
+	</li>
+	<li class='slide'><h3>All require we make a new facebook application</h3></li>
+</ol>
+</article>
+
+
+
+<article class='slide'>
+<h2>Facebook Javascript API Basics</h2>
+<p>Api Setup (After creating an application here: <a href='https://developers.facebook.com/apps'>https://developers.facebook.com/apps</a><p>
+<pre>
+&lt;div id="fb-root"&gt;&lt;/div&gt;
+&lt;script src="http://connect.facebook.net/en_US/all.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  FB.init({
+    appId  : 'YOUR APP ID',
+    status : true, // check login status
+    cookie : true, // enable cookies to allow the server to access the session
+    xfbml  : true, // parse XFBML
+    channelUrl : 'http://WWW.MYDOMAIN.COM/channel.html', // channel.html file
+    oauth  : true // enable OAuth 2.0
+  });
+&lt;/script&gt;
+</pre>
+<p>
+	Channel.html file:</p>
+<pre>
+ &lt;script src="http://connect.facebook.net/en_US/all.js"&gt;&lt;/script&gt;
+</pre>
+
+</article>
+
+
+<article class='slide'>
+<h2>Facebook Javascript API Basics #2</h2>
+<p>Then, we can force a login:</p>
+<pre>
+&lt;script&gt;
+FB.login(function(response) {
+   if (response.authResponse) {
+     console.log('Welcome!  Fetching your information.... ');
+     alert("Ur Logged in!");
+   } else {
+     console.log('User cancelled login or did not fully authorize.');
+   }
+ }, {scope: 'email'});
+&lt;/script&gt;
+</pre>
+<p>after we're logged in we can call the Graph API:</p>
+
+<pre>
+&lt;script&gt;
+     FB.api('/me', function(response) {
+       console.log('Good to see you, ' + response.name + '.');
+     });
+&lt;/script&gt;
+</pre>
+<p>
+
+</article>
+
+<article class='slide'>
+<h2>Graph API</h2>
+<ol>
+	<li class='slide'><h3>The preferred method to pull data in and out of facebook</h3></li>
+	<li class='slide'><h3>Reasonably well documented: <a target='_blank' href='http://developers.facebook.com/docs/reference/api/'>Graph API</a></h3></li>
+	<li class='slide'><h3>Everything has a graph id - either a numeric ID or a name: <a href='http://graph.facebook.com/pascalrettig'>http://graph.facebook.com/pascalrettig</a> or <a href='http://graph.facebook.com/678578882'>'http://graph.facebook.com/678578882</a></h3></li>
+
+</ol>
+</article>
+
+<article class='slide'>
+<h1>Before we go too much further...</h1>
+<h2>Let's play around with the Facebook Graph Api via <br/>
+	<a target='_blank' href='http://developers.facebook.com/tools/explorer/'>Graph API Explorer</a></h2>
+
+</article>
+
+<article class='slide'>
+<h2>Let's connect With Facebook</h2>
+<div class='coder-editor code-editor-full' data-language='js'>
+&lt;div id="fb-root"&gt;&lt;/div&gt;
+&lt;script src="http://connect.facebook.net/en_US/all.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  FB.init({
+    appId  : '186704188064658',
+    status : true, // check login status
+    cookie : true, // enable cookies to allow the server to access the session
+    xfbml  : true, // parse XFBML
+    channelUrl : 'channel.html', // channel.html file
+    oauth  : true // enable OAuth 2.0
+  });
+ 
+ 
+function clicker() {
+ FB.login(function(response) {
+   if (response.authResponse) {
+     console.log('Welcome!  Fetching your information.... ');
+     FB.api('/me', function(response) {
+       alert('Good to see you, ' + response.name + '.');
+     });
+  }
+});
+ 
 }
-
-var v1 = 1;
-var v2 = 2;
-
-document.write("v1: " + v1 + "&lt;br/&gt;");
-document.write("v2: " + v2 + "&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;");
-document.write("&lt;table&gt;");
-showComparison("v1 == v2");
-showComparison("v1 === v2");
-showComparison("v1 &lt; v2");
-showComparison("v1 &gt; v2");
-showComparison("v1 != v2");
-document.write("&lt;/table&gt;");
+ 
+  
+&lt;/script&gt;
+  
+&lt;a href='javascript:void(0);' onclick='clicker();'&gt;Click Me to Connect!&lt;/a&gt;
   </div>
-
-  <div class='coder-destination'></div>  
 
 </article>
 

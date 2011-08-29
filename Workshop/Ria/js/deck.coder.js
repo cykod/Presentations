@@ -74,7 +74,8 @@ This module adds a ace editor that shows up in individual slides
         'id': 'editor-' + idx,
         'data-target' : 'destination-' + idx
         }).wrapAll("<div class='coder-wrapper'></div>").css('position','static');
-        slide.find(".coder-destination").attr('id','destination-' + idx);
+
+       $("<div class='coder-destination' id='destination-" + idx + "'></div>").insertAfter("#editor-"+idx);
         var solution = slide.find("script[type=codedeck]")[0]
         if(solution) {
           $(solution).attr({ 'id' : 'solution-' + idx });
@@ -97,6 +98,11 @@ This module adds a ace editor that shows up in individual slides
         var html = $(this).html().replace(/SCRIPT/g,'<script>').replace(/END/,'</s' + 'cript>').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
 
         $(this).css('visibility','visible');
+
+        $(this).css('height',$(current).height() - $(this).position().top - 80);
+
+        var slideWidth = $[deck]('getSlide', from).width();
+        $(element).css('width',slideWidth);
         var editor = ace.edit(this.id);
         $(this).addClass('coderEditor');
 
@@ -116,8 +122,25 @@ This module adds a ace editor that shows up in individual slides
         $(this).data('editor',editor);
         editor.on('focus', focusCallback);
         editor.on('blur', blurCallback);
+
+
+        var dest = $(element).attr('data-target');
+        var destination = $("#" + dest );
+
+
+        destination.css('height',$(current).height() - $(this).position().top - 80);
+
+
         $("<button>Run</button>").insertBefore(this).click(function() {
+          $(element).hide();
+          $(destination).show();
           runCode(element);
+
+        });
+        $("<button>Toggle</button>").insertBefore(this).click(function() {
+          $(destination).toggle();
+          $(element).toggle();
+
         });
 
         var solution = $(this).attr('data-solution');
