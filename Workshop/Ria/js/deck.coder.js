@@ -29,10 +29,16 @@ This module adds a ace editor that shows up in individual slides
     var destination = $("#" + dest );
     $(destination).html("").append(iframe);
 
+
     var editor = $(element).data('editor');
     var code = editor.getSession().getValue();
 
     var language = $(element).attr('data-language');
+
+
+    if($(element).attr('data-save')) {
+      localStorage[$(element).attr('data-save')] = code;
+    }
 
     if(language == 'js') {
       code = "<scr" + "ipt>\n" + code + "\n</scr" + "ipt>";
@@ -119,8 +125,12 @@ This module adds a ace editor that shows up in individual slides
         }
 
         setTimeout(function() {
-          editor.getSession().setValue(html);
-        },1000);
+          if($(element).attr('data-save') && localStorage[$(element).attr('data-save')]) {
+            editor.getSession().setValue(localStorage[$(element).attr('data-save')]);
+          } else {
+            editor.getSession().setValue(html);
+          }
+        },500);
 
         $(this).data('editor',editor);
         editor.on('focus', focusCallback);

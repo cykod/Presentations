@@ -419,6 +419,7 @@ var likeMaster = (function($,window) {
      FB.api('/me', function(response) {
         self.me = response;
         $("#loggingIn").hide();
+        $("#loggedIn").show();
         $("#loggedIn h1").text("Welcome " + self.me.name).show();
         FB.api('/me/friends', function(response) {
            self.friends = response.data;
@@ -472,7 +473,7 @@ window.parent.window.likeMaster = likeMaster;
 
 <article class='slide slide-list'>
 <h2>Turn Friends into links</h2>
-<p>Make each of our friends clickable, and turn them into links.</p>
+<p>Make each of our friends clickable, and turn them into links. When you click on a friend it should show their information.</p>
 
 <div class='coder-editor code-editor-full' data-language='html'>
 &lt;link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap-1.1.1.min.css"&gt;
@@ -505,6 +506,7 @@ var likeMaster = (function($,window) {
         self.me = response;
         $("#loggingIn").hide();
         $("#loggedIn h1").text("Welcome " + self.me.name).show();
+        $("#loggedIn").show();
         FB.api('/me/friends', function(response) {
            self.friends = response.data;
            self.displayFriends();
@@ -513,9 +515,10 @@ var likeMaster = (function($,window) {
   };
 
   self.displayFriends = function() {
+    $("#content .row").html("");
+    $("#friend").tmpl(self.friends).appendTo("#content .row");
     $("#friend").tmpl(self.friends).html("#content .row");
   }
-
   return self;
 })(jQuery,window);
 window.parent.window.likeMaster = likeMaster;
@@ -553,6 +556,113 @@ window.parent.window.likeMaster = likeMaster;
     .hidden { display:none; }
   &lt;/style&gt;
 </div>
+
+</article>
+
+<article class='slide slide-list'>
+<h2>Finish the likeMaster</h2>
+<ul>
+  <li class="slide">
+  	<h3>Pull each user's likes</h3>
+  </li>
+  <li class="slide">
+  	<h3>Add a links to each like to take you to more details about it (Modal window!)</h3>
+  </li>
+  <li class="slide">
+  	<h3>Add a post button to post to facebook about the likeMaster</h3>
+  </li>
+</ul>
+
+
+</article>
+
+<article class='slide slide-list'>
+<h2>Scratch Box</h2>
+<p>Add more features!</p>
+
+<div class='coder-editor coder-editor-full' data-language='html' data-save='scratch'>
+&lt;link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap-1.1.1.min.css"&gt;
+&lt;script src='http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js'&gt;END   
+
+&lt;div id="fb-root"&gt;&lt;/div&gt;
+&lt;script src="http://connect.facebook.net/en_US/all.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  FB.init({
+    appId  : '186704188064658', status : true, cookie : true, xfbml  : true, channelUrl : 'channel.html', oauth  : true 
+  });
+
+var likeMaster = (function($,window) {
+  var self     = {};
+  self.me      = null;
+  self.friends = null;
+
+ self.login = function() {
+    $("#login").hide();
+    $("#loggingIn").fadeIn();
+    FB.login(function(response) {
+  	   if (response.authResponse) {
+  	   	self.loggedIn();
+  	   }
+  	});
+  };
+
+  self.loggedIn = function() {
+     FB.api('/me', function(response) {
+        self.me = response;
+        $("#loggingIn").hide();
+        $("#loggedIn h1").text("Welcome " + self.me.name).show();
+        $("#loggedIn").show();
+        FB.api('/me/friends', function(response) {
+           self.friends = response.data;
+           self.displayFriends();
+        });
+     });
+  };
+
+  self.displayFriends = function() {
+    $("#content .row").html("");
+    $("#friend").tmpl(self.friends).appendTo("#content .row");
+    $("#friend").tmpl(self.friends).html("#content .row");
+  }
+  return self;
+})(jQuery,window);
+window.parent.window.likeMaster = likeMaster;
+
+&lt;/script&gt;
+
+
+&lt;script id='friend' type="text/x-jquery-tmpl"&gt;
+&lt;span class='span4 columns'&gt;${name}&lt;/span&gt; 
+&lt;/script&gt;
+
+
+
+&lt;div id='login' class='centered' &gt;
+&lt;h1&gt;Login to the LikeMaster&trade;&lt;/h1&gt;
+&lt;a href='javascript:void(0);' class='btn large primary' onclick='likeMaster.login();'&gt;Click Me to Login!&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;div id='loggingIn' class='centered hidden'&gt;
+  &lt;h1&gt;Please Wait, Logging In...&lt;/h1&gt;
+&lt;/div&gt;
+
+&lt;div id='loggedIn' class='centered hidden'&gt;
+  &lt;h1&gt;Welcome &lt;/h1&gt;
+  <div id='content' class='container'>
+    <div class='row'>
+
+    </div>
+  </div>
+&lt;/div&gt;
+
+
+  &lt;style&gt;
+    .centered { text-align:center; }
+    .hidden { display:none; }
+  &lt;/style&gt;
+</div>
+
+</article>
 
 
 
