@@ -252,14 +252,12 @@ function clicker() {
     appId  : '186704188064658', status : true, cookie : true, xfbml  : true, channelUrl : 'channel.html', oauth  : true 
   });
 
-var responseData = null;
- 
 function clicker() {
  FB.login(function(response) {
    if (response.authResponse) {
      console.log('Welcome!  Fetching your information.... ');
      FB.api('/me/friends', function(response) {
-        responseData = response;
+        window.parent.window.responseData = response;
      });
   }
 });
@@ -294,7 +292,7 @@ function clicker() {
   });
 
 var likeMaster = (function($,window) {
-  var self = this;
+  var self = {};
 
   self.login = function() {
        FB.login(function(response) {
@@ -341,9 +339,9 @@ var likeMaster = (function($,window) {
   });
 
 var likeMaster = (function($,window) {
-  var self    = this;
-  var me      = null;
-  var friends = null;
+  var self    =  {};
+  self.me      = null;
+  self.friends = null;
 
   self.login = function() {
        FB.login(function(response) {
@@ -356,7 +354,7 @@ var likeMaster = (function($,window) {
 
   self.loggedIn = function() {
      FB.api('/me', function(response) {
-        me = response;
+        self.me = response;
         FB.api('/me/friends', function(response) {
            friends = response;
            self.displayFriends();
@@ -372,6 +370,8 @@ var likeMaster = (function($,window) {
   return self;
 })(jQuery,window)
  
+parent.window.likeMaster = likeMaster;
+
 &lt;/script&gt;
 
 &lt;div style='text-align:center'&gt;
@@ -401,9 +401,9 @@ var likeMaster = (function($,window) {
   });
 
 var likeMaster = (function($,window) {
-  var self    = this;
-  var me      = null;
-  var friends = null;
+  var self     = {};
+  self.me      = null;
+  self.friends = null;
 
  self.login = function() {
     $("#login").hide();
@@ -417,11 +417,11 @@ var likeMaster = (function($,window) {
 
   self.loggedIn = function() {
      FB.api('/me', function(response) {
-        me = response.data;
+        self.me = response.data;
         $("#loggingIn").hide();
         $("#loggedIn h1").text("Welcome " + me.name).show();
         FB.api('/me/friends', function(response) {
-           friends = response.data;
+           self.friends = response.data;
            self.displayFriends();
         });
      });
@@ -434,7 +434,8 @@ var likeMaster = (function($,window) {
 
   return self;
 })(jQuery,window);
- 
+window.parent.window.likeMaster = likeMaster;
+
 &lt;/script&gt;
 
 &lt;div id='login' class='centered' &gt;
