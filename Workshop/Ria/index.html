@@ -182,7 +182,7 @@ function clicker() {
 
 <article class='slide'>
 <h2>Let's grab some more data, and the print it out</h2>
-<p>We can access the data variable in the console via: $("iframe")[0].documentWindow.iframe</p>
+<p>We can access the data variable in the console via: $("iframe")[0].contentWindow.responseData</p>
 <div class='coder-editor code-editor-full' data-language='html'>
 &lt;div id="fb-root"&gt;&lt;/div&gt;
 &lt;script src="http://connect.facebook.net/en_US/all.js"&gt;&lt;/script&gt;
@@ -196,14 +196,14 @@ function clicker() {
     oauth  : true // enable OAuth 2.0
   });
 
-var outputData = null;
+var responseData = null;
  
 function clicker() {
  FB.login(function(response) {
    if (response.authResponse) {
      console.log('Welcome!  Fetching your information.... ');
      FB.api('/me/friends', function(response) {
-        outputData = response;
+        responseData = response;
      });
   }
 });
@@ -214,12 +214,186 @@ function clicker() {
   
 &lt;a href='javascript:void(0);' onclick='clicker();'&gt;Click Me to Connect!&lt;/a&gt;
 
-  </div>
+</div>
 
+</article>
+
+<article class='slide'>
+<h2>Let's Bootstrap our "app"</h2>
+<h3>With <a href='http://twitter.github.com/bootstrap/'>Twitter Bootstrap</a></h3>
+<p>Make it easy to get some simple styles up and running</p>
+<pre>
+&lt;link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap-1.1.1.min.css"&gt;
+</pre>
+<h3>Includes</h3>
+<ul>
+	<li>Grid System</li>
+	<li>Layouts (Fixed and fluid)</li>
+	<li>Headings</li>
+	<li>Forms</li>
+	<li>Buttons</li>
+	<li>Navigation</li>
+	<li>Alerts</li>
+	<li>Popovers</li>
+</ul>
+</article>
+
+<article class='slide'>
+<h2>Add in a pretty login button</h2>
+<p>Check out the code from the <a href='http://twitter.github.com/bootstrap/'>Twitter Bootstrap</a> page</p>
+
+<div class='coder-editor code-editor-full' data-language='html'>
+&lt;link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap-1.1.1.min.css"&gt;
+
+&lt;div id="fb-root"&gt;&lt;/div&gt;
+&lt;script src="http://connect.facebook.net/en_US/all.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  FB.init({
+    appId  : '186704188064658', status : true, cookie : true, xfbml  : true, channelUrl : 'channel.html', oauth  : true 
+  });
+
+var responseData = null;
+ 
+function clicker() {
+ FB.login(function(response) {
+   if (response.authResponse) {
+     console.log('Welcome!  Fetching your information.... ');
+     FB.api('/me/friends', function(response) {
+        responseData = response;
+     });
+  }
+});
+ 
+}
+ 
+&lt;/script&gt;
+
+&lt;div style='text-align:center'&gt;
+&lt;h1&gt;Login to the LikeMaster&trade;&lt;/h1&gt;
+&lt;a href='javascript:void(0);' onclick='clicker();'&gt;Click Me to Login!&lt;/a&gt;
+&lt;/div&gt;
+
+</div>
 
 
 </article>
 
+<article class='slide'>
+<h2>Refactor the Application</h2>
+<p>Let's clean up our Javascript a little bit with the module pattern.</p>
+
+<div class='coder-editor code-editor-full' data-language='html'>
+&lt;link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap-1.1.1.min.css"&gt;
+&lt;script src='http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js'&gt;END   
+
+&lt;div id="fb-root"&gt;&lt;/div&gt;
+&lt;script src="http://connect.facebook.net/en_US/all.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  FB.init({
+    appId  : '186704188064658', status : true, cookie : true, xfbml  : true, channelUrl : 'channel.html', oauth  : true 
+  });
+
+var responseData = null;
+
+var likeMaster = (function($,window) {
+  var self = this;
+
+  self.login = function() {
+       FB.login(function(response) {
+    	   if (response.authResponse) {
+    	   	self.loggedIn();
+    	   }
+    	});
+  };
+
+
+  self.loggedIn = function() {
+   	alert("Logged In");
+  };
+
+
+  return self;
+})(jQuery,window)
+ 
+&lt;/script&gt;
+
+&lt;div style='text-align:center'&gt;
+&lt;h1&gt;Login to the LikeMaster&trade;&lt;/h1&gt;
+&lt;a href='javascript:void(0);' class='btn large primary' onclick='likeMaster.login();'&gt;Click Me to Login!&lt;/a&gt;
+&lt;/div&gt;
+
+</div>
+
+
+</article>
+
+<article class='slide'>
+<h2>Let's fix the login and display our list of friends</h2>
+<p>Hide the login button when a user log's in, show a "Logging in", then the user's name once they are in.</p>
+
+<div class='coder-editor code-editor-full' data-language='html'>
+&lt;link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap-1.1.1.min.css"&gt;
+&lt;script src='http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js'&gt;END   
+
+&lt;div id="fb-root"&gt;&lt;/div&gt;
+&lt;script src="http://connect.facebook.net/en_US/all.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  FB.init({
+    appId  : '186704188064658', status : true, cookie : true, xfbml  : true, channelUrl : 'channel.html', oauth  : true 
+  });
+
+var likeMaster = (function($,window) {
+  var self    = this;
+  var me      = null;
+  var friends = null;
+
+  self.login = function() {
+       FB.login(function(response) {
+    	   if (response.authResponse) {
+    	   	self.loggedIn();
+    	   }
+    	});
+  };
+
+
+  self.loggedIn = function() {
+     FB.api('/me', function(response) {
+        me = response;
+        FB.api('/me/friends', function(response) {
+           friends = response;
+           self.displayFriends();
+        });
+     });
+  };
+
+  self.displayFriends = function() {
+
+
+  }
+
+  return self;
+})(jQuery,window)
+ 
+&lt;/script&gt;
+
+&lt;div style='text-align:center'&gt;
+&lt;h1&gt;Login to the LikeMaster&trade;&lt;/h1&gt;
+&lt;a href='javascript:void(0);' class='btn large primary' onclick='likeMaster.login();'&gt;Click Me to Login!&lt;/a&gt;
+&lt;/div&gt;
+
+</div>
+
+
+</article>
+
+
+
+<article class='slide'>
+<h2>Display a user's friends</h2>
+<p>Once the user is logged in, let's download their friends and write them to the screen as a template</p>
+
+
+</article>
 
 <!-- Update these paths to point to the correct files. -->
 <script src="js/jquery.min.js"></script>

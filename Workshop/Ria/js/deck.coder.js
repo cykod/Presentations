@@ -64,6 +64,9 @@ This module adds a ace editor that shows up in individual slides
 
 
   $d.bind('deck.init',function() {
+
+    $("a").attr('target','_blank');
+
     JavaScriptMode = require("ace/mode/javascript").Mode;
     HTMLMode = require("ace/mode/html").Mode;
 
