@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Mobile Apps with Javascript</title>
+	<meta name="viewport" content="width=1024">
+	
+	<!-- Replace path with correct path to deck.core.css. -->
+	<link rel="stylesheet" href="deck.core.css" type="text/css">
+	
+	<!-- Any other extension CSS files go here. -->
+	<!-- link rel="stylesheet"  id='transition-theme-link' href="horizontal-slide.css" type="text/css" --> 
+	<link rel="stylesheet" id='style-theme-link' href="coderdeck.css" type="text/css" >
+	
+	<!-- Core and extension CSS files -->
+	<link rel="stylesheet" href="deck.goto.css">
+	<link rel="stylesheet" href="deck.menu.css">
+	<link rel="stylesheet" href="deck.navigation.css">
+	<link rel="stylesheet" href="deck.status.css">
+	<link rel="stylesheet" href="deck.hash.css">
+
+	<link href='http://fonts.googleapis.com/css?family=Arvo|Open+Sans:400italic,400,700|Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+	
+	<!-- Replace path with correct path to Modernizr file. -->
+	<script src="modernizr.js"></script>
+	
+</head>
+<body class="deck-container">
+
+<!-- Create any number of elements with class slide within the container -->
+<div class='slide'>
+  <img src='mobile-worship.png' alt='Mobile Apps with Javascript'/>
+</div>
+	
+<div class="slide slide-title">
+    <h1>Why Apps?</h1>
+</div>
+
+<div class="slide slide-list">
+    <h2>Why Apps?</h2>
+    <ul>
+	    <li  class="slide">
+		    <h3>Access to all the various App Stores</h3>
+		    <p>Consumers are actually willing to pay for Apps, less so for Web Sites.</p>
+	    </li>
+	    <li  class="slide">
+		    <h3>Access to hardware & software features you might not otherwise</h3>
+		    <p>Camera, Microphone, Telephony, Contacts, Filesystem, etc...</p>
+	    </li>
+	    <li  class="slide">
+		    <h3>Client demand</h3>
+		    <p>Hey, you have to make a living somehow...</p>
+	    </li>
+	    <li  class="slide">
+		    <h3>Performance</h3>
+		    <p>But this is less and less a factor as JavaScript performance increases, leading us to...</p>
+	    </li>
+    </ul>
+</div>
+
+<div class='slide slide-subhead'>
+	<h1>The HTML5 Singularity</h1>
+	<h2>Apps are an evolutionary step. We will be approaching a transition point in 2012</h2>
+</div>
+
+<div class='slide slide-title'>
+	<h1>Says who?</h1>
+</div>
+
+<div class='slide slide-subhead'>
+	<h1>Says Mozilla</h1>
+	<h2 class='slide'>(Ok, they have a vested interested)<br/>
+ 		<a target='_blank' href='https://wiki.mozilla.org/WebAPI'>WebAPI</a></h2>
+</div>
+
+<div class="slide">
+    <h2>What is an App?</h2>
+    <ol>
+	    <li  class="slide">
+		    <h3><em>Not:</em> Something that looks like an app</h3>
+		    <p>We have plenty of web frameworks designed to recreate the "native" look and feel along with hardware accelerated transitions.</p>
+	    </li>
+	    <li  class="slide">
+		    <h3><em>Not:</em> something that works offline</h3>
+		    <p>We already have local storage and offline storage via cache manifests</p>
+	    </li>
+	    <li  class="slide">
+		    <h3><em>Not:</em> something that you can launch from your home screen</h3>
+		    <p>We already have <a target='_blank' href='http://developer.apple.com/library/safari/#documentation/appleapplications/reference/safariwebcontent/configuringwebapplications/configuringwebapplications.html'>iPhone meta tags</a> and stuff like <a href='http://code.google.com/p/mobile-bookmark-bubble/' target='_blank'>mobile-bookmark-bubble</a>
+	    </li>
+	    <li  class="slide">
+		    <h3><em>Somewhat:</em> Access to native hardware </h3>
+		    <p>But we saw that is changing fast...</p>
+	    </li>
+	    <li class='slide'>
+ 		   <h3><em>Definitely:</em> something you can get in an App store</h3>
+		   <p>This is the one defining factor for many apps.</p>
+	    </li>
+    </ol>
+</div>
+
+<div class='slide'>
+	<h1>So...</h1>
+</div>
+
+<div class='slide'>
+	<h1>Screw everything else<br/>(Obj-C, Java)</h1>
+	<h2 class='slide'>Let's use the tools we already know and love (HTML, CSS, and Javascript) to build stuff we can put in the app store</h2>
+</div>
+
+
+<div class='slide'>
+	<h2>The Players</h2>
+	<ol>
+		<li class='slide'>
+			<h3><a target='_blank' href='http://www.appcelerator.com/'>Titanium Appcelerator</a></h3>
+			<p>A Javascript API for building Mobile apps</p>
+		</li>
+		<li class='slide'>
+			<h3><a target='_blank' href='http://www.phonegap.com/'>PhoneGap</a></h3>
+			<p>A thin wrapper around a WebKit browser with native augmentation</p>
+		</li>
+		<li class='slide'>
+			<h3><a target='_blank' href='http://www.appmobi.com/'>AppMobi</a></h3>
+			<p>PhoneGap-like augmentation + plus commercial support</p>
+		</li>
+		<li class='slide'>
+			<h3><a target='_blank' href='http://impactjs.com/'>Impact.js</a></h3>
+			<p>Specialized use-case: Games. But neat idea...</p>
+		</li>
+  </ol>
+</div>
+
+<div class='slide'>
+	<h1>Unicorns and Rainbows?</h1>
+</div>
+
+<div class='slide'>
+	<h2>Not Quite...</h2>
+	<ul>
+		<li class='slide'><h3>The Good: Titanium and PhoneGap are open source products</h3></li>
+		<li class='slide'><h3>The Bad: They are documented a little like open source products</h3>
+			<p>Both want to sell you service contracts.<br/>
+			<a target='_blank' href='http://developer.appcelerator.com/apidoc/mobile/latest'>Titanium Docs</a> / <a target='_blank' href='http://docs.phonegap.com/'>PhoneGap Docs</a>
+		</li>
+
+		<li class='slide'><h3>The Good: Write once, deploy to iOS & Android (PhoneGap supports more)</h3></li>
+		<li class='slide'><h3>The Bad: Different options and support for different devices. No Free lunch.</h3>
+			<p>Differences are usually documented, but sometimes not. No audio recording on Android, for example.</p>
+		</li>
+
+		<li class='slide'><h3>The Bad: Tools, IDE and Debugging support are limited.</h3>
+			<p>Xcode and Interface builder are very nice tools, bundled build processes are a little hackish.</p>
+		</li>
+	</ul>
+</div>
+
+<div class='slide'>
+	<h1>Titanium and PhoneGap in Depth</h1>
+	<h2 class='slide'>From primarily an iOS perspective</h2>
+</div>
+
+<div class='slide'>
+  <h1>Titanium: Overview</h1>
+  <h2>A Javascript API for writing mobile (and desktop) applications</h2>
+</div>
+
+<div class='slide'>
+  <h2>Titanium: Overview</h2>
+  <ol>
+	  <li class='slide'><h3>Xcode required for iOS development, Eclipse for Android</h3>
+		  <p>Handles deployment to simulators and devices for you</p>
+	  </li>
+	  <li class='slide'><h3>Creates an Xcode project behind the scenes and builds automatically</h3>
+		  <p>This works about as good as you expect: works great when it works, leaves you searching the forums for some archaic error message when it doesn't.</p>
+	  </li>
+	  <li class='slide'><h3>Uses native components wherever possible</h3>
+		  <p>Compiles down to native code. Does not use HTML/CSS styled to look like native. Stuff Splitview are native.</p></li>
+
+	  <li class='slide'><h3>Switched from a simple builder app to a full-blown IDE</h3>
+		  <p>...which sorta sucks. If we're developing Javascript we probably already have our tools and editors we like. And now configuration options are buried inside of hacked-on IDE (Aptana built on Eclipse)</p>
+	  </li>
+
+  </ol>
+
+</div>
+
+
+<div class='slide'>
+  <h2>Titanium: Coding Details</h2>
+  <ol>
+	  <li class='slide'><h3>Documentation and forums are a bit spotty, but the <a target='_blank' href='https://github.com/appcelerator/KitchenSink'>KitchenSink</a> is great</h3>
+		  <p>Look at the KicthenSink app first, probably before the Google. New features get added to the App, then documented</p>
+	  </li>
+
+	  <li class='slide'><h3>Good support for services like Facebook & Twitter</h3>
+		  <p>Better than PhoneGap (which has none and needs stuff like ChildBrowser)</p>
+	  </li>
+
+	  <li class='slide'><h3>At the "community" level JSLint and log statements are your debuggger</h3>
+		  <p>Better tools come with a not-that-cheap <a href='http://www.appcelerator.com/products/plans-pricing/' target='_blank' >monthly subscription</a>
+		</p>
+	</li>
+
+	  <li class='slide'><h3>Two primary ways to develop in Titanium:</h3>
+		  <ol>
+			  <li>Using a single global scope.</li>
+			  <li>Using independent scopes and message passing.</li>
+		</ol>
+	</li>
+  </ol>
+</div>
+
+
+<div class='slide'>
+	<h1>Code Break</h1>
+</div>
+
+<div class='slide'>
+	<h2>Some notes on Coding Titanium</h2>
+	<ol>
+		<li class='slide'>
+			<h3>When stuff doesn't work, press the debug and run button again</h3>
+		</li>
+		<li class='slide'>
+			<h3>When stuff continues to not work, delete the build/iphone directory</h3>
+			<p>And build again. Titanium auto populates the necessary frameworks, but sometimes when you add new code it doesn't rebuild correctly. Especially do this if you get errors for unknown API methods that are spelled correctly.</p>
+		</li>
+		<li class='slide'>
+			<h3>You'll pine for Interface Builder pretty quickly</h3>
+			<p>Building all your stuff by hand gets boring. Can try stuff like <a href='https://github.com/daoki2/xib2js'>Xib2js</a>. People <a href='http://developer.appcelerator.com/question/72401/interface-builder-and-titanium-vs-native'>say a native titanium one</a> is coming. <br/>
+				You'll want to build up some functions for calculating your element positions (especially forms) so you don't end up with a bunch of magic numbers in you code.<br/>       
+			</p>
+		</li>
+		<li class='slide'>
+			<h3>Mess up a function name and your app just quits</h3>
+			<p>...without any real good feedback</p>
+		</li>
+		<li class='slide'>
+			<h3>Options parameters are not validated</h3>
+			<p>So when something isn't working right, look to your options and use the intelliSense if necessary</p>
+		</li>
+		<li class='slide'>
+			<h3>Factory methods are used to create everything</h3>
+			<p>But the details are always in the objects themselves</p>
+		</li>
+	</ol>
+
+</div>
+
+<div class='slide'>
+	<h2>Titanium API Notes</h2>
+	<ol>
+		<li class='slide'>
+			<h3>use Ti. instead of Titanium.</h3>
+			<p>Lower code noise</p>
+			<pre>
+Ti.UI.createButton( ... )
+Titanium.UI.createButton( ... )
+</pre>
+		</li>
+		<li class='slide'>
+			<h3>Store persistent values with Ti.App.Properties</h3>
+			<pre>
+Ti.App.Properties.setString('APIKey','12334456');
+var val = Ti.App.Properties.getString('APIKey');
+</pre>
+		</li>
+		<li class='slide'>
+			<h3>Be careful with Ajax (and any Web) Requests</h3>
+			<p>Always make sure you have a error handler as you don't want your app stalling forever if someone goes in a tunnel.<br/>
+			If you are updating a UI element - make sure it still exists by the time the request comes back as the user may have moved on.
+		</p>
+		</li>
+
+	</ol>
+</div>
+
+<div class='slide'>
+	<h2>Ti API Notes #2</h2>
+	<ol>
+		<li class='slide'>
+			<h3>Sending and receiving JSON is a little tricky:</h3>
+			<pre>
+var xhr = Ti.Network.createHTTPClient(); 
+
+xhr.onload = function(e) {
+      var json = this.responseText == '' ? JSON.parse(this.responseText) : {};
+      // Do stuff
+};
+xhr.onerror = function(e) {
+      // Catch error, show an alert
+};
+
+xhr.open('POST','http://site.com/update_data.json');
+xhr.setRequestHeader("content-type", "application/json");
+xhr.send(JSON.stringify(data));
+</pre>
+		</li>
+		<li class='slide'>
+			<h3>Binary data is difficult to work with</h3>
+			<p>Not really Titanium's fault, but Javascript's fault. Expect to be a little far removed from the binary data for files, sounds, images, etc. and expect to have access to them be a bit slow.</p>
+		</li>
+	</ol>
+</div>
+
+
+<div class='slide'>
+  <h1>PhoneGap: Overview</h1>
+  <h2>An native-augmented Web Browser</h2>
+</div>
+
+
+<div class='slide'>
+	<h2>PhoneGap: Overview</h2>
+	<ol>
+		<li class='slide'>
+			<h3>The Good: Mobile Webkit & Firefox are great browsers!</h3>
+			<p>Generally fast with great HTML5 & CSS3 Support, WebSockets. It has good looking native Audio & Video elements. Hardware accelerated CSS3 Animation support makes stuff look native.</p>
+		</li>
+		<li class='slide'>
+			<h3>The Good: Choice of Frameworks (jQuery Mobile, Sencha, Backbone.js ...) </h3>
+			<p>You can use the tools that your are comfortable with already.</p>
+		</li>
+		<li class='slide'>
+			<h3>The Good: Accessing native hardware is easy</h3>
+			<p>Just make sure you've waited for onDeviceReady and then follow the docs.</p>
+
+		</li>
+		<li class='slide'>
+			<h3>The Bad: Debugging on device is a royal PITA</h3>
+			<p>You generally want to build and debug your main app on the Desktop (with Firebug) and then worry about mobile.</p>
+		</li>
+		<li class='slide'>
+			<h3>The Bad: Once you step outside iPhone and Android, it's a bit Ghetto</h3>
+			<p>WP7 Support isn't great, BlackBerry, same thing</p>
+		</li>
+		<li class='slide'>
+			<h3>The Bad: Generally native hardware is at a one-size-fits-all granular level</h3>
+			<p>And there are some weird bits as well with some callbacks not support closures, etc.</p>
+		</li>
+	</ol>
+
+</div>
+
+<div class='slide'>
+	<h1>Code Break</h1>
+	<h2><a target='_blank' href='http://jquerymobile.com/test/#/test/docs/pages/page-anatomy.html'>jQuery Mobile Examples</a></h2>
+
+</div>
+
+<div class='slide'>
+	<h2>Some notes on PhoneGap</h2>
+	<ol>
+		<li class='slide'>
+			<h3>Some of the same mobile browsers limitations we've always had</h3>
+			<p>The position:fixed; + overflow:auto; issue (Fixed in iOS5)<br/>
+				Lot's of workarounds exist (<a target='_blank' href='http://jquerymobile.com/test/experiments/scrollview/'>Scroll view</a> using <a target='_blank' href='http://cubiq.org/iscroll-4'>iScroll4</a>)
+			</p>
+		</li>
+		<li class='slide'>
+			<h3>Many intentional browser restrictions are still there</h3>
+			<p>No video auto-play, no audio auto-play. No manual keyboard (input field only)</p>
+		</li>
+		<li class='slide'>
+			<h3>Ajax, however, is unrestricted</h3>
+			<p>No more JSONp hacks. Can make Ajax calls to any domain and pull and push data at will (using $.ajax)</p>
+		</li>
+		<li class='slide'>
+			<h3>Can't execute code not included in the application</h3>
+			<p>According to Apple - you shouldn't download and execute JS unless you do it in a Child Browser window. This makes things like OAuth little painful.</p>
+		</li>
+	</ol>
+</div>
+
+<div class='slide'>
+	<h1>Which makes PhoneGap sound bad...</h1>
+	<h2>But it's not, just know the restrictions</h2>
+</div>
+
+<div class='slide'>
+	<h1><a target='_blank' href='http://appmobi.com'>AppMobi</a></h1>
+	<h2>Like PhoneGap, only not open-sourced and more polished. Includes a automated online-build process.</h2>
+</div>
+
+<div class='slide'>
+	<h1><a target='_blank' href='http://impactjs.com/documentation/ios/overview'>Impact.js</a></h1>
+	<p>Compiled in his own JavasScriptCore (which is included by a Private library) - All Graphics use OpenGL and sound users OpenAL. Must be built using stock Impact engine code.</p>
+</div>
+
+<div class='slide'>
+	<h2>iOS Deployment Notes</h2>
+	<ol>
+		<li class='slide'><h4>You'll need a $99/yr Developer Account</h4></li>
+		<li class='slide'><h4>Read the <a href='https://developer.apple.com/appstore/resources/approval/guidelines.html'>App Store Review Guidelines</a> before starting a project</h4>
+			<p>Please, take the time to read them before agreeing to a client project...</p>
+		</li>
+		<li class='slide'><h4>You'll need to add devices by UDID to your provisioning profile.</h4>
+			<p>	(<a href='http://www.innerfence.com/howto/find-iphone-unique-device-identifier-udid' target='_blank'>Find your UDID</a>)</p>
+		</li>
+		<li class='slide'><h4>You'll need to update and download your provisioning profiles</h4></li>
+		<li class='slide'><h4>You'll need to rebuild your app with the new profile</h4></li>
+    <li class='slide'><h4>You'll need to upload your generated IPA to something like <a target='_blank' href='http://testflightapp.com'>TestFlight</a> or <a target='_blank' href='http://diawi.com'>Diawi</a></h4></li>
+		<li class='slide'><h4>They will then have to accept and install it</h4></li>
+		<li class='slide'><h4>If you are near the device, plugging it in and using it for development is much easier</h4></li>
+	</ol>
+</div>
+
+<div class='slide'>
+	<h2>Android Deployment Notes</h2>
+	<ol>
+		<li class='slide'>Send them the file, have them install it</li>
+	</ol>
+</div>
+
+<div class='slide'>
+	<h1>Thanks! Questions?</h1>
+	<h2>Pascal Rettig<br/>
+		<a href='twitter.com/cykod'>@cykod</a><br/>
+    <a href='http://cykod.com'>Cykod (Consultancy)</a><br/>
+    <a href='http://www.gamesforlanguage.com'>GamesForLanguage (Online Language Learning)</a>
+	</h2>
+
+</div>
+
+
+
+
+
+
+<!-- Update these paths to point to the correct files. -->
+<script src="jquery.min.js"></script>
+<script src="deck.core.js"></script>
+
+<!-- Add any other extension JS files here -->
+<!-- Deck Core and extensions -->
+<script src="deck.menu.js"></script>
+<script src="deck.goto.js"></script>
+<script src="deck.status.js"></script>
+<script src="deck.navigation.js"></script>
+<script src="deck.hash.js"></script>
+
+
+<!-- Initialize the deck. You can put this in an external file if desired. -->
+<script>
+	$(function() {
+		$.deck('.slide');
+	});
+</script>
+</body>
+</html>

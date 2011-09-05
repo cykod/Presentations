@@ -29,10 +29,16 @@ This module adds a ace editor that shows up in individual slides
     var destination = $("#" + dest );
     $(destination).html("").append(iframe);
 
+
     var editor = $(element).data('editor');
     var code = editor.getSession().getValue();
 
     var language = $(element).attr('data-language');
+
+
+    if($(element).attr('data-save')) {
+      localStorage[$(element).attr('data-save')] = code;
+    }
 
     if(language == 'js') {
       code = "<scr" + "ipt>\n" + code + "\n</scr" + "ipt>";
@@ -64,6 +70,9 @@ This module adds a ace editor that shows up in individual slides
 
 
   $d.bind('deck.init',function() {
+
+    $("a").attr('target','_blank');
+
     JavaScriptMode = require("ace/mode/javascript").Mode;
     HTMLMode = require("ace/mode/html").Mode;
 
@@ -74,7 +83,8 @@ This module adds a ace editor that shows up in individual slides
         'id': 'editor-' + idx,
         'data-target' : 'destination-' + idx
         }).wrapAll("<div class='coder-wrapper'></div>").css('position','static');
-        slide.find(".coder-destination").attr('id','destination-' + idx);
+
+       $("<div class='coder-destination' id='destination-" + idx + "'></div>").insertAfter("#editor-"+idx);
         var solution = slide.find("script[type=codedeck]")[0]
         if(solution) {
           $(solution).attr({ 'id' : 'solution-' + idx });
@@ -97,6 +107,11 @@ This module adds a ace editor that shows up in individual slides
         var html = $(this).html().replace(/SCRIPT/g,'<script>').replace(/END/,'</s' + 'cript>').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
 
         $(this).css('visibility','visible');
+
+        $(this).css('height',$(current).height() - $(this).position().top - 80);
+
+        var slideWidth = $[deck]('getSlide', from).width();
+        $(element).css('width',slideWidth);
         var editor = ace.edit(this.id);
         $(this).addClass('coderEditor');
 
@@ -110,14 +125,35 @@ This module adds a ace editor that shows up in individual slides
         }
 
         setTimeout(function() {
-          editor.getSession().setValue(html);
-        },1000);
+          if($(element).attr('data-save') && localStorage[$(element).attr('data-save')]) {
+            editor.getSession().setValue(localStorage[$(element).attr('data-save')]);
+          } else {
+            editor.getSession().setValue(html);
+          }
+        },500);
 
         $(this).data('editor',editor);
         editor.on('focus', focusCallback);
         editor.on('blur', blurCallback);
+
+
+        var dest = $(element).attr('data-target');
+        var destination = $("#" + dest );
+
+
+        destination.css('height',$(current).height() - $(this).position().top - 80);
+
+
         $("<button>Run</button>").insertBefore(this).click(function() {
+          $(element).hide();
+          $(destination).show();
           runCode(element);
+
+        });
+        $("<button>Toggle</button>").insertBefore(this).click(function() {
+          $(destination).toggle();
+          $(element).toggle();
+
         });
 
         var solution = $(this).attr('data-solution');
