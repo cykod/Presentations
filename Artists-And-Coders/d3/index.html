@@ -2,16 +2,18 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Data Visualization D3.js</title>
+	<title>Data Visualization d3.js</title>
 	<meta name="viewport" content="width=1024">
 
         <link rel="stylesheet" href="dist/coderdeck-core.min.css" type="text/css">
 	<link rel="stylesheet" id='style-theme-link' href="dist/coderdeck.css" type="text/css" >
+        <link rel="stylesheet" href="dist/prettify.css" type="text/css">
 
 	<script src='dist/jquery.min.js'></script>
+  <script src='dist/prettify.js'></script>
 	<script src="dist/modernizr.js"></script>
 </head>
-<body class="deck-container">
+<body class="deck-container" onload='prettyPrint();'>
 
 <script type='text/coderdeck' id='coderdeck-default'>
   <html>
@@ -26,7 +28,7 @@
 </script>
 
 <article class='slide slide-subhead'>
-<h1>D3.js</h1>
+<h1>d3.js</h1>
 <h2><a href='http://bit.ly/artist-coders-d3'>http://bit.ly/artist-coders-d3</a><br/>
    Pascal Rettig<br/>
    <a href='http://twitter.com/cykod'>@cykod</a>   
@@ -37,13 +39,13 @@
 <article class='slide slide-subhead'>
 <h1>Data-Driven Documents</h1>
 <blockquote>
-D3 is not a traditional visualization framework. Rather than provide a monolithic system with all the features anyone may ever need, D3 solves only the crux of the problem: efficient manipulation of documents based on data. 
+d3 is not a traditional visualization framework. Rather than provide a monolithic system with all the features anyone may ever need, d3 solves only the crux of the problem: efficient manipulation of documents based on data. 
 </blockquote>
-- From the D3.js website
+- From the d3.js website
 </article>
 
 <article class='slide slide-list'>
-<h2>About D3.js</h2>
+<h2>About d3.js</h2>
 <ul>
 	<li class="slide">
 		<h3>The spirtual successor to <a href="http://mbostock.github.com/protovis/">Protovis</a></h3>
@@ -181,13 +183,240 @@ D3 is not a traditional visualization framework. Rather than provide a monolithi
 </article>
 
 <article class='slide slide-subhead'>
-<h1>Taking things too far..</h1>
-<h2 class='slide'>We have a perfectly good technology for drawing scalable vector shapes</h2>
+<h1>Now we're taking things too far...</h1>
+<h2 class='slide'>We have a perfectly good technology for drawing vector shapes</h2>
 </article>
 
 <article class='slide slide-image'>
 <h1>Enter SVG</h1>
 <a href='images/tiger.svg'><img src='images/tiger.svg'/></a>
+</article>
+
+<article class='slide slide-list'>
+<h2>About SVG (Scalable Vector Graphics)</h2>
+<ul>
+	<li class="slide">
+		<h3>XML based format</h3>
+	</li>
+	<li class="slide">
+		<h3>SVG 1.1 W3C Recommendation since 2003</h3>
+	</li>
+	<li class="slide">
+		<h3>Can be created by a tool like Illustrator or Inkscape</h3>
+	</li>
+	<li class="slide">
+    <h3>Can be used as images (&lt;object&gt;, &lt;embed&gt; tags also supported):</h3>
+<pre><code class='prettyprint'>&lt;img src='images/tiger.svg'/&gt;
+</code></pre>
+	</li>
+	<li class="slide">
+		<h3>Embedded directly in a document:</h3>
+<pre><code class='prettyprint'>&lt;div&gt;
+  &lt;svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100" height="100"&gt;
+    &lt;rect x="10" y="10" width="80" height="80" rx="10" ry="10" fill="red"/&gt;
+  &lt;/svg&gt;
+&lt;/div&gt;
+</code></pre>
+	</li>
+</ul>
+</article>
+
+<article class='slide slide-list'>
+<h2>Playing around with SVG</h2>
+<p>Drawing a rectangle</p>
+<textarea class='coder-editor coder-editor-instant'>
+<div>
+  <svg xmlns="http://www.w3.org/2000/svg" 
+       version="1.1" 
+       width="100px" height="100px">
+    <rect x="10" y="10" 
+          width="80" height="80" 
+          rx="10" ry="10" fill="red"/>
+ </svg>
+</div>
+</textarea>
+</article>
+
+<article class='slide slide-list'>
+<h2>Other Shapes, Text, Stroke, Fill, Opacity</h2>
+<p><a href='http://www.w3.org/TR/SVG/shapes.html'>W3C Shapes Spec</a>, <a href='http://www.w3.org/TR/SVG/styling.html'>W3C Styling Spec</a></p>
+<textarea class='coder-editor coder-editor-instant'>
+<div>
+  <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="400" height="400">
+    <circle cx="100" cy="50" r="40" 
+          stroke="black" fill='white'/>
+    <polyline points="150,100 200,80 150,120 200,120" 
+          style="fill:none;stroke:black;stroke-width:3;" />
+    <text x="150" y="150" fill="black" 
+          transform="rotate(45 150,150)">This is SVG Yo!</text>
+ </svg>
+</div>
+</textarea>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>Paths, Groups &amp; Transforms</h2>
+<p>Paths generally not coded by hand. You can groups objects together and transform groups</p>
+<textarea class='coder-editor coder-editor-instant'>
+<div>
+ <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="400" height="400">
+<g transform='scale(0.5,0.5) translate(50,1)'>
+  <path
+   d="m 2,101.0334 c 26.666,-17.092 55.517,-29.013 86.454,-30.656 97.813,-5.193 135.322,22.658 145,65 8,35 -31.593,43.542 -19,101 16,73 -120.973,24.999 -120,61 1,37 59.511,2.971 133,10 115,11 -5.456,155.273 69,140 39,-8 99,19 172,14 136.049,-9.318 222.167,-4.271 242,-3 78,5 14,-151 25,-242 7.924,-65.553 -103.092,6.53 -174,-24 -72,-31 -164,17 -149.184,-40.404 3.848,-14.909 105.639,-31.324 187.184,-51.596 29.059,-7.224 51.751,-57.000001 73,-57.000001 50,0 48.304,48.043001 -6,44.000001 C 554.952,79.0754 557.384,26.148399 640.116,1.282399"
+   style="fill:none;stroke:#c49a6c;stroke-width:4;" />
+</g>
+</svg>
+</div>
+</textarea>
+</article>
+
+<article class='slide slide-subhead'>
+<h1>Back to d3.js...</h1>
+</article>
+
+<article class='slide slide-list'>
+<h2>Goals of d3</h2>
+<ul>
+	<li class="slide">
+		<h3>Create dynamic data visualizations</h3>
+	</li>
+	<li class="slide">
+		<h3>Easily let you bind to pieces of Data</h3>
+	</li>
+	<li class="slide">
+		<h3>Use the DOM for rendering</h3>
+	</li>
+	<li class="slide">
+		<h3>Transparently handle transitions</h3>
+	</li>
+  <li class='slide'>
+    <h3>Uses jQuery-style selector syntax to select elements</h3>
+  </li>
+</ul>
+</article>
+
+<article class='slide slide-list'>
+<h2>Simplest d3 program</h2>
+<p>Given some existing rectangles, let's just transition their 'y' attribute to 50. We can transition any attribute as well as delay() the transition.</p>
+<textarea class='coder-editor'>
+<svg id='chart' xmlns="http://www.w3.org/2000/svg" version="1.1" width="100px" height="100px">
+  <rect x="10" y="10" width="80" height="80" rx="10" ry="10" fill="red"/>
+  <rect x="200" y="100" width="80" height="80" rx="10" ry="10" fill="red"/>
+</svg>
+
+<script>
+  d3.selectAll('rect')
+     .transition()
+     .duration(500)
+     .attr('y',50);
+</script>
+</textarea>
+</article>
+
+<article class='slide slide-subhead'>
+<h1>dude, wait!</h1>
+<h2>How is this different than jQuery?</h2>
+</article>
+
+
+<article class='slide slide-subhead'>
+<h1>I'm glad<br/>you asked...</h1>
+</article>
+
+<article class='slide slide-list'>
+<h2>Binding data</h2>
+<p>Let's use d3 to create our SVG canvas and bind data to it</p>
+<textarea class='coder-editor'>
+<div id='container' style='padding:40px;'></div>
+<script>
+  // The data we are going to bind
+  var w = 400, h = 400,
+      data = [ 20, 100, 30, 200 ], 
+  // Creating our SVG container
+      svg = d3.select("#container").append("svg:svg")
+              .attr("width", w)
+              .attr("height",h),
+      x = d3.scale.ordinal()
+             .domain(data)
+             .rangeBands([0,w],0.5)
+      
+  
+  svg.selectAll('circle').data(data)
+    .enter().append("svg:circle")
+    .attr("cx", x)
+    .attr("cy", function(d,i) { return d; })
+    .attr("r", 10)
+</script>
+</textarea>
+</article>
+
+<article class='slide slide-subhead'>
+<h1>Statically<br/> boring...</h1>
+<h2 class='slide'>Ok I hear you, let's enhance</h2>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>Redraw</h2>
+<p>Let's fake some dynamic data and draw the new data. We can add a transition with a duration. We can add new pieces in if we move our enter and scale into the draw method.</p>
+<textarea class='coder-editor'>
+<div id='container' style='padding:40px;'></div>
+<script>
+  var w = 400, h = 400,
+  // The data we are going to bind
+      data = [ 250, 100, 150, 200 ], 
+  // Creating our SVG container
+      svg = d3.select("#container").append("svg:svg")
+              .attr("width", w)
+              .attr("height",h),
+  // Creating an even scale of bands
+      x = d3.scale.ordinal()
+             .domain(data)
+             .rangeBands([0,w],0.5)
+
+  // Create our initial cicles from the data
+  svg.selectAll('circle').data(data)
+      .enter().append("svg:circle")
+      .attr('cx', x)
+      .attr("cy", function(d,i) { return d; })
+      .attr("r", 10);  
+      
+  function draw() {
+    svg.selectAll('circle').data(data)
+      .attr('cx', x)
+      .attr("cy", function(d,i) { return d; })
+  }
+
+  // Simulate Changing Data
+  setInterval(function() {
+    for(var i =0;i<4;i++) {
+     data[i] += 40 - Math.random() * 80;
+    }
+    draw();
+  },1000);
+</script>
+</textarea>
+</article>
+
+<article class='slide slide-list'>
+<h2>Let's talk scales</h2>
+<p>Scales map from a domain to a range. f(domainValue) = rangeValue. There are <a href='https://github.com/mbostock/d3/wiki/Quantitative-Scales'>Quantitative Scales</a> and <a href='https://github.com/mbostock/d3/wiki/Ordinal-Scales'>Ordinal Scales</a>.
+<textarea class='coder-editor coder-editor-instant'>
+<script>
+ var x = d3.scale.linear()
+         .domain([0,1000])
+         .range([0,100]);
+	     
+
+ var start = 0; step = 10;
+  
+ for(var i=0;i<10;i++) {
+   var val = i*step + start;
+   document.write("X(" + val + "): ",x(val) + "<br/>");
+ }
+</script>
+</textarea>
 </article>
 
 

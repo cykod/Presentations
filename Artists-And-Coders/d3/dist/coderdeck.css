@@ -89,6 +89,19 @@
     background: #bf0000;
     color: #fff; }
   .deck-container ::selection {
+var circles =  svg.selectAll('circles');
+   circles.data(data)
+    .attr("cx", x)
+    .attr("cy", function(d,i) { return d; })
+    .enter().append("svg:circle")
+    .attr("cx", x)
+    .attr("cy", function(d,i) { return d; })
+    .attr("r", 10)
+    .on('click',function(d,i) {
+      data[i] += 20 - Math.random() * 40;
+      redraw();
+     
+    });
     background: #bf0000;
     color: #fff; }
   .deck-container a, .deck-container a:hover, .deck-container a:focus, .deck-container a:active, .deck-container a:visited {
