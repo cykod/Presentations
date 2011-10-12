@@ -12,6 +12,12 @@
 	<script src='dist/jquery.min.js'></script>
   <script src='dist/prettify.js'></script>
 	<script src="dist/modernizr.js"></script>
+
+  <script src='d3/d3.min.js'></script>
+  <script src='d3/d3.csv.min.js'></script>
+        <script src='d3/d3.geo.min.js'></script>
+        <script src='d3/d3.geom.min.js'></script>
+        <script src='d3/d3.time.min.js'></script>
 </head>
 <body class="deck-container" onload='prettyPrint();'>
 
@@ -20,6 +26,10 @@
     <head>
       <script src='dist/jquery.min.js'>SCRIPTEND
       <script src='d3/d3.min.js'>SCRIPTEND
+      <script src='d3/d3.csv.min.js'>SCRIPTEND
+      <script src='d3/d3.geo.min.js'>SCRIPTEND
+      <script src='d3/d3.geom.min.js'>SCRIPTEND
+      <script src='d3/d3.time.min.js'>SCRIPTEND
     </head>
     <body>
 	    CODE
@@ -54,7 +64,7 @@ d3 is not a traditional visualization framework. Rather than provide a monolithi
 		<h3>Drops it's own syntax for creating graphical elements</h3>
 	</li>
 	<li class='slide'>
-		<h3>Works with existing DOM elements</h3>
+		<h3>Works with <em>DOM</em> elements</h3>
 	</li>
 	<li class="slide">
 		<h3>Let's you use what you want for elements: HTML w/ CSS3 or SVG</h3>
@@ -143,7 +153,7 @@ d3 is not a traditional visualization framework. Rather than provide a monolithi
 </article>
 
 <article class='slide slide-list'>
-<h2>What about a scatter plots?</h2>
+<h2>What about scatter plots?</h2>
 <p>We can use border-radius to draw CSS3 circles</p>
 <textarea class='coder-editor coder-editor-split'>
 <div id='container'></div>
@@ -228,7 +238,7 @@ d3 is not a traditional visualization framework. Rather than provide a monolithi
 <div>
   <svg xmlns="http://www.w3.org/2000/svg" 
        version="1.1" 
-       width="100px" height="100px">
+       width="400" height="400">
     <rect x="10" y="10" 
           width="80" height="80" 
           rx="10" ry="10" fill="red"/>
@@ -282,13 +292,13 @@ d3 is not a traditional visualization framework. Rather than provide a monolithi
 		<h3>Create dynamic data visualizations</h3>
 	</li>
 	<li class="slide">
-		<h3>Easily let you bind to pieces of Data</h3>
+		<h3>Let you bind to data</h3>
 	</li>
 	<li class="slide">
 		<h3>Use the DOM for rendering</h3>
 	</li>
 	<li class="slide">
-		<h3>Transparently handle transitions</h3>
+		<h3>Handle transitions and interactions</h3>
 	</li>
   <li class='slide'>
     <h3>Uses jQuery-style selector syntax to select elements</h3>
@@ -298,9 +308,9 @@ d3 is not a traditional visualization framework. Rather than provide a monolithi
 
 <article class='slide slide-list'>
 <h2>Simplest d3 program</h2>
-<p>Given some existing rectangles, let's just transition their 'y' attribute to 50. We can transition any attribute as well as delay() the transition.</p>
+<p>Given some existing rectangles, let's just transition their 'y' attribute to 50. We can transition any attribute as well as delay() the transition. We can pass functions to the delay to affect different elements differently.</p>
 <textarea class='coder-editor'>
-<svg id='chart' xmlns="http://www.w3.org/2000/svg" version="1.1" width="100px" height="100px">
+<svg id='chart' xmlns="http://www.w3.org/2000/svg" version="1.1" width="400" height="400">
   <rect x="10" y="10" width="80" height="80" rx="10" ry="10" fill="red"/>
   <rect x="200" y="100" width="80" height="80" rx="10" ry="10" fill="red"/>
 </svg>
@@ -326,7 +336,7 @@ d3 is not a traditional visualization framework. Rather than provide a monolithi
 
 <article class='slide slide-list'>
 <h2>Binding data</h2>
-<p>Let's use d3 to create our SVG canvas and bind data to it</p>
+<p>Let's use d3 to create our SVG canvas and bind data to it. All of our attr() functions can take a function, e.g. modify the size based on data. Also, Data doesn't have to be an array.</p>
 <textarea class='coder-editor'>
 <div id='container' style='padding:40px;'></div>
 <script>
@@ -389,8 +399,9 @@ d3 is not a traditional visualization framework. Rather than provide a monolithi
   }
 
   // Simulate Changing Data
-  setInterval(function() {
-    for(var i =0;i<4;i++) {
+  setInterval(function() {  
+    // if(data.length < 20) data.push(100);
+    for(var i =0, len = data.length;i<len;i++) {
      data[i] += 40 - Math.random() * 80;
     }
     draw();
@@ -421,165 +432,181 @@ d3 is not a traditional visualization framework. Rather than provide a monolithi
 
 
 <article class='slide slide-list'>
-<h2>Let's bind some data</h2>
-<div class='slide'>
-<textarea class='coder-editor coder-editor-instant coder-editor-split' data-language='javascript'>
-
-</textarea>
-</div>
-</article>
-
-<!-- Apply a class of "coder-editor" to a textarea to make it show up as runnable code -->
-<article class='slide slide-list'>
-<h2>Basic Code Editor</h2>
-<p>Basic split code editor is created by adding a class of "coder-editor" to a textarea.
-   Press run, then modify some code and press "run" again</p>
-
-<textarea class='coder-editor'>
-<header>
-  <h1>My Site!</h1>
-  <nav><ul>
-    <li><a href='#'>Link 1</a></li>
-    <li><a href='#'>Link 2</a></li>
-  </ul></nav>
-</header>
-
-<section id='content'>
-  <article class='blog-post'>
-    <h1>Blog Post 1</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac elit at nisl sagittis consequat sed eget tellus. Aliquam gravida, nunc sit amet viverra dictum, nibh justo semper massa</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac elit at nisl sagittis consequat sed eget tellus. Aliquam gravida, nunc sit amet viverra dictum, nibh justo semper massa</p>
-  </article>
-</section>
-<footer>
-  <a href='#'>Link 1</a> | <a href='#'>Link 2</a>
-</footer>	
-</textarea>
-</article>
-
-<!-- Apply a class of "coder-editor-full" along with "coder-editor" to a textarea to make it show up as runnable code -->
-<article class='slide slide-list'>
-<h2>Full Page Code Editor</h2>
-<p>Basic full page code editor is created by adding a class of "coder-editor-full" along with "coder-editor" to a textarea.
-   Press run, then press "back", then modify some code and press "run" again</p>
-
-<textarea class='coder-editor coder-editor-full'>
-<header>
-  <h1>My Site!</h1>
-  <nav><ul>
-    <li><a href='#'>Link 1</a></li>
-    <li><a href='#'>Link 2</a></li>
-  </ul></nav>
-</header>
-
-<section id='content'>
-  <article class='blog-post'>
-    <h1>Blog Post 1</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac elit at nisl sagittis consequat sed eget tellus. Aliquam gravida, nunc sit amet viverra dictum, nibh justo semper massa</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac elit at nisl sagittis consequat sed eget tellus. Aliquam gravida, nunc sit amet viverra dictum, nibh justo semper massa</p>
-  </article>
-</section>
-<footer>
-  <a href='#'>Link 1</a> | <a href='#'>Link 2</a>
-</footer>	
-</textarea>
-</article>
-
-<!-- use a class of gist and a data-gist-id to pull the code example from a gist -->
-<article class='slide slide-list'>
-<h2>Pulling from Gists</h2>
-<p>Use a class of 'gist' and an attribute of data-gist-id for the Gist ID</p>
-<div class='gist' data-gist-classes='coder-editor coder-editor-full' data-gist-id='1262553'></div>
-</article>
-
-<!-- add a "data-coder-template" to use a different template (see the template definitions at the top)
-     add a "data-language" to use a different CodeMirror2 mode other than htmlmixed. Options include "html", "javascript", "css", "xml" and any other mode supported by CodeMirror2
--->
-<article class='slide slide-list'>
-<h2>Custom template and custom language</h2>
-<p>You can create custom reusable templates for wrapping the editor code with custom &lt;script&gt; tags. You can also specify the mode the editor should display (xml, css, javascript or the default htmlmixed ) </p>
-
-<textarea class='coder-editor' data-coder-template="coderdeck-style-example" data-language="css">
-h1 { color:blue; }
-h2 { color:red;}
-p  { color:pink;}
-.stuff  { color:purple;}
-#my-div { color:teal;}
-</textarea>
-</article>
-
-
-
-<!-- add a "data-coder-instant" to do on-the-fly updating-->
-<article class='slide slide-list'>
-<h2>Instant Update Sample</h2>
-<p>Try modifying any of the HTML on the left, the right side should updated periodically as you type. This is done by adding a class of "coder-editor-instant" to the textarea</p>
-
-<textarea class='coder-editor coder-editor-instant' data-coder-template="coderdeck-style-example" data-language="css">
-h1 { color:blue; }
-h2 { color:red;}
-p  { color:pink;}
-.stuff  { color:purple;}
-#my-div { color:teal;}
-</textarea>
-</article>
-
-
-<!-- Javascript works normally as well, libraries and external css (including jquery) can be included in template -->
-<article class='slide slide-list'>
-<h2>Javascript/jQuery Example</h2>
-<p> Javascript works normally as well, libraries and external css (including jquery) can be included in the coderdeck template.</p>
-<textarea class='coder-editor'>
+<h2>Loading a CSV</h2>
+<p>We'll need to load chrome with '--disable-web-security' to prevent CORS checks</p>
+<textarea class='coder-editor coder-editor-full' >
 <script>
-  $(function() {
-    $(".box").animate({ 
-        'top':"50%", 
-        'left':"50%" });
+ d3.csv("rails.csv", function(csv) {
+   console.log(csv);
+ });
+</script>
+</textarea>
+</article>
+
+
+
+
+<article class='slide slide-list'>
+<h2>Drawing our stations</h2>
+<textarea class='coder-editor coder-editor-full' >
+<div id='chart'></div>
+<script>
+var w = $(document).width() - 50, h = $(document).height() - 50;
+ var svg = d3.select("#chart").append("svg:svg")
+     .attr("width", w)
+     .attr("height", h);
+
+ d3.csv("rails.csv", function(csv) {
+	var lat = d3.scale.linear()
+     	  .domain([ d3.min(csv,function(d) { return d.stop_lat }),
+	                d3.max(csv,function(d) { return d.stop_lat })])
+		    .range([40,h-40]),
+	    lon =  d3.scale.linear()
+	      .domain([ d3.min(csv,function(d) { return d.stop_lon }),
+	                d3.max(csv,function(d) { return d.stop_lon })])
+        .range([40,w-40]),
+      height = d3.scale.linear()
+        .domain([0,600])
+        .range([0,60]);
+
+     svg.selectAll('circle').data(csv,function(d) { return d.PlatformKey; })
+         .enter().append("svg:circle")
+         .attr('cx', function(d) { return lon(d.stop_lon) + (d.Direction == 'NB' ? 10 : -10); })
+         .attr("cy",function(d) { return lat(d.stop_lat) })
+         .attr("r", 10)
+         .attr('opacity',0.5)
   });
 </script>
-<style>
-  .box { 
-    top:0px; left:0px;
-    width:50px; height:50px; 
-    position:absolute; 
-    background-color:red;
-  }
-</style>
-<div class='box'></div>
-</textarea>
-</article>
-
-
-
-<article class='slide slide-list'>
-<h2>Local Storage</h2>
-<p>  If you want your changes to a slide to survive between page reloads you can define a data-save attribute which will save it to the attributes value in localstorage. Make a code change, hit run/save and reload this slide.</p>
-<p> You can also use the same 'data-save'  attribute on mulitiple slides to keep the same code moving forwad</p>
-<textarea class='coder-editor' data-save='dummy'>
-  <h1>This is some dummy content..</h1>
 </textarea>
 </article>
 
 
 <article class='slide slide-list'>
-<h2>Solutions</h2>
-<p>If you want to add a solution to an exercise, you can add a coderdeck-solution script tag in the slide </p>
-<textarea class='coder-editor'>
-
+<h2>Loading JSON</h2>
+<textarea class='coder-editor coder-editor-full' >
 <script>
-    // Display an alert message
-    // if a confirm dialog returns true
+  d3.json("http://developer.mbta.com/Data/Red.json", function(json) {
+    console.log(json);
+  });
 </script>
 </textarea>
-
-<script type='coder-solution'>
-SCRIPT
-  if(confirm("Do you want an alert?")) {
-      alert("Yay!");
-  }
-SCRIPTEND
-</script>
 </article>
+
+
+
+
+
+<article class='slide slide-list'>
+<h2>All together now</h2>
+<p>We'll need to load chrome with '--disable-web-security' to prevent CORS checks</p>
+<textarea class='coder-editor coder-editor-full' >
+<div id='chart'></div>
+<script>
+$(function() {
+var w = $(document).width() - 50, h = $(document).height() - 50;
+ var svg = d3.select("#chart").append("svg:svg")
+     .attr("width", w)
+     .attr("height", h);
+ 
+var color = d3.scale.linear()
+    .domain([0, 60, 600])
+    .range(["green", "yellow", "red"]);
+
+ d3.csv("rails.csv", function(csv) {
+	var lat = d3.scale.linear()
+     	  .domain([ d3.min(csv,function(d) { return d.stop_lat }),
+	                d3.max(csv,function(d) { return d.stop_lat })])
+		    .range([40,h-40]),
+	    lon =  d3.scale.linear()
+	      .domain([ d3.min(csv,function(d) { return d.stop_lon }),
+	                d3.max(csv,function(d) { return d.stop_lon })])
+        .range([40,w-40]),
+      height = d3.scale.linear()
+        .domain([0,600])
+        .range([0,60]);
+
+     svg.selectAll('circle').data(csv,function(d) { return d.PlatformKey; })
+         .enter().append("svg:circle")
+         .attr('cx', function(d) { return lon(d.stop_lon) + (d.Direction == 'NB' ? 10 : -10); })
+         .attr("cy",function(d) { return lat(d.stop_lat) })
+         .attr("r", 10)
+         .attr('opacity',0.5)
+
+   
+	var lat = d3.scale.linear()
+	.domain([ d3.min(csv,function(d) { return d.stop_lat }),
+	          d3.max(csv,function(d) { return d.stop_lat })])
+		  .range([40,h-40]),
+	    lon =  d3.scale.linear()
+	        .domain([ d3.min(csv,function(d) { return d.stop_lon }),
+	          d3.max(csv,function(d) { return d.stop_lon })])
+         .range([40,w-40]),
+       height = d3.scale.linear()
+          .domain([0,600])
+          .range([0,60]);
+
+     svg.selectAll('circle').data(csv,function(d) { return d.PlatformKey; })
+         .enter().append("svg:circle")
+         .attr('cx', function(d) { return lon(d.stop_lon) + (d.Direction == 'NB' ? 10 : -10); })
+         .attr("cy",function(d) { return lat(d.stop_lat) })
+         .attr("r", 10)
+         .attr('opacity',0.5)
+
+
+     svg.selectAll('rect').data(csv,function(d) { return d.PlatformKey; })
+         .enter().append("svg:g")
+         .attr('transform',function(d) {
+           return "translate(" + (lon(d.stop_lon) + (d.Direction == 'NB' ? 10 : -10) - 5 ) + "," +
+                                 (lat(d.stop_lat)) + ")"
+         })
+         .append('svg:rect')
+         .attr('height',function(d) { return height(10); })
+         .attr('opacity',0.5)
+         .attr('width',10);
+
+         setInterval(updateData,15000);
+         updateData();
+  });
+
+  function parseRemaining(t) {
+    if(t.InformationType == 'Arrived') {
+      return 1;
+    } else {
+      var time = t.TimeRemaining.split(":");
+      var remaining = parseInt(time[0],10) * 60 * 60 + parseInt(time[1],10) * 60 + parseInt(time[2],10);
+      return remaining > 600 ? 600 : remaining;
+    }
+  }
+
+  function updateData() {
+    d3.json("http://developer.mbta.com/Data/Red.json", function(json) {
+
+      svg.selectAll('rect').data(json,function(d) { return d.PlatformKey; })
+      .transition()
+      .duration(15000)
+      .attr('y',function(d) { return -parseRemaining(d) / 5; })
+      .attr('height',function(d) { return parseRemaining(d) / 5; });
+
+      svg.selectAll('circle').data(json,function(d) { return d.PlatformKey; })
+      .transition()
+      .duration(15000)
+      .attr("fill", function(d) { return color(parseRemaining(d)); })
+
+    });
+  }
+
+  });
+ </script>
+</textarea>
+</article>
+
+<article class='slide slide-subhead'>
+<h1>Thanks, Questions?</h1>
+<h2>Pascal Rettig / @cykod</h2>
+
+
+
+
 
 <script src='dist/coderdeck.min.js'></script>
 
