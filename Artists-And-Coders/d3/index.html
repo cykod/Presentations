@@ -433,7 +433,7 @@ d3 is not a traditional visualization framework. Rather than provide a monolithi
 
 <article class='slide slide-list'>
 <h2>Loading a CSV</h2>
-<p>We'll need to load chrome with '--disable-web-security' to prevent CORS checks</p>
+<p>All loading operations are Async - we'll need to process the response in a callback</p>
 <textarea class='coder-editor coder-editor-full' >
 <script>
  d3.csv("rails.csv", function(csv) {
