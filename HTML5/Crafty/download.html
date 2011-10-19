@@ -1,0 +1,86 @@
+<html>
+    <head>
+      <script src='dist/jquery.min.js'></script>
+      <script src='js/crafty.js'></script>
+    </head>
+    <body>
+<script>
+$(document).ready(function() {
+
+  Crafty.init(640,480).canvas.init();
+  Crafty.background("black");
+
+
+  Crafty.c("PlayerControls", {
+    _keys: { 
+    UP_ARROW: [0,-1],
+    DOWN_ARROW: [0,1],
+    RIGHT_ARROW: [1,0],
+    LEFT_ARROW: [-1,0]
+    }, 
+    init: function() {
+      this._moveX = 0;
+      this._moveY = 0;
+
+      for(var k in this._keys) {
+        var keyCode = Crafty.keys[k] || k;
+        this._keys[keyCode] = this._keys[k];
+      }
+
+
+      this.bind("KeyDown",function(e) {
+        if(this._keys[e.key]) {
+          this._moveX = this._keys[e.key][0];
+          this._moveY = this._keys[e.key][1];
+        }
+      }).bind("EnterFrame",function() {
+        if(this._moveX || this._moveY) {
+           this.x += this._moveX * 32;
+           this.y += this._moveY * 32;
+           this.trigger('Moved', {x: this.x, y: this.y});
+           this._moveX = 0;
+           this._moveY = 0;
+        }
+      });
+    }
+    
+  });
+
+  Crafty.sprite(32,"images/dungeon.png", {
+     floor: [0,0],
+     wall1: [2,1],
+     stairs: [1,3]
+  });
+
+  Crafty.sprite(32,"images/monsters.png", {
+     hero1: [14,1],
+     blob1: [6,0]
+  });
+
+  //the loading screen that will display while our assets load
+  Crafty.scene("loading", function() {
+    Crafty.load(["images/dungeon.png","images/monsters.png"], function() {
+         Crafty.scene("main"); //when everything is loaded, run the main scene
+    });
+  });
+ 
+  Crafty.scene("main",function() {
+    Crafty.background("#FFF");
+    var player = Crafty.e("2D, Canvas, PlayerControls, hero1")
+         .attr({x:0, y:0});
+
+    var blob = Crafty.e("2D, Canvas, blob1")
+         .attr({x:50, y:50});
+  });
+
+  Crafty.scene("loading");
+
+
+
+});
+
+</script>
+</body>
+</html>
+</script>
+
