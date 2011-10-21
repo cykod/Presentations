@@ -582,7 +582,7 @@ Crafty.c("PlayerControls", {
 
 <article class='slide slide-list'>
 <h2>Separating Movement from Controls</h2>
-<p>Let's separate our movement out from our control and let's make it a little smoother</p>
+<p>Let's separate our movement out from our control and let's make it a little smoother. We'll create a PlayerControls components that just sends "Slide" events to our "Slide" component, which makes our little knight guy slide around the screen. We'll also have the PlayerControls trigger a global "Turn" action which represents 1-turn in our game.</p>
 <textarea class='coder-editor' data-coder-template='crafty-template'  data-language='javascript'>
 
 Crafty.c("PlayerControls", {
@@ -617,35 +617,47 @@ Crafty.c("PlayerControls", {
   });
 
 
+  // Our slide component - listens for slide events
+  // and smoothly slides to another tile location
   Crafty.c("Slide", {
     init: function() {
       this._stepFrames = 5;
       this._tileSize = 32;
       this._moving = false;
-      this._vx = 0;
-      this._destX = 0;
-      this._vy = 0;
-      this._destY = 0;
+      this._vx = 0; this._destX = 0; this._sourceX = 0;
+      this._vy = 0; this._destY = 0; this._sourceY = 0;
       this._frames = 0;
 
       this.bind("Slide", function(direction) {
+        // Don't continue to slide if we're already moving
         if(this._moving) return false;
         this._moving = true;
 
+        // Let's keep our pre-movement location
+        // Hey, Maybe we'll need it later :)
+        this._sourceX = this.x;
+        this._sourceY = this.y;
+
+        // Figure out our destination
         this._destX = this.x + direction[0] * 32;
         this._destY = this.y + direction[1] * 32;
 
+        // Get our x and y velocity
         this._vx = direction[0] * this._tileSize / this._stepFrames;
         this._vy = direction[1] * this._tileSize / this._stepFrames;
 
         this._frames = this._stepFrames;
       }).bind("EnterFrame",function(e) {
         if(!this._moving) return false;
+
+        // If we'removing, update our position by our per-frame velocity
         this.x += this._vx;
         this.y += this._vy;
         this._frames--;
 
         if(this._frames == 0) {
+          // If we've run out of frames,
+          // move us to our destination to avoid rounding errors.
           this._moving = false;
           this.x = this._destX;
           this.y = this._destY;
@@ -656,6 +668,14 @@ Crafty.c("PlayerControls", {
     }, 
     slideFrames: function(frames) { 
        this._stepFrames = frames;
+    },
+
+    // A function we'll use later to 
+    // cancel our movement and send us back to where we started
+    cancelSlide: function() {
+      this.x = this._sourceX;
+      this.y = this._sourceY;
+      this._moving = false;
     }
   });
 
@@ -724,7 +744,7 @@ function startGame() {
 
 <article class='slide slide-list'>
 <h2>"AI"</h2>
-<p>Let's have our blog move every turn as well. We'll define a new component called AI which moves randomly every turn. Let's create two blobs: one slow and one fast.
+<p>Let's have our blob move every turn as well. We'll define a new component called AI which moves randomly every turn. Let's create two blobs: one slow and one fast.
 <textarea class='coder-editor' data-coder-template='crafty-separate-template'>
 <script src='components/player_controls.js?'></script>
 <script src='components/slide.js'></script>
@@ -773,16 +793,254 @@ function startGame() {
 </textarea>
 </article>
 
+<article class='slide slide-list'>
+<h2>Loading a Map</h2>
+<p>Now, where do we get a dungeon? Instead of worrying about generation algorithms, let's just download a map from an online map creator like: <a href='http://donjon.bin.sh/d20/dungeon/'>http://donjon.bin.sh/d20/dungeon/</a>. I've generated a map, downloaded the tab-separated-values and put it in levels/map.tsv. Let's load it via $.get.</p>
+<textarea class='coder-editor' data-coder-template='crafty-separate-template'>
+<script src='components/player_controls.js?'></script>
+<script src='components/slide.js'></script>
+<script src='scenes/loading.js'></script>
 
+  <script>
+  function startGame() {
 
+    $.get("levels/map1.tsv",function(data) {
+       alert(data);
+    });
+
+  }
+</script>
+</textarea>
+</article>
 
 
 <article class='slide slide-list'>
-<h2>Drawing a Map</h2>
-<p>To Do.</p>
-<textarea class='coder-editor' data-coder-template='crafty-template-final'  data-language='javascript'>
+<h2>Rendering a Map</h2>
+<p>Let's turn our map into a dungeon tiles. We're using $.each to iterate - please don't do this in a 
+real game, I just think it's easier to see what's going on than with for loops.</p>
+<textarea class='coder-editor' data-coder-template='crafty-separate-template'>
+<script src='components/player_controls.js'></script>
+<script src='components/slide.js'></script>
+<script src='scenes/loading.js'></script>
+
+  <script>
+
+function loadMap(file, callback) {
+  $.get(file,function(data) {
+    var level = [];
+    // Split out each row
+    $.each(data.split("\n"),function(y,row) { 
+      var columns = row.split("\t");
+      level.push(columns);
+      // Then split out each column
+      $.each(columns,function(x,column) {
+        if(column) {
+          Crafty.e("2D, Canvas, floor, Floor").attr({x:x * 32, y: y * 32});            
+        } else {
+          Crafty.e("2D, Canvas, wall1, Wall").attr({x:x * 32, y: y * 32});            
+        }
+      });
+
+    });
+
+    // Phone back home when we're done
+    callback(level);
+  });
+}
+
+ 
+  function startGame() {
+
+    Crafty.scene("main",function() {
+      Crafty.background("#FFF");
+      loadMap("levels/map1.tsv",function(levelData) {
+        var player = Crafty.e("2D, Canvas, PlayerControls, Slide, hero1")
+        .attr({x:0, y:11 * 32, z: 1});
+      });
+    });
+
+    Crafty.scene("loading");
+
+  }
+
+
+</script>
 </textarea>
 </article>
+
+<article class='slide slide-list'>
+<h2>Following the player</h2>
+<p>Crafty has support for a 2D Camera accessible via the "viewport", let's add in a camera component
+that tracks player movement (loadMap has been moved to loading.js)</p>
+<textarea class='coder-editor' data-coder-template='crafty-separate-template'>
+<script src='components/player_controls.js'></script>
+<script src='components/slide.js'></script>
+<script src='scenes/loading.js'></script>
+
+  <script>
+
+  Crafty.c("Camera",{
+    init: function() {  },
+    camera: function(obj) {
+      this.set(obj);
+      var that = this;
+      obj.bind("Moved",function(location) { that.set(location); });
+    },
+    set: function(obj) {
+      Crafty.viewport.x = -obj.x + Crafty.viewport.width / 2;
+      Crafty.viewport.y = -obj.y + Crafty.viewport.height / 2;
+    }
+  });
+
+
+  function startGame() {
+
+    Crafty.scene("main",function() {
+      Crafty.background("#000");
+      loadMap("levels/map1.tsv",function() {
+          var player = Crafty.e("2D, Canvas, PlayerControls, Slide, hero1")
+                              .attr({x:0, y:11 * 32, z: 1});
+
+          var camera = Crafty.e("Camera").camera(player);
+        });
+    });
+
+    Crafty.scene("loading");
+
+  }
+
+
+</script>
+</textarea>
+</article>
+
+<article class='slide slide-list'>
+<h2>Wall Collisions</h2>
+<p>Let's make it so that the player can't walk through walls amymore...</p>
+<textarea class='coder-editor' data-coder-template='crafty-separate-template'>
+<script src='components/player_controls.js?'></script>
+<script src='components/slide.js'></script>
+<script src='components/camera.js'></script>
+<script src='scenes/loading.js'></script>
+
+  <script>
+  function startGame() {
+
+    Crafty.scene("main",function() {
+      Crafty.background("#000");
+      loadMap("levels/map1.tsv", function() {
+      // 
+        var player = Crafty.e("2D, Canvas, PlayerControls, Slide, hero1")
+                              .attr({x:0, y:11 * 32, z: 1});
+        player.addComponent("Collision").onHit("Wall",function(obj) {
+          this.cancelSlide();
+        });
+
+        var camera = Crafty.e("Camera").camera(player);
+      });
+    });
+
+    Crafty.scene("loading");
+
+  }
+</script>
+</textarea>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>Enemies</h2>
+<p>We need enemies! Let's add some random enemies onto the page. We'll also extract out a "Solid" component so we don't need to duplicate on hit methods</p>
+<textarea class='coder-editor' data-coder-template='crafty-separate-template'>
+<script src='components/player_controls.js?'></script>
+<script src='components/slide.js'></script>
+<script src='components/ai.js'></script>
+<script src='components/camera.js'></script>
+<script src='scenes/loading.js'></script>
+
+<script>
+  Crafty.c("Solid",{
+    init: function() {
+      this.requires("Collision").onHit("Wall",function(obj) {
+        this.cancelSlide();
+      });
+    }
+  });
+
+  function populateLevel(chance,level) {
+    console.log(level);
+    $.each(level,function(y,row) {
+      $.each(row,function(x,entry) {
+        if(entry != "") {
+          if((Math.random() < chance)) {
+            Crafty.e("2D, Canvas, blob1, AI, Solid").attr({x:x*32, y:y*32, z:1}).moveChance(Math.random()*0.5);
+          }
+        }
+      });
+    });
+  }
+
+  function startGame() {
+
+    Crafty.scene("main",function() {
+      Crafty.background("#000");
+      loadMap("levels/map1.tsv", function(level) {
+        // 
+        var player = Crafty.e("2D, Canvas, PlayerControls, Slide, hero1, Solid")
+                        .attr({x:0, y:11 * 32, z: 1})
+
+        var camera = Crafty.e("Camera").camera(player);
+();
+        populateLevel(0.05, level);
+      });
+    });
+
+    Crafty.scene("loading");
+
+  }
+</script>
+</textarea>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>Fight!</h2>
+<p>Let's assume our hero is awesome, and just automatically kill the enemies on contact. Populate level has been moved to loading.js</p>
+<textarea class='coder-editor' data-coder-template='crafty-separate-template'>
+<script src='components/player_controls.js?'></script>
+<script src='components/slide.js'></script>
+<script src='components/ai.js'></script>
+<script src='components/camera.js'></script>
+<script src='components/solid.js'></script>
+<script src='scenes/loading.js?'></script>
+
+<script>
+  function startGame() {
+
+    Crafty.scene("main",function() {
+      Crafty.background("#000");
+      loadMap("levels/map1.tsv", function(level) {
+        // 
+        var player = Crafty.e("2D, Canvas, PlayerControls, Slide, hero1, Solid")
+             .attr({x:0, y:11 * 32, z: 1})
+             .onHit("Enemy",function(hit) {
+               this.cancelSlide();
+               hit[0].obj.destroy();
+             });
+
+        var camera = Crafty.e("Camera").camera(player);
+
+        populateLevel(0.05, level);
+      });
+    });
+
+    Crafty.scene("loading");
+
+  }
+</script>
+</textarea>
+</article>
+
 
 
 
@@ -790,19 +1048,26 @@ function startGame() {
 <h2>To Do:</h2>
 <ul>
 	<li>
-		<h3>Add a background map http://donjon.bin.sh/d20/dungeon/  http://donjon.bin.sh/dungeon/about/</h3>
+          <h3>Add health to player and enemies</h3>
+	</li>
+        <li>
+          <h3>Add Sound Effects</h3>
+        </li>
+	<li>
+          <h3>Add Hud</h3>
 	</li>
 	<li>
-		<h3>Add collisions with enemies</h3>
+          <h3>Add Level up support</h3>
 	</li>
+        <li>
+          <h3>Add Chests and items</h3>
+        </li>
 	<li>
-		<h3>Add a hud with enemies</h3>
+          <h3>Add an inventory</h3>
 	</li>
+
 	<li>
-		<h3>Add an inventory</h3>
-	</li>
-	<li>
-		<h3>Add multiple scenes / levels</h3>
+          <h3>Add multiple scenes / levels</h3>
 	</li>
 </ul>
 </article>
