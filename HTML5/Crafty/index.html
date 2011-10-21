@@ -968,7 +968,6 @@ that tracks player movement (loadMap has been moved to loading.js)</p>
   });
 
   function populateLevel(chance,level) {
-    console.log(level);
     $.each(level,function(y,row) {
       $.each(row,function(x,entry) {
         if(entry != "") {
@@ -990,7 +989,6 @@ that tracks player movement (loadMap has been moved to loading.js)</p>
                         .attr({x:0, y:11 * 32, z: 1})
 
         var camera = Crafty.e("Camera").camera(player);
-();
         populateLevel(0.05, level);
       });
     });
