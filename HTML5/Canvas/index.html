@@ -37,7 +37,9 @@
 
 <article class='slide slide-subhead'>
 <h1>Designing Interactivity</h1>
-<h2>with HTML5 Canvas</h2>
+<h2>with HTML5 Canvas<br/>
+ <a href='http://bit.ly/massart-canvas-workshop'>http://bit.ly/massart-canvas-workshop</a>
+</h2>
 </article>
 
 <!-- Apply a class of "coder-editor" to a textarea to make it show up as runnable code -->
@@ -66,16 +68,19 @@
 		<h3>Adding some Interactivity</h3>
 	</li>
 	<li>
-		<h3>Drawing Images</h3>
-	</li>
-	<li>
 		<h3>Timers and loops</h3>
 	</li>
 	<li>
-		<h3>Drawing Pixels</h3>
+		<h3>Drawing Images</h3>
 	</li>
+        <li>
+                <h3>Transforms</h3>
+        </li>
+        <li>
+                <h3>Particle Systems</h3>
+        </li>
 	<li>
-		<h3>Some Bigger Experiments</h3>
+                <h3>Interactive Particle system</h3>
 	</li>
 </ul>
 <h3>Tomorrow</h3>
@@ -329,6 +334,14 @@ ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise)
 ctx.fill(); or ctx.stroke();
 </pre>
 </li>
+<li class="slide">
+	<h3>Setting the opacity</h3>
+		<pre class='prettyprint'>
+ctx.globalAlpha = 0.2;
+ctx.fillRect(x,y,width,height);
+</pre>
+</li>
+
 <li><h3>More: <a href='https://developer.mozilla.org/en/Canvas_tutorial/Drawing_shapes'>https://developer.mozilla.org/en/Canvas_tutorial/Drawing_shapes</a></h3>
 </ol>
 </article>
@@ -588,7 +601,7 @@ function animationLoop() {
    // Run some code
 }
 
-var loopTimer = setInterval(animationLoop,30/1000);
+var loopTimer = setInterval(animationLoop,30);
 </pre>
 </li>
 <li class="slide">
@@ -596,10 +609,11 @@ var loopTimer = setInterval(animationLoop,30/1000);
 		<pre class='prettyprint'>
 function animationLoop() {
    // Run some code
-   setTimeout(animationLoop,30/1000);
+   loopTimer = setTimeout(animationLoop,30); 
+   // pass a callback + # of milliseconds
 }
 
-var loopTimer = setTimeout(animationLoop,30/1000);
+var loopTimer = setTimeout(animationLoop,30);
 </pre>
 </li>
 <li class="slide">
@@ -658,10 +672,11 @@ y += vy * dt;
   var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
   ctx.fillStyle = "#000";
 
-  var dt = 30/1000;
+  // 60 frames per second
+  var dt = 1/60;
   var x = 0, y = 400;
-  var vx = 20, vy = -80;
-  var ax = 0, ay = 10;
+  var vx = 80, vy = -400;
+  var ax = 0, ay = 200;
 
   function animLoop() {
     // Code here
@@ -672,19 +687,20 @@ y += vy * dt;
       // Draw a ball
 
     // Call set timeout for the next frame
-    setTimeout(animLoop,dt);
+    setTimeout(animLoop,dt*1000);
   }
 
-
-  setTimeout(animLoop,dt);
+  // Start the loop
+  animLoop();
 </textarea>
 <script type='coder-solution'>var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
   ctx.fillStyle = "#000";
 
-  var dt = 30/1000;
+  // 60 frames per second
+  var dt = 1/60;
   var x = 0, y = 400;
-  var vx = 20, vy = -80;
-  var ax = 0, ay = 10;
+  var vx = 80, vy = -400;
+  var ax = 0, ay = 200;
 
   function animLoop() {
     // Clear the canvas
@@ -702,36 +718,567 @@ y += vy * dt;
     ctx.fill();
 
     // Call set timeout for the next frame
-    setTimeout(animLoop,dt);
+    setTimeout(animLoop,dt * 1000);
   }
 
+  // Start the loop
+  animLoop();
 
-  setTimeout(animLoop,dt);
+</script>
+</article>
+
+<article class='slide slide-subhead'>
+<h1>Images</h1>
+<h2 class='slide'>Canvas also let's you draw images</h2>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>Need to have image objects first</h2>
+<ol>
+<li class="slide">
+  <h3>Can pull the from the page:</h3>
+<pre class='prettyprint'>
+&lt;img src='images/penguin.png' id='penguin'/&gt;
+&lt;script&gt;
+// Wait for page to finish loading
+$(function() {
+  var img = $("#penguin")[0];
+  // Do something with img
+});
+&lt;/script&gt;
+</pre>
+</li>
+<li class="slide">
+  <h3>Can load entirely in JavaScript</h3>
+<pre class='prettyprint'>
+&lt;script&gt;
+  var img = new Image();
+  img.onload = function() {
+    // We can use image
+  }
+  img.src = 'images/penguin.png';
+&lt;/script&gt;
+</li>
+</li>
+</ol>
+</article>
+
+<article class='slide slide-list'>
+<h2>Drawing images on Canvas</h2>
+<ol>
+<li class="slide">
+  <h3>Simplest, just pass an image and a x and y</h3>
+<pre class='prettyprint'>
+ctx.drawImage(img,x,y);
+</pre>
+</li>
+<li class="slide">
+  <h3>Can also pass a destination width and height</h3>
+<pre class='prettyprint'>
+ctx.drawImage(img,x,y,dw,dh);
+</pre>
+</li>
+<li class="slide">
+  <h3>Or at it's most complicated:</h3>
+<pre class='prettyprint'>
+ctx.drawImage(img,sx,sy,sw,sh,dx,dy,dw,dh);
+</pre>
+</li>
+</ol>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>Let's exercise image drawing</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' >
+  var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+
+  var penguin = new Image();
+  penguin.onload = function() {
+    console.log(penguin.width + " " + penguin.height);
+    ctx.drawImage(penguin,100,100);
+  }
+
+  penguin.src = 'images/penguin.png';
+</textarea>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>Make an image stamper</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' >
+  var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+
+  // Skip the onload, image will be loaded by the time the user stamps anything
+  var penguin = new Image();
+  penguin.src = 'images/penguin.png';
+
+  canvas.addEventListener('click',function(e) {
+    // Remember e.offsetX and e.offsetY?
+  });
+</textarea>
+<script type='coder-solution'>var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+
+  // Skip the onload, image will be loaded by the time the user stamps anything
+  var penguin = new Image();
+  penguin.src = 'images/penguin.png';
+
+  canvas.addEventListener('click',function(e) {
+    ctx.drawImage(penguin,
+                  e.offsetX - penguin.width/2,
+                  e.offsetY - penguin.height/2);
+  });
+
+</script>
+</article>
+
+<article class='slide slide-list'>
+<h2>Make the penguin follow the mouse</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' >
+  var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+  var dt = 1/60;
+
+  // Skip the onload, image will be loaded by the time the user stamps anything
+  var penguin = new Image();
+  penguin.src = 'images/penguin.png';
+
+  var mouseX,mouseY;
+
+  $(canvas).on('mousemove',function(e) {
+    // set the mouseX and mouseY
+  });
+
+  function drawPenguin() {
+    setTimeout(drawPenguin,dt*1000);
+
+    if(!mouseX) return;
+
+    // Clear the canvas
+    // Draw the little guy at the mouse position
+  }
+
+  drawPenguin();
+</textarea>
+<script type='coder-solution'>var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+  var dt = 1/60;
+
+  // Skip the onload, image will be loaded by the time the user stamps anything
+  var penguin = new Image();
+  penguin.src = 'images/penguin.png';
+
+  var mouseX,mouseY;
+
+  $(canvas).on('mousemove',function(e) {
+    mouseX = e.offsetX;
+    mouseY = e.offsetY;
+  });
+
+  function drawPenguin() {
+    setTimeout(drawPenguin,dt*1000);
+
+    if(!mouseX) return;
+
+    // Clear the canvas
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    // Draw the little guy at the mouse position
+    ctx.drawImage(penguin,
+                  mouseX - penguin.width/2,
+                  mouseY - penguin.height/2);
+
+  }
+
+  drawPenguin();
 </script>
 </article>
 
 
+<article class='slide slide-list'>
+<h2>penguin vs. mouse *slowly*</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' >
+  var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+  var dt = 1/60;
+
+  // Skip the onload, image will be loaded by the time the user stamps anything
+  var penguin = new Image();
+  penguin.src = 'images/penguin.png';
+
+  var penguinX = 100,penguinY = 100;
+  var mouseX = penguinX,mouseY = penguinY;
+
+  $(canvas).on('mousemove',function(e) {
+    // set the mouseX and mouseY
+  });
+
+  function drawPenguin() {
+    setTimeout(drawPenguin,dt*1000);
+
+    // Have the penguin move 1/4 the distance to the mouse
+    // EC: have the penguin always move the same speed towards the mouse
+    // Clear the canvas
+    // Draw the little guy at the mouse position
+  }
+
+  drawPenguin();
+</textarea>
+<script type='coder-solution'>var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+  var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+  var dt = 1/60;
+
+  // Skip the onload, image will be loaded by the time the user stamps anything
+  var penguin = new Image();
+  penguin.src = 'images/penguin.png';
+
+  var penguinX = 100,penguinY = 100;
+  var mouseX = penguinX,mouseY = penguinY;
+
+  $(canvas).on('mousemove',function(e) {
+    mouseX = e.offsetX;
+    mouseY = e.offsetY;
+  });
+
+  function drawPenguin() {
+    setTimeout(drawPenguin,dt*1000);
+
+    // Have the penguin move 1/4 the distance to the mouse
+    penguinX += (mouseX - penguinX) / 4;
+    penguinY += (mouseY - penguinY) / 4;
+
+    // Clear the canvas
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    // Draw the little guy at the mouse position
+    ctx.drawImage(penguin,
+                  penguinX - penguin.width/2,
+                  penguinY - penguin.height/2);
+  }
+
+  drawPenguin();
+</script>
+</article>
+
+
+<article class='slide slide-subhead'>
+<h1>Transforms</h1>
+<h2 class='slide'>Canvas supports the idea of a transformation matrix that you can translate, rotate, and scale around.<br/>
+  <a href='https://developer.mozilla.org/en/Canvas_tutorial/Transformations'>https://developer.mozilla.org/en/Canvas_tutorial/Transformations</a>
+</h2>
+</article>
+
+<article class='slide slide-list'>
+<h2>Pulsating Snowflake</h2>
+<p>Order is very important!</p>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' >
+  var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+  var dt = 1/60;
+
+  // Skip the onload, image will be loaded by the time the user stamps anything
+  var snowflake = new Image();
+  snowflake.src = 'images/snowflake.png';
+
+  var snowflakeX = canvas.width/2,snowflakeY = canvas.height/2;
+  var angle = 0, scaleAmt = 1;
+
+  function drawSnowflake() {
+    setTimeout(drawSnowflake,dt*1000);
+
+    // Clear the canvas
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    angle += 1;
+    scaleAmt = Math.sin(angle * Math.PI / 180) + 2;
+
+    // Save the transformation matrix
+    ctx.save();
+
+    // Move something globally
+    ctx.translate(snowflakeX,snowflakeY);
+
+    // Then scale it
+    ctx.scale(scaleAmt,scaleAmt);
+
+    // Then rotate
+    ctx.rotate(angle * Math.PI / 180);
+
+    // Then make sure it's centered
+    ctx.translate(-snowflake.width/2, -snowflake.height/2);
+
+    // Finally draw at 0,0 (we've already transformed)
+    ctx.drawImage(snowflake,0,0);
+
+    // Restore the transformation matrix
+    ctx.restore();
+  }
+
+  drawSnowflake();
+</textarea>
+</article>
 
 
 <article class='slide slide-list'>
-<h2>Larger Exercise 1: Let's build a simple drawing program</h2>
+<h2>Particle System</h2>
 <ol>
 <li class="slide">
-	<h3>Show let you type in a color</h3>
+  <h3>A bunch of small objects that are animated and have some behavior and a lifetime</h3>
 </li>
 <li class="slide">
-	<h3>Type in a size</h3>
+  <h3>Can store them in an array</h3>
+<pre class='prettyprint'>
+ var particles = [];
+</pre>
 </li>
 <li class="slide">
-	<h3>Pick a tool</h3>
+  <h3>Can create a particle object prototype to draw and update</h3>
+<pre class='prettyprint'>
+var Particle = function() { /* Initialize */ }
+Particle.prototype.update(ctx) { /* Update the particle */ }
+Particle.prototype.draw(ctx) { /* Draw the particle */ }
+</pre>
+</li>
+<li class="slide">
+  <h3>Can just loop over all of them to update an draw</h3>
+<pre class='prettyprint'>
+for(var i = 0, len = particle.length; i&lt;len; i++) {
+  var particle = particles[i];
+  particle.update(dt);
+  particle.draw(ctx);
+}
+</pre>
+</li>
+</ol>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>Particle Lifetime</h2>
+<li class="slide">
+  <h3>If they have a lifestime, we need to handle removing them</h3>
+<pre class='prettyprint'>
+removedParticles = [];
+for(var i = 0, len = particle.length; i&lt;len; i++) {
+  var particle = particles[i];
+  particle.update(dt);
+
+  if(particle.dead) { removedParticles.push(particle); }
+
+  particle.draw(ctx);
+}
+
+for(var k =0;k&lt;removedParticles.length;k++) {
+  var idx = particle.indexOf(removedParticles[k]);
+  // If particle is found
+  if(idx != -1) {
+    particles.splice(idx,1);
+  }
+}
+
+</pre>
 </li>
 </ol>
 </article>
 
 
 
+<article class='slide slide-list'>
+<h2>Random Colored Twinkling Lights</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' >
+  var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+  canvas.style.backgroundColor = "#000";
+  var dt = 1/60;
+
+  // Set up a light with a random x and y location
+  var Light = function() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.lifetime = Math.random() * 0.5 + 0.5;
+
+    this.color = 'rgb(' + Math.floor(Math.random() * 255) + "," +
+                          Math.floor(Math.random() * 255) + "," +
+                          Math.floor(Math.random() * 255) + ")";
+  };
+
+  Light.prototype.update = function(dt) {
+    this.lifetime -= dt;
+    if(this.lifetime < 0) { this.dead = true; }
+  }
+
+  Light.prototype.draw = function(ctx) {
+    ctx.fillStyle = this.color;
+    ctx.globalAlpha = this.lifetime;
+    ctx.fillRect(this.x,this.y,4,4);
+  };
+
+  var particles = [];
+  var removedParticles = [];
+
+  function addParticle() {
+    particles.push(new Light());
+  }
+
+  for(var n = 0; n < 100; n++) { addParticle(); }
+
+  function drawParticles() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    for(var i = 0, len = particles.length; i&lt;len; i++) {
+      var particle = particles[i];
+      particle.update(dt);
+
+      if(particle.dead) { removedParticles.push(particle); addParticle(); }
+
+      particle.draw(ctx);
+    }
+
+    for(var k =0;k&lt;removedParticles.length;k++) {
+      var idx = particles.indexOf(removedParticles[k]);
+      if(idx != -1) { particles.splice(idx,1); }
+    }
+
+    setTimeout(drawParticles,dt*1000);
+  }
+
+  drawParticles();
+</textarea>
+</article>
 
 
+
+<article class='slide slide-list'>
+<h2>Starfield</h2>
+<p>Turn the twinkling lights into a flying starfield</p>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' >
+    var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+  canvas.style.backgroundColor = "#000";
+  var dt = 1/60;
+
+  var Star = function(initial) {
+    this.x = Math.random() * canvas.width;
+    this.y = initial ? Math.random() * canvas.height : 0;
+    this.opacity = Math.random();
+    this.speed = Math.random() * 150;
+  };
+
+  Star.prototype.update = function(dt) {
+    // How to get the stars moving?
+    // When is a star dead?
+  }
+
+  Star.prototype.draw = function(ctx) {
+    ctx.fillStyle = "#FFF";
+    ctx.globalAlpha = this.opacity;
+    ctx.fillRect(this.x,this.y,2,2);
+  };
+
+  var particles = [];
+  var removedParticles = [];
+
+  function addParticle(initial) {
+    particles.push(new Star(initial));
+  }
+
+  for(var n = 0; n < 100; n++) { addParticle(true); }
+
+  function drawParticles() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    for(var i = 0, len = particles.length; i&lt;len; i++) {
+      var particle = particles[i];
+      particle.update(dt);
+
+      if(particle.dead) { removedParticles.push(particle); addParticle(); }
+
+      particle.draw(ctx);
+    }
+
+    for(var k =0;k&lt;removedParticles.length;k++) {
+      var idx = particles.indexOf(removedParticles[k]);
+      if(idx != -1) { particles.splice(idx,1); }
+    }
+
+    setTimeout(drawParticles,dt*1000);
+  }
+
+  drawParticles();
+
+</textarea>
+<script type='coder-solution'>
+  var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+  canvas.style.backgroundColor = "#000";
+  var dt = 1/60;
+
+  var Star = function(initial) {
+    this.x = Math.random() * canvas.width;
+    this.y = initial ? Math.random() * canvas.height : 0;
+    this.opacity = Math.random();
+    this.speed = Math.random() * 150;
+  };
+
+  Star.prototype.update = function(dt) {
+    this.y += this.speed * dt;
+    if(this.y > canvas.height) this.dead = true;
+  }
+
+  Star.prototype.draw = function(ctx) {
+    ctx.fillStyle = "#FFF";
+    ctx.globalAlpha = this.opacity;
+    ctx.fillRect(this.x,this.y,2,2);
+  };
+
+  var particles = [];
+  var removedParticles = [];
+
+  function addParticle(initial) {
+    particles.push(new Star(initial));
+  }
+
+  for(var n = 0; n < 100; n++) { addParticle(true); }
+
+  function drawParticles() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    for(var i = 0, len = particles.length; i&lt;len; i++) {
+      var particle = particles[i];
+      particle.update(dt);
+      if(particle.dead) { removedParticles.push(particle); addParticle(); }
+      particle.draw(ctx);
+    }
+
+    for(var k =0;k&lt;removedParticles.length;k++) {
+      var idx = particles.indexOf(removedParticles[k]);
+      if(idx != -1) { particles.splice(idx,1); }
+    }
+
+    setTimeout(drawParticles,dt*1000);
+  }
+
+  drawParticles();
+</script>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>Putting it all together</h2>
+<ul>
+	<li>
+		<h3>Create a particle fountain</h3>
+	</li>
+	<li>
+		<h3>It should spout multicolor particles</h3>
+	</li>
+	<li>
+		<h3>Use the mouse position or mouse click.</h3>
+	</li>
+	<li>
+		<h3>Particles should spray at random angles and fall w/ gravity.</h3>
+	</li>
+        <li>
+                <h3><a href='final-exercise.html'>Download (ctrl-click)</a></h3>
+        </li>
+</ul>
+
+
+</article>
 
 <script src='dist/coderdeck.js'></script>
 

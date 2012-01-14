@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'></script>
+    <style>
+      canvas { background-color:black; }
+    </style>
+</head>
+<body>
+<canvas id='canvasElem' width='500' height='400'></canvas>
+<script>
+
+  var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+  var dt = 1/60;
+
+  var Particle = function(initial) {
+  };
+
+  Particle.prototype.update = function(dt) {
+  }
+
+  Particle.prototype.draw = function(ctx) {
+  };
+
+  var particles = [];
+  var removedParticles = [];
+
+  $(canvas).on("click",function() {
+
+  });
+
+  function drawParticles() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    for(var i = 0, len = particles.length; i<len; i++) {
+      var particle = particles[i];
+      particle.update(dt);
+
+      if(particle.dead) { removedParticles.push(particle); }
+
+      particle.draw(ctx);
+    }
+
+    for(var k =0;k<removedParticles.length;k++) {
+      var idx = particles.indexOf(removedParticles[k]);
+      if(idx != -1) { particles.splice(idx,1); }
+    }
+
+    setTimeout(drawParticles,dt*1000);
+  }
+
+  drawParticles();
+
+
+
+</script>
+</body>
+</html>
+</script>
+
+
