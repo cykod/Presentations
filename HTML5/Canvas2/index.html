@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Designing Interactivity</title>
+	<meta name="viewport" content="width=1024">
+
+        <link rel="stylesheet" href="dist/coderdeck-core.min.css" type="text/css">
+	<link rel="stylesheet" id='style-theme-link' href="dist/coderdeck.css" type="text/css" >
+
+	<script src='dist/jquery.min.js'></script>
+	<script src="dist/modernizr.js"></script>
+</head>
+<body class="deck-container">
+
+<script type='text/coderdeck' id='coderdeck-default'>
+  <html>
+    <head>
+      <script src='dist/jquery.min.js'>SCRIPTEND
+      <style>
+	      canvas { border: 1px solid black; }
+      </style>
+    </head>
+    <body>
+	<canvas id='canvasElem' width='500' height='400'></canvas>
+	SCRIPT
+		CODE
+	SCRIPTEND
+    </body>
+</html>
+</script>
+
+
+<script type='text/coderdeck' id='coderdeck-boxbox'>
+  <html>
+    <head>
+      <script src='dist/jquery.min.js'>SCRIPTEND
+      <script src='js/Box2DWeb-2.1.a.3.js'>SCRIPTEND
+      <script src='js/boxbox.js'>SCRIPTEND
+      <style>
+	      canvas { border: 1px solid black; }
+      </style>
+    </head>
+    <body>
+	<canvas id='canvasElem' width='500' height='400'></canvas>
+	SCRIPT
+		CODE
+	SCRIPTEND
+    </body>
+</html>
+</script>
+
+
+
+<script type='text/coderdeck' id='coderdeck-paperjs'>
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="js/paper.js">SCRIPTEND
+
+<!-- Define inlined PaperScript associate it with myCanvas -->
+<script type="text/paperscript" canvas="myCanvas">
+    CODE
+SCRIPTEND
+</head>
+<body>
+    <canvas id="myCanvas" resize ></canvas>
+</body>
+</html>
+</script>
+
+
+
+<script type='text/coderdeck' id='coderdeck-threejs'>
+<!DOCTYPE html>
+<html>
+<head>
+<script src='dist/jquery.min.js'>SCRIPTEND
+<script type="text/javascript" src="js/three.js">SCRIPTEND
+<style> #container { background-color:black; } </style>
+
+</head>
+<body>
+<div id='container'></div>
+<script>
+    CODE
+SCRIPTEND
+</body>
+</html>
+</script>
+
+
+
+
+<script type='text/coderdeck' id='coderdeck-everything'>
+	CODE
+</script> 	
+
+<article class='slide slide-subhead'>
+<h1>Designing Interactivity</h1>
+<h2>with HTML5 Canvas - Day 2<br/>
+ <a href='http://bit.ly/massart-canvas-workshop-2'>http://bit.ly/massart-canvas-workshop-2</a>
+</h2>
+</article>
+
+<article class='slide slide-list'>
+<h2>Workshop overview</h2>
+<h3>Day 2</h3>
+<ul>
+
+        <li> 
+                <h3>More particles</h3>
+        </li>
+        <li>
+                <h3>Working with Pixels</h3>
+        </li>
+        <li>
+                <h3>Video</h3>
+        </li>
+	<li>
+		<h3>2D physics</h3>
+	</li>
+	<li>
+		<h3>Paper.js</h3>
+	</li>
+	<li>
+		<h3>Three.js</h3>
+	</li>
+</ul>
+
+</article>
+
+
+<article class='slide slide-subhead'>
+ <h1>Anyone do the exercise?</h1>
+</article>
+
+<article class='slide slide-list'>
+<h2>Particle fountain revisisted</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' >
+ var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+ canvas.style.backgroundColor = "black";
+  var dt = 1/60;
+
+  var mouseX,mouseY;
+
+  var Particle = function(x,y) {
+    this.x = x;
+    this.y = y;
+    this.life = this.lifetime = Math.random() * 4 + 0.5;
+    this.vx = -200 + Math.random() * 400;
+    this.vy = -400 + Math.random() * 400;
+    this.ax = 0;
+    this.ay = 400;
+
+
+    this.color = 'rgb(' + Math.floor(Math.random() * 255) + "," +
+                          Math.floor(Math.random() * 255) + "," +
+                          Math.floor(Math.random() * 255) + ")";
+ 
+  };
+
+  Particle.prototype.update = function(dt) {
+    this.vx += this.ax * dt;
+    this.vy += this.ay * dt;
+    this.x += this.vx * dt;
+    this.y += this.vy * dt;
+
+    if(this.x < 10) { this.x = 10; this.vx *= -0.8; }
+    else if(this.x > canvas.width - 10) { this.x = canvas.width - 10; this.vx *= -0.8; }
+    
+    if(this.y < 10) { this.y = 10;  this.vy *= -0.8; }
+    else if(this.y > canvas.height - 10) { this.y = canvas.height - 10; this.vy *= -0.8; }
+
+    this.lifetime -= dt;
+    if(this.lifetime < 0) { this.dead = true; }
+
+  }
+
+  Particle.prototype.draw = function(ctx) {
+    ctx.beginPath();
+    ctx.globalAlpha = this.lifetime / this.life;
+    ctx.fillStyle = this.color;
+    ctx.arc(this.x,this.y,10,0,Math.PI * 2);
+    ctx.fill();
+  };
+
+  var particles = [];
+  var removedParticles = [];
+  var particleFountain = false;
+
+  function addParticle(x,y) {
+    particles.push(new Particle(x,y));
+  }
+
+  $(canvas).on("mousedown",function() {
+    particleFountain = true;
+  });
+
+  $(canvas).on("mousemove",function(e) {
+    mouseX = e.offsetX;
+    mouseY = e.offsetY;
+  });
+
+  $(canvas).on("mouseup",function() {
+    particleFountain = false;
+  });
+
+  function drawParticles() {
+    if(particleFountain) { addParticle(mouseX,mouseY); }
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    for(var i = 0, len = particles.length; i<len; i++) {
+      var particle = particles[i];
+      particle.update(dt);
+
+      if(particle.dead) { removedParticles.push(particle); }
+      else { particle.draw(ctx); }
+    }
+
+    for(var k =0;k<removedParticles.length;k++) {
+      var idx = particles.indexOf(removedParticles[k]);
+      if(idx != -1) { particles.splice(idx,1); }
+    }
+
+    setTimeout(drawParticles,dt*1000);
+  }
+
+  drawParticles();
+
+ 
+</textarea>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>Working with pixels</h2>
+<p>Let's load a image and play with some of the image data</p>
+<textarea class='coder-editor coder-editor-full'>
+var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+var img = new Image();
+$(img).on("load",function() {
+  ctx.drawImage(img,0,0);
+  var imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+  console.log(imgData);
+});
+
+img.src = "images/kitten.jpg"
+</textarea>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>Modifying pixel data</h2>
+<p>Let's load a image and play with some of the image data</p>
+<textarea class='coder-editor coder-editor-full'>
+var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+var img = new Image();
+$(img).on("load",function() {
+  ctx.drawImage(img,0,0);
+  var imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+
+  var data = imgData.data;
+  for(var y =0;y<canvas.height;y++) {
+    for(var x=0;x<canvas.width;x++) {
+      var offset = x*4 + y*canvas.width*4;
+      var avg = (data[offset] + data[offset+1] + data[offset+2])/3
+      data[offset] = 0;
+      data[offset+1] = 0; 
+      //data[offset+2] = avg;
+    }
+  }
+  ctx.putImageData(imgData,0,0);
+});
+
+img.src = "images/kitten.jpg"
+</textarea>
+</article>
+
+<article class='slide slide-subhead'>
+ <h1>Playing with video</h1>
+ <h2>Videos can be drawn using drawImage just like any other image</h2>
+</article>
+
+
+
+<article class='slide slide-list'>
+<h2>Playing with video</h2>
+<p>
+<textarea class='coder-editor coder-editor-full'>
+var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+var dt = 1/20;
+var frameWidth = 100;
+var frameHeight = 100;
+var cols = canvas.width / frameWidth;
+var rows = canvas.height / frameHeight;
+
+var video = $("<video>")[0];
+var frame = 0;
+$(video).on("canplaythrough",function() {
+  video.play(); 
+  video.playbackRate = 1.0;
+
+  animLoop();
+});
+
+video.src = "images/video.ogv";
+video.loop = true;
+video.playbackRate = 4;
+video.load();
+
+function animLoop() {
+  var x = frame % cols;
+  var y = Math.floor(frame / cols) % rows; 
+  ctx.drawImage(video,x*frameWidth,y*frameHeight,frameWidth,frameHeight);
+  frame++;
+
+  // Call set timeout for the next frame
+  setTimeout(animLoop,dt*1000);
+}
+</textarea>
+</article>
+
+
+
+<article class='slide slide-subhead'>
+ <h1>2D Physics</h1>
+ <h2><a href="http://box2d.org/">Box2D</a> is one of the best engines out there. But it's kinda difficult to use.</h2>
+</article>
+
+<article class='slide slide-subhead'>
+ <h1><a href='http://incompl.github.com/boxbox/'>BoxBox Wrapper</a></h1>
+ <h2>We're going to us a canvas-based wrapper to make our lives easier. <a href='http://incompl.github.com/boxbox/updoc.html'>API Reference</a></h2>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>We need to pull some more JavaScript to do so</h2>
+<pre class='prettyprint'><code>
+  &lt;html&gt;
+    &lt;head&gt;
+      &lt;script src='dist/jquery.min.js'&gt;&lt;/script&gt;
+      &lt;script src='js/Box2DWeb-2.1.a.3.js'&gt;&lt;/script&gt;
+      &lt;script src='js/boxbox.js'&gt;&lt;/script&gt;
+      &lt;style&gt;
+	      canvas { border: 1px solid black; }
+      &lt;/style&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+	&lt;canvas id='canvasElem' width='500' height='400'&gt;&lt;/canvas&gt;
+        &lt;script&gt;
+	  // Your code
+        &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</article>
+
+
+
+<article class='slide slide-list'>
+<h2>The first world</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' data-coder-template='coderdeck-boxbox'>
+   var canvas = $("#canvasElem")[0];
+    
+   var world = boxbox.createWorld(canvas, {debugDraw:false, scale: 30});
+   // Set up the world, at 30 pixels per meter
+
+   world.createEntity({
+        name: 'ground',
+        type: 'static',
+        height: .1,
+        color: 'green',
+        width: 10, x: 10, y: 13.22});
+    
+</textarea>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>Adding some blocks</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' data-coder-template='coderdeck-boxbox'>
+   var canvas = $("#canvasElem")[0];
+    
+   var world = boxbox.createWorld(canvas, {debugDraw:false, scale: 30});
+   // Set up the world, at 30 pixels per meter
+
+   world.createEntity({
+        name: 'ground',
+        type: 'static',
+        height: .1,
+        color: 'green',
+        width: 10, x: 10, y: 13.22});
+
+  var boxTemplate = {
+     name: "box",
+     height: 1,
+     width: 1,
+     friction: .3,
+     restitution: 0.5,
+     color: 'blue'
+  };
+
+  var box1 = world.createEntity(boxTemplate,{
+        x: 5,
+        y: 8
+  });
+    
+  var box2 = world.createEntity(boxTemplate,{
+        x: 6,
+        y: 5,
+        color: 'red'
+  });
+    
+
+    
+</textarea>
+</article>
+
+<article class='slide slide-list'>
+<h2>Picking</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' data-coder-template='coderdeck-boxbox'>
+   var canvas = $("#canvasElem")[0];
+    
+   var worldScale = 30;
+   var world = boxbox.createWorld(canvas, {debugDraw:false, scale: worldScale});
+   // Set up the world, at 30 pixels per meter
+
+   world.createEntity({
+        name: 'ground',
+        type: 'static',
+        height: .1,
+        color: 'green',
+        width: 10, x: 10, y: 13.22});
+
+  var boxTemplate = {
+     name: "box",
+     height: 1,
+     width: 1,
+     friction: .3,
+     restitution: 0.5,
+     color: 'blue'
+  };
+
+  var box1 = world.createEntity(boxTemplate,{
+        x: 5,
+        y: 8
+  });
+    
+  var box2 = world.createEntity(boxTemplate,{
+        x: 6,
+        y: 5,
+        color: 'red'
+  });
+
+  $(canvas).on("click",function(e) {
+     // convert to world coords
+     var worldX = e.offsetX / worldScale - world.camera().x;
+     var worldY = e.offsetY / worldScale - world.camera().y;
+
+     var objs = world.find(worldX - 0.01, worldY - 0.01, worldX + 0.01, worldY + 0.01);
+     for(var i=0;i<objs.length;i++) {
+      objs[i].applyImpulse(100,0);
+     }
+  });
+</textarea>
+</article>
+
+<article class='slide slide-list'>
+<h2>Physics Playground</h2>
+<p>Modify the code to add a new object at that location if none were found, then create an interesting world (<a href='http://incompl.github.com/boxbox/updoc.html/'>API</a>)</p>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' data-coder-template='coderdeck-boxbox' data-save='physics-playground'>
+   var canvas = $("#canvasElem")[0];
+    
+   var worldScale = 30;
+   var world = boxbox.createWorld(canvas, {debugDraw:false, scale: worldScale});
+   // Set up the world, at 30 pixels per meter
+
+   world.createEntity({
+        name: 'ground',
+        type: 'static',
+        height: .1,
+        color: 'green',
+        width: 10, x: 10, y: 13.22});
+
+  var boxTemplate = {
+     name: "box",
+     height: 1,
+     width: 1,
+     friction: .3,
+     restitution: 0.5,
+     color: 'blue'
+  };
+
+  var box1 = world.createEntity(boxTemplate,{
+        x: 5,
+        y: 8
+  });
+    
+  var box2 = world.createEntity(boxTemplate,{
+        x: 6,
+        y: 5,
+        color: 'red'
+  });
+
+  $(canvas).on("click",function(e) {
+     // convert to world coords
+     var worldX = e.offsetX / worldScale - world.camera().x;
+     var worldY = e.offsetY / worldScale - world.camera().y;
+
+     var objs = world.find(worldX - 0.01, worldY - 0.01, worldX + 0.01, worldY + 0.01);
+     for(var i=0;i<objs.length;i++) {
+      objs[i].applyImpulse(100,0);
+     }
+  });
+</textarea>
+</article>
+
+
+
+
+
+
+<article class='slide slide-subhead'>
+<h1><a href='http://paperjs.org/'>Paper.js</a></h1>
+<h2>A Scene graph for Canvas for doing vector based work</h2>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>Using Paper.js</h2>
+<p>You generally write Paper.js code in PaperScript (Augmented Javascript). <a href='http://paperjs.org/tutorials/getting-started/working-with-paper-js/'>Working with Paper.js</a></p>
+<pre class='prettyprint'><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;script type="text/javascript" src="js/paper.js"&gt;&lt;/script&gt;
+&lt;!-- Define inlined PaperScript associate it with myCanvas --&gt;
+&lt;script type="text/paperscript" canvas="myCanvas"&gt;
+    // Create a Paper.js Path to draw a line into it:
+    var path = new Path();
+    path.strokeColor = 'black';
+    var start = new Point(100, 100);
+    // Move to start and draw a line from there
+    path.moveTo(start);
+    // Note the plus operator on Point objects.
+    // PaperScript does that for us, and much more!
+    path.lineTo(start + [ 100, -50 ]);
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;canvas id="myCanvas" resize&gt;&lt;/canvas&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</article>
+
+<article class='slide slide-list'>
+<h2>Basic Example</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' data-coder-template='coderdeck-paperjs'>
+    // Create a Paper.js Path to draw a line into it:
+    var path = new Path();
+    // Give the stroke a color
+    path.strokeColor = 'black';
+    var start = new Point(100, 100);
+    // Move to start and draw a line from there
+    path.moveTo(start);
+    // Note the plus operator on Point objects.
+    // PaperScript does that for us, and much more!
+    path.lineTo(start + [ 100, -50 ]);
+
+</textarea>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>Animation</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' data-coder-template='coderdeck-paperjs'>
+// Create a rectangle shaped path with its top left point at
+// {x: 75, y: 75} and a size of {width: 75, height: 75}
+var topLeft = new Point(75, 75);
+var size = new Size(75, 75);
+var path = new Path.Rectangle(topLeft, size);
+path.strokeColor = 'black';
+
+function onFrame(event) {
+    // Each frame, rotate the path by 3 degrees:
+    path.rotate(3);
+}
+
+</textarea>
+</article>
+
+
+
+<article class='slide slide-list'>
+<h2>Mouse Follow</h2>
+<p><a href='http://paperjs.org/examples/'>More Examples</a></p>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' data-coder-template='coderdeck-paperjs'>
+// From : http://paperjs.org/examples/chain/
+
+var path = new Path();
+path.style = {
+    strokeColor: '#E4141B',
+    strokeWidth: 20,
+    strokeCap: 'round'
+};
+var size = 25;
+var segments = path.segments;
+var start = view.center / [10, 1];
+for (var i = 0; i < size; i++)
+    path.add(start + new Point(i * 100, 0));
+
+function onMouseMove(event) {
+    segments[0].point = event.point;
+    for (var i = 0; i < size - 1; i++) {
+        var nextSegment = segments[i + 1];
+        var position = path.segments[i].point;
+        var angle = (position - nextSegment.point).angle;
+        var vector = new Point({ angle: angle, length: 35 });
+        nextSegment.point = position - vector;
+    }
+    path.smooth();
+}
+
+function onMouseDown(event) {
+    path.fullySelected = true;
+    path.strokeColor = '#e08285';
+}
+
+function onMouseUp(event) {
+    path.selected = false;
+    path.strokeColor = '#e4141b';
+}
+
+</textarea>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>Hit testing</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' data-coder-template='coderdeck-paperjs'>
+// Create a rectangle shaped path with its top left point at
+// {x: 75, y: 75} and a size of {width: 75, height: 75}
+var topLeft = new Point(75, 75);
+var size = new Size(75, 75);
+var path = new Path.Rectangle(topLeft, size);
+path.fillColor = new RgbColor(1, 0, 0);
+path.strokeColor = 'black';
+var moving = false;
+
+function onMouseMove(event) {
+    var hitResult = project.hitTest(event.point)
+    if (hitResult) {
+      moving = true;
+    } else {
+      moving = false;
+    }
+}
+
+function onFrame(event) {
+    if(moving) {
+      path.rotate(3);
+    }
+}
+
+</textarea>
+</article>
+
+
+
+<article class='slide slide-subhead'>
+<h1><a href='http://mrdoob.github.com/three.js/'>Three.js</a></h1>
+<h2>3D in the browser</h2>
+</article>
+
+
+
+
+<article class='slide slide-list'>
+<h2>About Three.js</h2>
+<ul>
+	<li class="slide">
+		<h3>Very popular</h3>
+	</li>
+	<li class="slide">
+		<h3>Not terrible well documented</h3>
+	</li>
+	<li class="slide">
+		<h3>Supports multiple rendering pipelines</h3>
+	</li>
+	<li class="slide">
+		<h3>Fastest w/ WebGL</h3>
+	</li>
+	<li class="slide">
+          <h3><a href='http://threejs.org/io/s/'>API Docs</a></h3>
+	</li>
+	<li class="slide">
+		<h3>Warning: 3D is complicated!</h3>
+	</li>
+</ul>
+</article>
+
+
+
+<article class='slide slide-list'>
+<h2>A Static Scene</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' data-coder-template='coderdeck-threejs'>
+// set the scene size
+var WIDTH = 500,
+    HEIGHT = 400;
+
+// set some camera attributes
+var VIEW_ANGLE = 45,
+    ASPECT = WIDTH / HEIGHT,
+    NEAR = 0.1,
+    FAR = 10000;
+
+// get the DOM element to attach to
+// - assume we've got jQuery to hand
+var $container = $('#container');
+
+// create a WebGL renderer, camera
+// and a scene
+var renderer = new THREE.WebGLRenderer();
+var camera = new THREE.PerspectiveCamera(  VIEW_ANGLE,
+                                ASPECT,
+                                NEAR,
+                                FAR  );
+var scene = new THREE.Scene();
+
+// the camera starts at 0,0,0 so pull it back
+camera.position.z = 300;
+
+// start the renderer
+renderer.setSize(WIDTH, HEIGHT);
+
+// attach the render-supplied DOM element
+$container.append(renderer.domElement);
+
+// create the sphere's material
+var sphereMaterial = new THREE.MeshLambertMaterial(
+{
+    color: 0xCC0000
+});
+
+// set up the sphere vars
+var radius = 50, segments = 16, rings = 16;
+
+// create a new mesh with sphere geometry -
+// we will cover the sphereMaterial next!
+var sphere = new THREE.Mesh(
+   new THREE.SphereGeometry(radius, segments, rings),
+   sphereMaterial);
+
+// add the sphere to the scene
+scene.add(sphere);
+
+// create a point light
+var pointLight = new THREE.PointLight( 0xFFFFFF );
+
+// set its position
+pointLight.position.x = 10;
+pointLight.position.y = 50;
+pointLight.position.z = 130;
+
+// add to the scene
+scene.add(pointLight);
+
+// draw!
+renderer.render(scene, camera);
+
+</textarea>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>Adding some animation</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' data-coder-template='coderdeck-threejs'>
+// set the scene size
+var WIDTH = 500,
+    HEIGHT = 400;
+
+// set some camera attributes
+var VIEW_ANGLE = 45,
+    ASPECT = WIDTH / HEIGHT,
+    NEAR = 0.1,
+    FAR = 10000;
+
+// get the DOM element to attach to
+// - assume we've got jQuery to hand
+var $container = $('#container');
+
+// create a WebGL renderer, camera
+// and a scene
+var renderer = new THREE.WebGLRenderer();
+var camera = new THREE.PerspectiveCamera(  VIEW_ANGLE,
+                                ASPECT,
+                                NEAR,
+                                FAR  );
+var scene = new THREE.Scene();
+
+// the camera starts at 0,0,0 so pull it back
+camera.position.z = 300;
+
+// start the renderer
+renderer.setSize(WIDTH, HEIGHT);
+
+// attach the render-supplied DOM element
+$container.append(renderer.domElement);
+
+// create the sphere's material
+var sphereMaterial = new THREE.MeshLambertMaterial(
+{
+    color: 0xCC0000
+});
+
+// set up the sphere vars
+var radius = 50, segments = 16, rings = 16;
+
+// create a new mesh with sphere geometry -
+// we will cover the sphereMaterial next!
+var sphere = new THREE.Mesh(
+   new THREE.SphereGeometry(radius, segments, rings),
+   sphereMaterial);
+
+// add the sphere to the scene
+scene.add(sphere);
+
+// create a point light
+var pointLight = new THREE.PointLight( 0xFFFFFF );
+
+// set its position
+pointLight.position.x = 10;
+pointLight.position.y = 50;
+pointLight.position.z = 130;
+
+// add to the scene
+scene.add(pointLight);
+
+var dt = 1/30;
+var ang=0;
+function animLoop() {
+  ang+=.1;
+  sphere.position.x = 50*Math.cos(ang);
+  sphere.position.y = 50*Math.cos(ang);
+// draw!
+renderer.render(scene, camera);
+
+  setTimeout(animLoop,dt*1000);
+}
+
+animLoop();
+</textarea>
+</article>
+
+<article class='slide slide-list'>
+<h2>Adding some animation, playground</h2>
+<p><a href='http://threejs.org'>ThreeJS</a></p>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' data-coder-template='coderdeck-threejs' data-save='threejs'>
+// set the scene size
+var WIDTH = 500,
+    HEIGHT = 400;
+
+// set some camera attributes
+var VIEW_ANGLE = 45,
+    ASPECT = WIDTH / HEIGHT,
+    NEAR = 0.1,
+    FAR = 10000;
+
+// get the DOM element to attach to
+// - assume we've got jQuery to hand
+var $container = $('#container');
+
+// create a WebGL renderer, camera
+// and a scene
+var renderer = new THREE.WebGLRenderer();
+var camera = new THREE.PerspectiveCamera(  VIEW_ANGLE,
+                                ASPECT,
+                                NEAR,
+                                FAR  );
+var scene = new THREE.Scene();
+
+// the camera starts at 0,0,0 so pull it back
+camera.position.z = 300;
+
+// start the renderer
+renderer.setSize(WIDTH, HEIGHT);
+
+// attach the render-supplied DOM element
+$container.append(renderer.domElement);
+
+// create the sphere's material
+var sphereMaterial = new THREE.MeshLambertMaterial(
+{
+    color: 0xCC0000
+});
+
+// set up the sphere vars
+var radius = 50, segments = 16, rings = 16;
+
+// create a new mesh with sphere geometry -
+// we will cover the sphereMaterial next!
+var sphere = new THREE.Mesh(
+   new THREE.SphereGeometry(radius, segments, rings),
+   sphereMaterial);
+
+// add the sphere to the scene
+scene.add(sphere);
+
+// create a point light
+var pointLight = new THREE.PointLight( 0xFFFFFF );
+
+// set its position
+pointLight.position.x = 10;
+pointLight.position.y = 50;
+pointLight.position.z = 130;
+
+// add to the scene
+scene.add(pointLight);
+
+var dt = 1/30;
+var ang=0;
+function animLoop() {
+  ang+=.1;
+  sphere.position.x = 50*Math.cos(ang);
+  sphere.position.y = 50*Math.cos(ang);
+// draw!
+renderer.render(scene, camera);
+
+  setTimeout(animLoop,dt*1000);
+}
+
+animLoop();
+</textarea>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>3D Lights Renderer</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' data-coder-template='coderdeck-threejs'>
+// the main three.js components
+var camera, scene, renderer,
+
+// to keep track of the mouse position
+	mouseX = 0, mouseY = 0,
+
+// an array to store our particles in
+	particles = [];
+
+// let's get going! 
+init();
+
+function init() {
+
+	// Camera params : 
+	// field of view, aspect ratio for render output, near and far clipping plane. 
+	camera = new THREE.Camera(80, window.innerWidth / window.innerHeight, 1, 4000 );
+
+	// move the camera backwards so we can see stuff! 
+	// default position is 0,0,0. 
+	camera.position.z = 1000;
+
+	// the scene contains all the 3D object data
+	scene = new THREE.Scene();
+
+	// and the CanvasRenderer figures out what the 
+	// stuff in the scene looks like and draws it!
+
+        var $container = $('#container');
+	renderer = new THREE.CanvasRenderer();
+	renderer.setSize( $container.width(),400);
+
+        $container.append(renderer.domElement);
+
+	makeParticles(); 
+
+	// add the mouse move listener
+	document.addEventListener( 'mousemove', onMouseMove, false );
+	
+	// render 30 times a second (should also look 
+	// at requestAnimationFrame) 
+	setInterval(update,1000/30); 
+
+}
+
+// the main update function, called 30 times a second
+
+function update() {
+
+	updateParticles();
+
+	// and render the scene from the perspective of the camera
+	renderer.render( scene, camera );
+
+}
+
+// creates a random field of Particle objects
+
+function makeParticles() { 
+	
+	var particle, material; 
+
+        material = new THREE.ParticleBasicMaterial({
+          color: 0xFFFFFF,
+          size: 100,
+          map: THREE.ImageUtils.loadTexture(
+          "images/particle.png"
+          ),
+          blending: THREE.AdditiveBlending,
+          transparent: true
+        });
+
+
+	// we're gonna move from z position -1000 (far away) 
+	// to 1000 (where the camera is) and add a random particle at every pos. 
+	for ( var zpos= -1000; zpos < 1000; zpos+=20 ) {
+
+		// we make a particle material and pass through the 
+		// colour and custom particle render function we defined. 
+		// make the particle
+		particle = new THREE.Particle(material);
+
+		// give it a random x and y position between -500 and 500
+		particle.position.x = Math.random() * 1000 - 500;
+		particle.position.y = Math.random() * 1000 - 500;
+
+		// set its z position
+		particle.position.z = zpos;
+
+		// scale it up a bit
+		particle.scale.x = particle.scale.y = 10;
+
+		// add it to the scene
+		scene.add( particle );
+
+		// and to the array of particles. 
+		particles.push(particle); 
+	}
+	
+}
+
+
+// moves all the particles dependent on mouse position
+
+function updateParticles() { 
+	
+	// iterate through every particle
+	for(var i=0; i<particles.length; i++) {
+
+		particle = particles[i]; 
+
+		// and move it forward dependent on the mouseY position. 
+		particle.position.z +=  mouseY * 0.1;
+
+		// if the particle is too close move it to the back
+		if(particle.position.z>1000) particle.position.z-=2000; 
+
+	}
+
+}
+
+//called when the mouse moves
+function onMouseMove( event ) {
+	// store the mouseX and mouseY position 
+	mouseX = event.clientX;
+	mouseY = event.clientY;
+}
+</textarea>
+</article>
+
+
+
+<script src='dist/coderdeck.js'></script>
+
+<script>
+	$(function() {
+		$.deck('.slide');
+	});
+</script>
+</body>
+</html>

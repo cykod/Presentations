@@ -439,6 +439,32 @@ $(canvas).on('click',function(e) {
 </script>
 </article>
 
+
+<article class='slide slide-list'>
+<h2>Draw a random color square</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' data-save='canvas-square'>
+var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+ctx.fillStyle = "#F00";
+
+function randColor() {
+  return Math.floor(Math.random() * 256);
+}
+
+$(canvas).on('click',function(e) {
+  var r = randColor();
+  var g = randColor();
+  var b = randColor();
+  ctx.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
+  ctx.fillRect(e.offsetX - 20,
+               e.offsetY - 20,
+               40,40);
+});
+
+</textarea>
+</article>
+
+
+
 <article class='slide slide-list'>
 <h2>Drawing some lines</h2>
 <p>Draw use beginPath, moveTo, lineTo to draw lines on mousedown and mousemove.</p>
@@ -583,7 +609,40 @@ $(canvas).on('mouseup',function(e) {
 </script>
 </article>
 
+<article class='slide slide-list'>
+<h2>Drawing colored under the keyboard</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' >
+  var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+  ctx.fillStyle = "#000";
 
+  // EC: shift colors on space
+  var COLORS = [ "#F00", "#0F0", "#00F", "#FF0", "#0FF", "#000" ];
+  var color = 0;
+
+  var KEY_CODES = { 37:'left', 38:'up', 39:'right', 40:'down', 32 :'space', 13: 'enter' };
+  var x = 100, y = 100;
+
+  $(window).on('keydown',function(e) {
+    if(KEY_CODES[e.which]) {
+      switch(KEY_CODES[e.which]) {
+      case 'left': x -= 20; break;
+      case 'right': x += 20; break;
+      case 'up': y -= 20; break;
+      case 'down': y += 20; break;
+      case 'space': color = (color+1) % 6; break; 
+      }
+
+      // Drawing code here
+      ctx.beginPath();
+      ctx.fillStyle = COLORS[color];
+      ctx.arc(x,y,10,0,360);
+      ctx.fill();
+
+      e.preventDefault();
+    }
+  });
+</textarea>
+</article>
 
 <article class='slide slide-subhead'>
 <h1>What about animation?</h1>
@@ -727,6 +786,63 @@ y += vy * dt;
 
 </script>
 </article>
+
+
+<article class='slide slide-list'>
+<h2>Make a Ball fly through the air</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' >
+var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+  ctx.fillStyle = "#000";
+
+  // 60 frames per second
+  var dt = 1/60;
+  var x = 0, y = 390;
+  var vx = 80, vy = -400;
+  var ax = 0, ay = 200;
+
+  var clicked = false;
+
+  function animLoop() {
+    // Clear the canvas
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    // Update the position and velocity
+    vx += ax * dt;
+    vy += ay * dt;
+    x += vx * dt;
+    y += vy * dt;
+    
+    if(x < 10) { x = 10; vx *= -0.8; }
+    else if(x > canvas.width - 10) { x = canvas.width - 10; vx *= -0.8; }
+    
+    if(y < 10) { y = 10; vy *= -0.8; }
+    else if(y > canvas.height - 10) { y = canvas.height - 10; vy *= -0.8; }
+
+    // Set the alpha based on the velocity
+    ctx.globalAlpha = Math.sqrt(vx * vx + vy * vy) / 400;
+    // Draw a ball
+    ctx.beginPath();
+    ctx.arc(x,y,10,0,260);
+    ctx.fill();
+
+    // Call set timeout for the next frame
+    setTimeout(animLoop,dt * 1000);
+  }
+
+$(canvas).on("click",function(e) {
+   x = e.offsetX;
+   y = e.offsetY;
+   vy = -200;
+   vx = 80;
+  
+  if(!clicked) {
+    clicked = true;
+    animLoop();
+  }
+});
+</textarea>
+</article>
+
 
 <article class='slide slide-subhead'>
 <h1>Images</h1>
