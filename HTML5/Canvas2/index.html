@@ -35,7 +35,7 @@
   <html>
     <head>
       <script src='dist/jquery.min.js'>SCRIPTEND
-      <script src='js/Box2DWeb-2.1.a.3.js'>SCRIPTEND
+      <script src='js/box2dweb.js'>SCRIPTEND
       <script src='js/boxbox.js'>SCRIPTEND
       <style>
 	      canvas { border: 1px solid black; }
@@ -231,6 +231,112 @@ SCRIPTEND
  
 </textarea>
 </article>
+
+<article class='slide slide-list'>
+<h2>Particle fountain variation</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' >
+ var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+ canvas.style.backgroundColor = "black";
+  var dt = 1/60;
+
+  var mouseX,mouseY;
+ 
+  var img = new Image();
+  img.src ='images/penguin.png';
+  
+
+  var Particle = function(x,y) {
+    this.x = x;
+    this.y = y;
+    this.life = this.lifetime = Math.random() * 10 + 0.5;
+    this.vx = -200 + Math.random() * 400;
+    this.vy = -500;// + Math.random() * 400;
+    this.ax = 0;
+    this.ay = 400;
+
+
+    this.color = 'rgb(' + Math.floor(Math.random() * 255) + "," +
+                          Math.floor(Math.random() * 255) + "," +
+                          Math.floor(Math.random() * 255) + ")";
+ 
+  };
+
+  Particle.prototype.update = function(dt) {
+    this.ax = (mouseX - this.x)*3;
+    this.ay = (mouseY - this.y)*3;
+    
+    this.vx += this.ax * dt;
+    this.vy += this.ay * dt;
+    this.x += this.vx * dt;
+    this.y += this.vy * dt;
+
+    var bounciness = 0.2;
+    if(this.x < 10) { this.x = 10; this.vx *= -bounciness; }
+    else if(this.x > canvas.width - 10) { this.x = canvas.width - 10; this.vx *= -bounciness; }
+    
+    if(this.y < 10) { this.y = 10;  this.vy *= -bounciness; }
+    else if(this.y > canvas.height - 10) { this.y = canvas.height - 10; this.vy *= -bounciness; }
+ 
+    this.lifetime -= dt;
+    if(this.lifetime < 0) { this.dead = true; }
+
+  }
+
+  Particle.prototype.draw = function(ctx) {
+    //ctx.beginPath();
+    ctx.globalAlpha = this.lifetime / this.life;
+    //ctx.fillStyle = this.color;
+    ctx.drawImage(img,this.x,this.y,20,20);
+    //ctx.arc(this.x,this.y,10,0,Math.PI * 2);
+   // ctx.fill();
+  };
+
+  var particles = [];
+  var removedParticles = [];
+  var particleFountain = false;
+
+  function addParticle(x,y) {
+    particles.push(new Particle(x,y));
+  }
+
+  $(canvas).on("mousedown",function() {
+    particleFountain = true;
+  });
+
+  $(canvas).on("mousemove",function(e) {
+    mouseX = e.offsetX;
+    mouseY = e.offsetY;
+  });
+
+  $(canvas).on("mouseup",function() {
+    particleFountain = false;
+  });
+
+  function drawParticles() {
+    if(particleFountain) { addParticle(mouseX,mouseY); }
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    for(var i = 0, len = particles.length; i<len; i++) {
+      var particle = particles[i];
+      particle.update(dt);
+
+      if(particle.dead) { removedParticles.push(particle); }
+      else { particle.draw(ctx); }
+    }
+
+    for(var k =0;k<removedParticles.length;k++) {
+      var idx = particles.indexOf(removedParticles[k]);
+      if(idx != -1) { particles.splice(idx,1); }
+    }
+
+    setTimeout(drawParticles,dt*1000);
+  }
+
+  drawParticles();
+</textarea>
+</article>
+
+
 
 
 <article class='slide slide-list'>
