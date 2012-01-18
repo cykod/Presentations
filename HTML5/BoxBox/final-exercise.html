@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'></script>
+    <style>
+      canvas { background-color:black; }
+    </style>
+</head>
+<body>
+<canvas id='canvasElem' width='500' height='400'></canvas>
+<script>
+
+  var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+  var dt = 1/60;
+
+  var mouseX,mouseY;
+
+  var Particle = function(x,y) {
+    this.x = x;
+    this.y = y;
+    this.life = this.lifetime = Math.random() * 4 + 0.5;
+    this.vx = -200 + Math.random() * 400;
+    this.vy = -400 + Math.random() * 400;
+    this.ax = 0;
+    this.ay = 400;
+
+
+    this.color = 'rgb(' + Math.floor(Math.random() * 255) + "," +
+                          Math.floor(Math.random() * 255) + "," +
+                          Math.floor(Math.random() * 255) + ")";
+ 
+  };
+
+  Particle.prototype.update = function(dt) {
+    this.vx += this.ax * dt;
+    this.vy += this.ay * dt;
+    this.x += this.vx * dt;
+    this.y += this.vy * dt;
+
+    if(this.x < 10) { this.x = 10; this.vx *= -0.8; }
+    else if(this.x > canvas.width - 10) { this.x = canvas.width - 10; this.vx *= -0.8; }
+    
+    if(this.y < 10) { this.y = 10;  this.vy *= -0.8; }
+    else if(this.y > canvas.height - 10) { this.y = canvas.height - 10; this.vy *= -0.8; }
+
+    this.lifetime -= dt;
+    if(this.lifetime < 0) { this.dead = true; }
+
+  }
+
+  Particle.prototype.draw = function(ctx) {
+    // Set the alpha based on the velocity
+    // Draw a ball:41
+
+    ctx.beginPath();
+    ctx.globalAlpha = this.lifetime / this.life;
+    ctx.fillStyle = this.color;
+    ctx.arc(this.x,this.y,10,0,Math.PI * 2);
+    ctx.fill();
+  };
+
+  var particles = [];
+  var removedParticles = [];
+  var particleFountain = false;
+
+  function addParticle(x,y) {
+    particles.push(new Particle(x,y));
+  }
+
+  $(canvas).on("mousedown",function() {
+    particleFountain = true;
+  });
+
+  $(canvas).on("mousemove",function(e) {
+    mouseX = e.offsetX;
+    mouseY = e.offsetY;
+  });
+
+  $(canvas).on("mouseup",function() {
+    particleFountain = false;
+  });
+
+  function drawParticles() {
+    if(particleFountain) { addParticle(mouseX,mouseY); }
+    //ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    for(var i = 0, len = particles.length; i<len; i++) {
+      var particle = particles[i];
+      particle.update(dt);
+
+      if(particle.dead) { removedParticles.push(particle); }
+      else { particle.draw(ctx); }
+    }
+
+    for(var k =0;k<removedParticles.length;k++) {
+      var idx = particles.indexOf(removedParticles[k]);
+      if(idx != -1) { particles.splice(idx,1); }
+    }
+
+    setTimeout(drawParticles,dt*1000);
+  }
+
+  drawParticles();
+
+
+
+</script>
+</body>
+</html>
+</script>
+
+

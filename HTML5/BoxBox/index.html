@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>BoxBox</title>
+	<meta name="viewport" content="width=1024">
+
+        <link rel="stylesheet" href="dist/coderdeck-core.min.css" type="text/css">
+	<link rel="stylesheet" id='style-theme-link' href="dist/coderdeck.css" type="text/css" >
+
+	<script src='dist/jquery.min.js'></script>
+	<script src="dist/modernizr.js"></script>
+</head>
+<body class="deck-container">
+
+<script type='text/coderdeck' id='coderdeck-default'>
+  <html>
+    <head>
+      <script src='dist/jquery.min.js'>SCRIPTEND
+      <style>
+	      canvas { border: 1px solid black; }
+      </style>
+    </head>
+    <body>
+	<canvas id='canvasElem' width='500' height='400'></canvas>
+	SCRIPT
+		CODE
+	SCRIPTEND
+    </body>
+</html>
+</script>
+
+
+<script type='text/coderdeck' id='coderdeck-boxbox'>
+  <html>
+    <head>
+      <script src='dist/jquery.min.js'>SCRIPTEND
+      <script src='js/box2dweb.js'>SCRIPTEND
+      <script src='js/boxbox.js'>SCRIPTEND
+      <style>
+	      canvas { border: 1px solid black; }
+      </style>
+    </head>
+    <body>
+	<canvas id='canvasElem' width='500' height='400'></canvas>
+	SCRIPT
+		CODE
+	SCRIPTEND
+    </body>
+</html>
+</script>
+
+
+
+<script type='text/coderdeck' id='coderdeck-paperjs'>
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="js/paper.js">SCRIPTEND
+
+<!-- Define inlined PaperScript associate it with myCanvas -->
+<script type="text/paperscript" canvas="myCanvas">
+    CODE
+SCRIPTEND
+</head>
+<body>
+    <canvas id="myCanvas" resize ></canvas>
+</body>
+</html>
+</script>
+
+
+
+<script type='text/coderdeck' id='coderdeck-threejs'>
+<!DOCTYPE html>
+<html>
+<head>
+<script src='dist/jquery.min.js'>SCRIPTEND
+<script type="text/javascript" src="js/three.js">SCRIPTEND
+<style> #container { background-color:black; } </style>
+
+</head>
+<body>
+<div id='container'></div>
+<script>
+    CODE
+SCRIPTEND
+</body>
+</html>
+</script>
+
+
+
+
+<script type='text/coderdeck' id='coderdeck-everything'>
+	CODE
+</script> 	
+
+
+<article class='slide slide-subhead'>
+ <h1>BoxBox</h1>
+ <h2><a href='http://bit.ly/html5b-boxbox'>http://bit.ly/html5b-boxbox</a></h2>
+</article>
+
+<article class='slide slide-subhead'>
+ <h1>Box2D</h1>
+ <h2><a href="http://box2d.org/">Box2D</a> is one of the best engines out there. But it's a bit difficult to use.</h2>
+</article>
+
+
+<article class='slide slide-list'>
+  <h2>Some Box2D Code</h2>
+<pre><code class='prettyprint'>
+// Create a world
+var worldAABB = new b2AABB();
+worldAABB.minVertex.Set(-1000, -1000);
+worldAABB.maxVertex.Set(1000, 1000);
+var gravity = new b2Vec2(0, 300);
+var doSleep = true;
+var world = new b2World(worldAABB, gravity, doSleep); 
+
+// Create a circle body
+var circleSd = new b2CircleDef();
+circleSd.density = 1.0;
+circleSd.radius = 20;
+circleSd.restitution = 1.0;
+circleSd.friction = 0;
+var circleBd = new b2BodyDef();
+circleBd.AddShape(circleSd);
+circleBd.position.Set(x,y);
+var circleBody = world.CreateBody(circleBd);
+
+// Create a revolute joint
+var jointDef = new b2RevoluteJointDef();
+jointDef.anchorPoint.Set(250, 200);
+jointDef.body1 = world.GetGroundBody();
+jointDef.body2 = circleBody;
+world.CreateJoint(jointDef);
+
+
+// Step a world
+var timeStep = 1.0/60;
+var iteration = 1;
+world.Step(timeStep, iteration);
+
+// Repeat stepping (for instance)
+var ctx;
+var canvasWidth; 
+var canvasHeight; 
+function step(cnt) {
+  world.Step(1.0/60, 1);
+  ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+  drawWorld(world, ctx); // see demos/draw_world.js
+  setTimeout('step(' + (cnt || 0) + ')', 10);
+}
+Event.observe(window, 'load', function() {
+  setupWorld(world); // as you like
+  ctx = $('canvas').getContext('2d');
+  var canvasElm = $('canvas');
+  canvasWidth = parseInt(canvasElm.width);
+  canvasHeight = parseInt(canvasElm.height);
+  step();
+});
+
+
+</code></pre>
+
+</article>
+
+<article class='slide slide-subhead'>
+ <h1><a href='http://incompl.github.com/boxbox/'>BoxBox Wrapper</a></h1>
+ <h2>A canvas-based wrapper to make our lives easier. <a href='http://incompl.github.com/boxbox/updoc.html'>API Reference</a></h2>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>We need to pull some more JavaScript to do so</h2>
+<pre class='prettyprint'><code>
+  &lt;html&gt;
+    &lt;head&gt;
+      &lt;script src='js/Box2DWeb-2.1.a.3.js'&gt;&lt;/script&gt;
+      &lt;script src='js/boxbox.js'&gt;&lt;/script&gt;
+      &lt;style&gt;
+	      canvas { border: 1px solid black; }
+      &lt;/style&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+	&lt;canvas id='canvasElem' width='500' height='400'&gt;&lt;/canvas&gt;
+        &lt;script&gt;
+	  // Your code
+        &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</article>
+
+
+
+<article class='slide slide-list'>
+<h2>The first world</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' data-coder-template='coderdeck-boxbox'>
+   var canvas = $("#canvasElem")[0];
+    
+   var world = boxbox.createWorld(canvas, {debugDraw:false, scale: 30});
+   // Set up the world, at 30 pixels per meter
+
+   world.createEntity({
+        name: 'ground',
+        type: 'static',
+        height: .1,
+        color: 'green',
+        width: 10, x: 10, y: 13.22});
+    
+</textarea>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>Adding a block</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' data-coder-template='coderdeck-boxbox'>
+   var canvas = $("#canvasElem")[0];
+    
+   var world = boxbox.createWorld(canvas, {debugDraw:false, scale: 30});
+   // Set up the world, at 30 pixels per meter
+
+   world.createEntity({
+        name: 'ground',
+        type: 'static',
+        height: .1,
+        color: 'green',
+        width: 10, x: 10, y: 13.22});
+
+  var box = world.createEntity({
+     x: 6,
+     y: 5,
+     height: 1,
+     width: 1,
+     friction: .3,
+     restitution: 0.5,
+     color: 'blue'
+  });
+    
+
+    
+</textarea>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>Adding more blocks (using a template)</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' data-coder-template='coderdeck-boxbox'>
+   var canvas = $("#canvasElem")[0];
+    
+   var world = boxbox.createWorld(canvas, {debugDraw:false, scale: 30});
+   // Set up the world, at 30 pixels per meter
+
+   world.createEntity({
+        name: 'ground',
+        type: 'static',
+        height: .1,
+        color: 'green',
+        width: 10, x: 10, y: 13.22});
+
+  var boxTemplate = {
+     name: "box",
+     height: 1,
+     width: 1,
+     friction: .3,
+     restitution: 0.5,
+     color: 'blue'
+  };
+
+  var box1 = world.createEntity(boxTemplate,{
+        x: 5,
+        y: 8
+  });
+    
+  var box2 = world.createEntity(boxTemplate,{
+        x: 6,
+        y: 5,
+        color: 'red'
+  });
+    
+
+    
+</textarea>
+</article>
+
+<article class='slide slide-list'>
+<h2>Circles, joints and images</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' data-coder-template='coderdeck-boxbox'>
+   var canvas = $("#canvasElem")[0];
+    
+   var world = boxbox.createWorld(canvas, {debugDraw:false, scale: 30});
+   // Set up the world, at 30 pixels per meter
+
+   world.createEntity({
+        name: 'ground',
+        type: 'static',
+        height: .1,
+        color: 'green',
+        width: 10, x: 10, y: 13.22});
+
+  var boxTemplate = {
+     name: "box",
+     height: 1,
+     width: 1,
+     friction: .3,
+     restitution: 0.5,
+     color: 'blue'
+  };
+
+  var circle = world.createEntity(boxTemplate,{
+        x: 5,
+        y: 8,
+        shape: 'circle',
+        image: 'wheel.png'
+  });
+    
+  var box = world.createEntity(boxTemplate,{
+        x: 6,
+        y: 5,
+        color: 'black'
+  });
+
+  var box = world.createEntity(boxTemplate,{
+        x: 6,
+        y: 5,
+        height: 3,
+        color: 'red'
+  });
+    
+ // Car thing
+    var wheelTemplate = {
+        name: 'wheel',
+        shape: 'circle',
+        radius: 1,
+        image: 'wheel.png'
+    };
+    var wheel1 = world.createEntity(wheelTemplate, {x: 11, y:1});
+    var wheel2 = world.createEntity(wheelTemplate, {x: 14, y:1});
+    world.createJoint("distance", wheel1, wheel2);
+
+    
+</textarea>
+</article>
+
+
+
+<article class='slide slide-list'>
+<h2>Picking</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' data-coder-template='coderdeck-boxbox'>
+   var canvas = $("#canvasElem")[0];
+    
+   var worldScale = 30;
+   var world = boxbox.createWorld(canvas, {debugDraw:false, scale: worldScale});
+   // Set up the world, at 30 pixels per meter
+
+   world.createEntity({
+        name: 'ground',
+        type: 'static',
+        height: .1,
+        color: 'green',
+        width: 10, x: 10, y: 13.22});
+
+  var boxTemplate = {
+     name: "box",
+     height: 1,
+     width: 1,
+     friction: .3,
+     restitution: 0.5,
+     color: 'blue'
+  };
+
+  var box1 = world.createEntity(boxTemplate,{
+        x: 5,
+        y: 8
+  });
+    
+  var box2 = world.createEntity(boxTemplate,{
+        x: 6,
+        y: 5,
+        color: 'red'
+  });
+
+  $(canvas).on("click",function(e) {
+     // convert to world coords
+     var worldX = e.offsetX / worldScale - world.camera().x;
+     var worldY = e.offsetY / worldScale - world.camera().y;
+
+     var objs = world.find(worldX - 0.01, worldY - 0.01, worldX + 0.01, worldY + 0.01);
+     for(var i=0;i<objs.length;i++) {
+      objs[i].applyImpulse(100,0);
+     }
+  });
+</textarea>
+</article>
+
+
+<article class='slide slide-list'>
+<h2>Picking up</h2>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' data-coder-template='coderdeck-boxbox'>
+   var canvas = $("#canvasElem")[0];
+    
+   var worldScale = 30;
+   var world = boxbox.createWorld(canvas, {debugDraw:false, scale: worldScale});
+   // Set up the world, at 30 pixels per meter
+
+   world.createEntity({
+        name: 'ground',
+        type: 'static',
+        height: .1,
+        color: 'green',
+        width: 10, x: 10, y: 13.22});
+
+  var boxTemplate = {
+     name: "box",
+     height: 1,
+     width: 1,
+     friction: .3,
+     restitution: 0.5,
+     color: 'blue'
+  };
+
+  var box1 = world.createEntity(boxTemplate,{
+        x: 5,
+        y: 8
+  });
+    
+  var box2 = world.createEntity(boxTemplate,{
+        x: 6,
+        y: 5,
+        color: 'red'
+  });
+
+  var curObj = null;
+
+  $(canvas).on("mousedown",function(e) {
+     var worldX = e.offsetX / worldScale - world.camera().x;
+     var worldY = e.offsetY / worldScale - world.camera().y;
+
+     var objs = world.find(worldX - 0.01, worldY - 0.01, worldX + 0.01, worldY + 0.01);
+     curObj = objs[0];
+     if(!curObj) {
+      world.createEntity(boxTemplate, { x: worldX, y: worldY, color:'black'});
+
+     }
+  });
+
+  $(canvas).on("mousemove",function(e) {
+     var worldX = e.offsetX / worldScale - world.camera().x;
+     var worldY = e.offsetY / worldScale - world.camera().y;
+
+     if(curObj) {
+      curObj.position({x: worldX, y: worldY });
+      curObj.setVelocity('none',0,0);
+      curObj.rotation(0);
+     }
+  });
+
+  $(canvas).on("mouseup",function(e) {
+    if(curObj) { curObj.clearVelocity('none'); }
+    curObj = null;
+
+  });
+</textarea>
+</article>
+
+<article class='slide slide-list'>
+<h2>Physics Playground</h2>
+<p>Modify the code to add a new object at that location if none were found, then create an interesting world (<a href='http://incompl.github.com/boxbox/updoc.html/'>API</a>)</p>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' data-coder-template='coderdeck-boxbox' data-save='physics-playground'>
+   var canvas = $("#canvasElem")[0];
+    
+   var worldScale = 30;
+   var world = boxbox.createWorld(canvas, {debugDraw:false, scale: worldScale});
+   // Set up the world, at 30 pixels per meter
+
+   world.createEntity({
+        name: 'ground',
+        type: 'static',
+        height: .1,
+        color: 'green',
+        width: 10, x: 10, y: 13.22});
+
+  var boxTemplate = {
+     name: "box",
+     height: 1,
+     width: 1,
+     friction: .3,
+     restitution: 0.5,
+     color: 'blue'
+  };
+
+  var box1 = world.createEntity(boxTemplate,{
+        x: 5,
+        y: 8
+  });
+    
+  var box2 = world.createEntity(boxTemplate,{
+        x: 6,
+        y: 5,
+        color: 'red'
+  });
+
+  $(canvas).on("click",function(e) {
+     // convert to world coords
+     var worldX = e.offsetX / worldScale - world.camera().x;
+     var worldY = e.offsetY / worldScale - world.camera().y;
+
+     var objs = world.find(worldX - 0.01, worldY - 0.01, worldX + 0.01, worldY + 0.01);
+     for(var i=0;i<objs.length;i++) {
+      objs[i].applyImpulse(100,0);
+     }
+  });
+</textarea>
+</article>
+
+
+
+
+
+<script src='dist/coderdeck.js'></script>
+
+<script>
+	$(function() {
+		$.deck('.slide');
+	});
+</script>
+</body>
+</html>
