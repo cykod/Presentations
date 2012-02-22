@@ -38,7 +38,6 @@
 <article class='slide slide-subhead'>
 <h1>Designing Interactivity</h1>
 <h2>with HTML5 Canvas<br/>
- <a href='http://bit.ly/massart-canvas-workshop'>http://bit.ly/massart-canvas-workshop</a>
 </h2>
 </article>
 
@@ -408,12 +407,35 @@ $(canvas).on('click',function(e) {
 
 <article class='slide slide-list'>
 <h2>Getting the X and Y</h2>
-<p>Let's examine the event Object</p>
+<p>Let's examine the event Object (Open up the console)</p>
 <textarea class='coder-editor coder-editor-full' data-language='javascript' >
 var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
 
 $(canvas).on('click',function(e) {
   console.log(e.offsetX + " " + e.offsetY);
+});
+</textarea>
+</article>
+
+<article class='slide slide-list'>
+  <h2>Bad news: offsetX and offsetY aren't universally supported (WebKit only)</h2>
+  <p>Workaround is to calc it yourself. We're going to skip this in these slides for simplicity's sake and
+  assume you are using Chrome to view this.</p>
+<textarea class='coder-editor coder-editor-full' data-language='javascript' >
+var canvas=$('#canvasElem')[0], ctx = canvas.getContext('2d');
+
+$(canvas).on('click',function(e) {
+  var offX, offY;
+  if (!(e.offsetX || e.offsetY)) {
+    offX = e.layerX - $(e.target).position().left;
+    offY = e.layerY - $(e.target).positionion().top;
+  }
+  else {
+    offX = e.offsetX;
+    offY = e.offsetY;
+  }
+
+  console.log(offX,offY);
 });
 </textarea>
 </article>
