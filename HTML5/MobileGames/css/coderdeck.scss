@@ -1,0 +1,258 @@
+$main-color:#444;
+$callout-color:#669933;
+$complimentary-color:#d3502c;
+$light-color:#999999;
+
+@mixin body-font {
+	font-family: adelle,serif;
+	font-weight:400;	
+} 
+
+@mixin sans-bold-font {
+	font-family: proxima-nova,sans-serif;
+	font-weight:900;	
+}
+
+@mixin slab-font {
+	font-family: adelle,serif;
+	font-weight:700;
+}
+
+
+@mixin condensed-font {
+	font-family: proxima-nova-condensed,sans-serif; 
+	font-weight:400;
+}
+
+.deck-container {
+	@include body-font;
+	font-size:1.25em;
+	background:#fff;
+	
+	.slide {
+		background:#fff;
+		h1 { 
+			  -webkit-transform:none;
+		      -moz-transform:none;
+		      -ms-transform:none;
+		      -transform:none;
+		      -o-transform:none;
+		position:relative;
+		top:0;
+			}
+	}
+	
+	.slide-accent {
+		background:$callout-color;
+		h1 { font-size:4em; @include slab-font; color:white; text-transform:none; 
+			position:absolute; top:30%;
+			}
+		p { font-size:1.5em; @include body-font; color:white; text-align:center; text-transform:none; padding-top:0;}
+	}
+	
+	.slide-title {
+		background:$complimentary-color;
+		h1 { font-size:4em; @include slab-font; color:white; text-transform:none; padding-top:3em;}
+	}
+	
+	.slide-statement {
+		h1 { font-size:4em; @include slab-font; color:$callout-color; text-transform:none; padding-top:3em;}
+	}
+	
+	.slide-list {
+		h1 { font-size:3.5em; text-align:left; line-height:.9em; color:$complimentary-color; border-bottom:4px solid $light-color; padding:.2em 1em .07em 0; margin-bottom:.3em; 
+			 position:relative;  left:0; 
+		 
+			}
+		h2 { border-bottom:4px solid $light-color; padding:.5em 1em .07em 0; margin-bottom:.5em;}
+		h3, p { @include body-font; font-size:1.3em; color:$main-color; margin-bottom:.3em;}
+		ol { list-style-type: decimal; @include body-font; font-size:.9em; color:$light-color; margin-left:1em;
+			ul { @include body-font; font-size:1.0em; margin-left:.5em; padding:0 0;}
+		}	
+		ul { list-style-type: square; @include body-font; font-size:.9em; color:$light-color; margin-left:1em;
+			ul { @include body-font; list-style-type:none; font-size:1.0em; margin-left:.5em; padding:0 0;
+				li { padding-left:.5em; padding-top:.2; padding-bottom:0; margin-top:.5em; }
+				}
+			
+		}
+		li { padding-left:.5em; padding-bottom:.5em; }
+		
+	}	
+		
+	.slide-homework {
+		padding:0 10%;
+		background:black;
+		h1 {  font-size:3.5em; text-align:left; background-color:inherit; line-height:.9em; color:white; border-bottom:4px solid $light-color; padding:.2em 1em .07em 0; margin-bottom:.3em; }
+		h2 { color:$light-color; border-bottom:4px solid $light-color; background-color:inherit; padding:.5em 1em .07em 0; margin-bottom:.5em;}
+		h3 { background-color:inherit; @include body-font; font-size:1.5em; color:white; margin-bottom:.3em;}
+		ol { list-style-type: decimal; @include body-font; font-size:1.5em; color:$light-color; margin-left:1em;
+				ul { @include body-font; font-size:1.0em; margin-left:.5em; padding:0 0;}
+			}	
+		ul { background-color:inherit; list-style-type: square; @include body-font; font-size:1.1em; color:$light-color; margin-left:1em;
+				ul { @include body-font; list-style-type:none; font-size:1.0em; margin-left:.5em; padding:0 0;
+					li {background-color:inherit;  padding-left:.5em; padding-top:.2; padding-bottom:0; margin-top:.5em; }
+					}
+				h3 {font-size:1.0em;}	
+			}
+		li { background-color:inherit;  padding-left:.5em; padding-bottom:.5em; }
+		p { @include body-font; }		
+
+		
+	}
+	
+	.slide-subhead { 
+		h1 { font-size:5em; position:static; margin:0px; padding-top:1em; 
+	    
+	    }
+		h2 { font-size:2em; text-align:center; margin:0px; padding:0px; }
+	
+		h1 { font-size:5em; margin:0; line-height:.9em; color:$complimentary-color; }
+		h2 { font-size:3em; text-align:center; padding-top:0; margin-bottom:0;}
+		p { font-size:1.5em; text-align:center; color:$main-color; line-height:1.25em; margin-top:.5em;}
+			a {color:$complimentary-color;}
+	}
+	
+	.slide-background {
+		background:no-repeat top left;
+		background-size:100% auto;
+		h1 { padding-top:.5em; margin-top:0; text-align:left; color:white; text-shadow: 0 0 10px #444;}		
+	}
+	
+	
+	
+	.slide-background-content {
+
+		background:no-repeat top left;
+		background-size:100% auto;
+		h1 { text-align:left; font-size:3.25em; margin:0; line-height:.9em; color:$complimentary-color; padding-top:1em; padding-left:5%; padding-right:15%;}
+		h2 { font-size:1.5em; text-align:left; margin:0; padding-bottom:1.5em; padding-left:5%; padding-right:15%; }
+
+		.background-wrapper{ background-color:white; }
+		.background-padding { padding-top:15%;}
+	}
+	
+	.slide-image {
+		h1 { font-size:4em; text-align:left; margin:0; line-height:.9em; color:$complimentary-color; padding-top:5%;}
+		h2 { font-size:2em; text-align:left; padding-top:0; }
+		p { font-size:1.75em; text-align:left; color:$main-color; line-height:1.5em; padding-top:.5em;}
+		
+		.top-image {float:left; padding-right:.3em; padding-top:5%; }
+	
+	}
+	
+	h1 {
+		@include sans-bold-font;
+		font-size: 5em;
+		text-transform:uppercase;
+	}
+
+
+	h2 {
+		@include body-font;
+		border:none;
+	}
+
+	h3 {
+		@include slab-font;
+
+	}
+	
+	em { color:$callout-color; font-style:normal;}
+
+	pre {
+		border-color:$complimentary-color;
+	}
+
+	code {
+		color:#888;
+	}
+
+	blockquote {
+		font-size:2em;
+		font-style:italic;
+		padding:1em 2em;
+		color:#000;
+		border-left:5px solid $complimentary-color;
+
+		p {
+			margin:0;
+		}
+
+		cite {
+			font-size:.5em;
+			font-style:normal;
+			font-weight:bold;
+			color:#888;
+		}
+	}
+	
+	.example { 
+		//display:inline-block;
+		font-size:2.5em;
+		color:$main-color;  
+		line-height:2em; 
+		padding:.1em .15em 0 .15em; 
+		margin-left:1em;
+		margin-bottom:.5em;
+		
+		em { 
+			display:inline-block;
+			background:$callout-color; 
+			color:#fff; 
+			padding:.1em .15em 0 .15em; 
+			font-style:normal;
+			//margin-left:1em;
+			margin-bottom:.5em;
+		}
+	}
+	
+
+	
+	.slide .callout {color:$complimentary-color;}
+	
+	.accent {color:$callout-color;}
+	
+	::-moz-selection{ background:$callout-color; color:#fff; }
+	::selection { background:$callout-color; color:#fff; }
+	
+	.slide .light {color:$light-color;}
+	
+	a {
+		&, &:hover, &:focus, &:active, &:visited {
+			color:$callout-color;
+			text-decoration:none;
+		}
+		
+		&:hover, &:focus {
+			text-decoration:underline;
+		}
+	}
+	
+	.deck-prev-link, .deck-next-link {
+		background:$complimentary-color;
+		font-family:serif; // sans-serif arrows x-browser fail
+		
+		&, &:hover, &:focus, &:active, &:visited {
+			color:#fff;
+		}
+		
+		&:hover, &:focus {
+			background:$callout-color;
+			text-decoration:none;
+		}
+	}
+	
+	.deck-status {
+		font-size:0.6666em;
+	}
+	
+	&.deck-menu {
+		.slide {
+			background:#eee;
+		}
+		
+		.deck-current {
+			background:#ddf;
+		}
+	}
+}

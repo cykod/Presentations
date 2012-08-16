@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>HTML5 Games and Mobile</title>
+	<meta name="viewport" content="width=1024">
+	
+	<!-- Replace path with correct path to deck.core.css. -->
+	<link rel="stylesheet" href="src/deck.js/core/deck.core.css" type="text/css">
+	
+	<!-- Core and extension CSS files -->
+	<link rel="stylesheet" href="src/deck.js/extensions/navigation/deck.navigation.css">
+	<link rel="stylesheet" href="src/deck.js/extensions/status/deck.status.css">
+	<link rel="stylesheet" href="src/deck.js/extensions/hash/deck.hash.css">
+	<link rel="stylesheet" href="src/deck.js/extensions/menu/deck.menu.css">
+	<link rel="stylesheet" href="src/css/prettify.css">
+	<link rel="stylesheet" href="src/css/deck.coder.css">
+	
+
+	<!-- Theme -->
+	<link rel="stylesheet" id='style-theme-link' href="src/css/coderdeck.css" type="text/css" >
+
+	<link rel="stylesheet" href="src/codemirror/lib/codemirror.css">
+	<link rel="stylesheet" href="src/codemirror/theme/default.css">
+	<link href='http://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+	
+	<!-- Replace path with correct path to Modernizr file. -->
+
+	<script src='src/jquery.min.js'></script>
+	<script src="src/modernizr.js"></script>
+</head>
+<body class="deck-container">
+
+<script type='text/coderdeck' id='coderdeck-default'>
+  <html>
+    <head>
+      <script src='src/jquery.min.js'>SCRIPTEND
+    </head>
+    <body>
+	    CODE
+    </body>
+</html>
+</script>
+
+
+<script type='text/coderdeck' id='coderdeck-style-example'>
+	<html>
+		<title>test</title>
+		<style>
+			CODE
+		</style>
+		<body>
+			<h1>I'm a H1 heading</h1>
+			<h2>I'm a H2 heading</h2>
+			<p>Pargraph of text &lt;p&gt; here</p>
+			<div class='stuff'>I'm a div &lt;div&gt; with class "stuff"</div>
+			<div id='my-div'>I'm a &lt;div&gt; with id "my-div"</div>
+		</body>
+	</html>
+</script> 	
+
+<article class='slide slide-subhead'>
+<h1>HTML5 Games on Mobile</h1>
+<h3>Pascal Rettig - <a href='http://twitter.com/cykod'>@cykod</a>
+</h3>
+</article>
+
+<!-- Apply a class of "coder-editor" to a textarea to make it show up as runnable code -->
+<article class='slide slide-list'>
+<h2>So what is HTML5 Development?</h2>
+<ul style='text-align:left;'>
+	<li class="slide">
+		<h3>Plugin-free game development</h3>
+	</li>
+	<li class="slide">
+		<h3>Download-free game development</h3>
+	</li>
+	<li class="slide">
+		<h3>Instant Gaming</h3>
+	</li>
+</ul>
+</article>
+
+<article class='slide slide-list'>
+	<h2>Where are we?</h2>
+  <ul style='text-align:left;'>
+  	<li class="slide">
+  		<h3>2004 - Canvas created by Apple</h3>
+  	</li>
+  	<li class="slide">
+  		<h3>2005 - Canvas integrated into Gecko</h3>
+  	</li>
+  	<li class="slide">
+  		<h3>2008 - Chrome released, JavaScript wars are on</h3>
+  	</li>
+  	<li class="slide">
+  		<h3>Mar 2011 - IE9 released, finally supports canvas</h3>
+  	</li>
+  	<li class="slide">
+  		<h3>Mar 2011 - WebGL "released" (On mobile only on Firefox, Opera)</h3>
+  	</li>
+  	<li class="slide">
+  		<h3>Nov 2011 - iOS 5 released (GPU Accel. canvas)</h3>
+  	</li>
+  	<li class="slide">
+  		<h3>Jun 2012 - Chrome for Android (GPU Accel. canvas)</h3>
+  	</li>
+  </ul>
+</article>
+
+<article class='slide slide-list'>
+	<h2>Mobile Goodies in HTML5</h2>
+  <ul style='text-align:left;'>
+  	<li class="slide">
+    <h3><a href='./demos/accel/orient.html'>Accelerometer</a></h3>
+  	</li>
+  	<li class="slide">
+  		<h3>Geolocation</h3>
+  	</li>
+  	<li class="slide">
+  		<h3>WebSockets</h3>
+  	</li>
+  	<li class="slide">
+  		<h3>Multi-touch</h3>
+  	</li>
+  </ul>
+</article>
+
+ <article class='slide slide-list'>
+   <h2>Mobile Gotchas</h2>
+   <ul style='text-align:left;'>
+   	<li class="slide">
+   		<h3>Performance is still a WIP</h3>
+   	</li>
+   	<li class="slide">
+   		<h3>Audio...Sucks (although Audio API is coming to iOS + Chrome)</h3>
+   	</li>
+   	<li class="slide">
+   		<h3>WebGL isn't prevalent </h3>
+   	</li>
+   	<li class="slide">
+   		<h3>Windows Phone</h3>
+   	</li>
+   	<li class="slide">
+   		<h3>Form factor / screen sizes</h3>
+   	</li>
+   </ul>
+</article>
+
+
+ <article class='slide slide-list'>
+   <h2>Work arounds</h2>
+   <ul style='text-align:left;'>
+   	<li class="slide">
+   		<h3>DOM based + CSS3 Transitions, Animations</h3>
+   	</li>
+   	<li class="slide">
+   		<h3>Canvas rescaling</h3>
+   	</li>
+   	<li class="slide">
+   		<h3>Audio Sprites (Egh)</h3>
+   	</li>
+   </ul>
+ </article>
+
+
+<article class='slide slide-subhead'>
+  <h1>Why Mobile?</h1>
+</article>
+
+<article class='slide slide-subhead'>
+<h1>It's all gonna be mobile</h1>
+<h3>Consumers moving consumption to tablets, Win8 going all-in on Mobile. HTML5 Bridges the Gap.</h3>
+</article>
+
+<article class='slide slide-list'>
+  <h2>Getting Started</h2>
+  <ul style='text-align:left;'>
+  	<li class="slide">
+    <h3><a href='http://buildnewgames.com/mobile-game-primer/'>DIY - Mobile Game Primer</a></h3>
+  	</li>
+  	<li class="slide">
+    <h3>Grab an engine: <a href='http://ludei.com/'>Ludei's CAAT</a>, <a href='http://craftyjs.com/'>Crafty.js</a>, <a href='http://impactjs.com/'>Impact.js</a>, <a href='http://www.melonjs.org/'>MelonJS</a>, <a href='http://www.limejs.com/'>LimeJS</a></h3>
+  	</li>
+  </ul>
+</article>
+
+<article class='slide slide-subhead'>
+<h1>Thanks? Questions</h1>
+<h3>Pascal Rettig - <a href='http://twitter.com/cykod'>@cykod</a>
+</h3>
+</article>
+
+
+
+<!-- Update these paths to point to the correct files. -->
+<script src="src/jquery.tmpl.min.js"></script>
+<script src="src/deck.js/core/deck.core.js"></script>
+
+<!-- Code Mirror -->
+<script src="src/codemirror/lib/codemirror.js"></script>
+<script src="src/codemirror/mode/xml/xml.js"></script>
+<script src="src/codemirror/mode/css/css.js"></script>
+<script src="src/codemirror/mode/javascript/javascript.js"></script>
+<script src="src/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+
+<!-- Prettify -->
+<script src="src/prettify.js"></script>
+
+<!-- Deck Core and extensions -->
+<script src="src/deck.js/extensions/status/deck.status.js"></script>
+<script src="src/deck.js/extensions/navigation/deck.navigation.js"></script>
+<script src='src/deck.coder.js'></script>
+<script src="src/deck.js/extensions/hash/deck.hash.js"></script>
+<script src="src/deck.js/extensions/menu/deck.menu.js"></script>
+
+<script>
+	$(function() {
+		$.deck('.slide');
+	});
+</script>
+</body>
+</html>
